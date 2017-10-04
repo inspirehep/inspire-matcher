@@ -48,3 +48,14 @@ script:
 
 after_success:
   - coveralls
+
+deploy:
+  provider: pypi
+  user: inspirehep
+  password:
+    secure: "TImiF/7uL3hne5ta/ZbZVP0h6qmYD6Ik/yc0QFZ7i1VgRjJDzgsvNDwK0245XZOF1mY86qEJGAr5mumUmRvMOxUhnb76izIrbN1wqoe1RiG1/UZdM0cyCiYlRR0PjvYj48zi+hM/7SDPjSu5FNIAZ7DGoasxYnRYIyXWZQA3ZHW57RTpcddLXAjkOZg1bd7EvU+9+56P7cSQJ6ogJcS8Rr8bpZZmqrnp9/W7NX54WteVXkMHThaNhEv0GWVZ1vkxdM/rgP4fmKQ8KZvtsu0MqEJibHJmPZ8vuRUjiFVyK+WE2KKDaHuv74ESSTBnGGMN0mC+cJbpZZGnRua5KYnKmAUmn/cj7jQsXwJ84+6XTz5YHRiremh+Ar/JBjapT3NHOfajx1MYxMGU9WsVKE0aMRon6fl4bwf0DV+9Zus9WeFaf1zmGag+NWGDclU4bLaubhk08+avELnys8P4E/F4DX88IMV1As9yjtviziHpky44pm0QQezvX1+szsnYuRBjpqUHEV9pabhl3FmZyUVYc91zoRtCPUeZe7S7bz6ImkiHYomAd0mVhlbwbO9vtBrV4gBOu/YG1HX7dTO7H8SiTYOe40OPbucTEOvWkG16wD3U7maxDpLZiSCLjeH3AP4PydwX4PEnToRGT3grs5cUXuF9ZdAXXzKPwv5F3ikbMzg="
+  on:
+    branch: master
+    python: 2.7
+  distribution: sdist
+
