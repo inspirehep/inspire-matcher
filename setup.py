@@ -29,7 +29,7 @@ from setuptools import find_packages, setup
 
 URL = 'https://github.com/inspirehep/inspire-matcher'
 
-readme = open('README.rst')
+readme = open('README.rst').read()
 
 setup_requires = [
     'autosemver~=0.0,>=0.5.2',
