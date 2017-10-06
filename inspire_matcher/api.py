@@ -68,6 +68,6 @@ def match(record, config=None):
 
             results = es.search(index=index, doc_type=doc_type, body=body)
 
-            for result in results:
+            for result in results['hits']['hits']:
                 if validator(record, result):
                     yield result
