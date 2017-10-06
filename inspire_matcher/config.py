@@ -42,7 +42,7 @@ MATCHER_DEFAULT_CONFIGURATION = {
             ],
         },
     ],
-    'doc_type': 'records',
+    'doc_type': 'hep',
     'index': 'records-hep',
 }
 """Default configuration of the matcher."""
