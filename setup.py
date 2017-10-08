@@ -86,7 +86,7 @@ setup(
     extras_require=extras_require,
     entry_points={
         'invenio_base.apps': [
-            'inspire_matcher = inspire_matcher.InspireMatcher',
+            'inspire_matcher = inspire_matcher:InspireMatcher',
         ],
     },
     classifiers=[
