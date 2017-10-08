@@ -84,6 +84,11 @@ setup(
     install_requires=install_requires,
     tests_require=tests_require,
     extras_require=extras_require,
+    entry_points={
+        'invenio_base.apps': [
+            'inspire_matcher = inspire_matcher.InspireMatcher',
+        ],
+    },
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
