@@ -66,7 +66,10 @@ def match(record, config=None):
             except Exception as e:
                 raise ValueError('Malformed query. Query %d of step %d does not compile: %s' % (j, i, e.message))
 
-            results = es.search(index=index, doc_type=doc_type, body=body)
+            if body:
+                results = es.search(index=index, doc_type=doc_type, body=body)
+            else:
+                results = {'hits': {'hits': []}}
 
             for result in results['hits']['hits']:
                 if validator(record, result):
