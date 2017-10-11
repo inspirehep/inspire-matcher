@@ -35,7 +35,7 @@ def test_match_raises_if_the_configuration_does_not_have_all_the_keys():
 
     with pytest.raises(KeyError) as excinfo:
         list(match(None, config))
-    assert 'Malformed configuration. Missing "algorithm".' in str(excinfo.value)
+    assert 'Malformed configuration' in str(excinfo.value)
 
 
 def test_match_raises_if_one_step_of_the_algorithm_has_no_queries():
@@ -49,7 +49,7 @@ def test_match_raises_if_one_step_of_the_algorithm_has_no_queries():
 
     with pytest.raises(KeyError) as excinfo:
         list(match(None, config))
-    assert 'Malformed algorithm. Step 0 has no queries.' in str(excinfo.value)
+    assert 'Malformed algorithm' in str(excinfo.value)
 
 
 def test_match_raises_if_one_query_does_not_have_a_type():
@@ -67,7 +67,7 @@ def test_match_raises_if_one_query_does_not_have_a_type():
 
     with pytest.raises(ValueError) as excinfo:
         list(match(None, config))
-    assert 'Malformed query. Query 0 of step 0 does not compile: "type" is missing.' in str(excinfo.value)
+    assert 'Malformed query' in str(excinfo.value)
 
 
 def test_match_raises_if_one_query_type_is_not_supported():
@@ -85,7 +85,7 @@ def test_match_raises_if_one_query_type_is_not_supported():
 
     with pytest.raises(ValueError) as excinfo:
         list(match(None, config))
-    assert 'Malformed query. Query 0 of step 0 does not compile: type "not-supported" is not supported.' in str(excinfo.value)
+    assert 'Malformed query' in str(excinfo.value)
 
 
 def test_match_raises_if_an_exact_query_does_not_have_all_the_keys():
@@ -106,4 +106,4 @@ def test_match_raises_if_an_exact_query_does_not_have_all_the_keys():
 
     with pytest.raises(ValueError) as excinfo:
         list(match(None, config))
-    assert 'Malformed query. Query 0 of step 0 does not compile: "match" is missing.' in str(excinfo.value)
+    assert 'Malformed query' in str(excinfo.value)

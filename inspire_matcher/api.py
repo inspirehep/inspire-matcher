@@ -46,13 +46,13 @@ def match(record, config=None):
     try:
         algorithm, doc_type, index = config['algorithm'], config['doc_type'], config['index']
     except KeyError as e:
-        raise KeyError('Malformed configuration. Missing "%s".' % e.message)
+        raise KeyError('Malformed configuration: %s.' % repr(e))
 
     for i, step in enumerate(algorithm):
         try:
             queries = step['queries']
         except KeyError:
-            raise KeyError('Malformed algorithm. Step %d has no queries.' % i)
+            raise KeyError('Malformed algorithm: step %d has no queries.' % i)
 
         try:
             validator = import_string(step['validator'])
@@ -64,7 +64,7 @@ def match(record, config=None):
             try:
                 body = compile(query, record)
             except Exception as e:
-                raise ValueError('Malformed query. Query %d of step %d does not compile: %s' % (j, i, e.message))
+                raise ValueError('Malformed query. Query %d of step %d does not compile: %s.' % (j, i, repr(e)))
 
             if body:
                 results = es.search(index=index, doc_type=doc_type, body=body)
