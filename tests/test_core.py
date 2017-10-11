@@ -61,3 +61,113 @@ def test_compile_exact():
     result = _compile_exact(query, record)
 
     assert expected == result
+
+
+def test_compile_exact_supports_a_collection():
+    query = {
+        'collections': [
+            'HAL Hidden',
+        ],
+        'match': 'arxiv_eprints.value',
+        'search': 'arxiv_eprints.value.raw',
+        'type': 'exact',
+    }
+    record = {
+        'arxiv_eprints': [
+            {
+                'categories': [
+                    'hep-th',
+                ],
+                'value': 'hep-th/9711200',
+            },
+        ],
+    }
+
+    expected = {
+        'query': {
+            'bool': {
+                'minimum_should_match': 1,
+                'filter': {
+                    'bool': {
+                        'should': [
+                            {
+                                'match': {
+                                    '_collections': 'HAL Hidden',
+                                },
+                            },
+                        ],
+                    },
+                },
+                'should': [
+                    {
+                        'term': {
+                            'arxiv_eprints.value.raw': {
+                                'value': 'hep-th/9711200',
+                            },
+                        },
+                    },
+                ],
+            },
+        },
+    }
+    result = _compile_exact(query, record)
+
+    assert expected == result
+
+
+def test_compile_exact_supports_multiple_collections():
+    query = {
+        'collections': [
+            'CDS Hidden',
+            'HAL Hidden',
+        ],
+        'match': 'arxiv_eprints.value',
+        'search': 'arxiv_eprints.value.raw',
+        'type': 'exact',
+    }
+    record = {
+        'arxiv_eprints': [
+            {
+                'categories': [
+                    'hep-th',
+                ],
+                'value': 'hep-th/9711200',
+            },
+        ],
+    }
+
+    expected = {
+        'query': {
+            'bool': {
+                'minimum_should_match': 1,
+                'filter': {
+                    'bool': {
+                        'should': [
+                            {
+                                'match': {
+                                    '_collections': 'CDS Hidden',
+                                },
+                            },
+                            {
+                                'match': {
+                                    '_collections': 'HAL Hidden',
+                                },
+                            },
+                        ],
+                    },
+                },
+                'should': [
+                    {
+                        'term': {
+                            'arxiv_eprints.value.raw': {
+                                'value': 'hep-th/9711200',
+                            },
+                        },
+                    },
+                ],
+            },
+        },
+    }
+    result = _compile_exact(query, record)
+
+    assert expected == result
