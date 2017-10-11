@@ -39,7 +39,7 @@ def _compile_exact(query, record):
 
     values = get_value(record, match, default=[])
     if not values:
-        return {}
+        return
 
     result = {
         'query': {
