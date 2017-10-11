@@ -26,22 +26,16 @@ from inspire_utils.record import get_value
 
 
 def compile(query, record):
-    try:
-        type_ = query['type']
-    except KeyError:
-        raise KeyError('"type" is missing.')
+    type_ = query['type']
 
     if type_ == 'exact':
         return _compile_exact(query, record)
 
-    raise NotImplementedError('type "%s" is not supported.' % type_)
+    raise NotImplementedError(type_)
 
 
 def _compile_exact(query, record):
-    try:
-        match, search = query['match'], query['search']
-    except KeyError as e:
-        raise KeyError('"%s" is missing.' % e.message)
+    match, search = query['match'], query['search']
 
     values = get_value(record, match, default=[])
     if not values:
