@@ -37,6 +37,8 @@ def compile(query, record):
 def _compile_exact(query, record):
     match, search = query['match'], query['search']
 
+    collections = query.get('collections', [])
+
     values = get_value(record, match, default=[])
     if not values:
         return
@@ -49,6 +51,16 @@ def _compile_exact(query, record):
             },
         },
     }
+
+    if collections:
+        result['query']['bool']['filter'] = {'bool': {'should': []}}
+
+        for collection in collections:
+            result['query']['bool']['filter']['bool']['should'].append({
+                'match': {
+                    '_collections': collection,
+                },
+            })
 
     for value in values:
         result['query']['bool']['should'].append({
