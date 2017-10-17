@@ -22,6 +22,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+from inspire_utils.helpers import force_list
 from inspire_utils.record import get_value
 
 
@@ -39,7 +40,7 @@ def _compile_exact(query, record):
 
     collections = query.get('collections', [])
 
-    values = get_value(record, match, default=[])
+    values = force_list(get_value(record, match))
     if not values:
         return
 

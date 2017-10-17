@@ -171,3 +171,36 @@ def test_compile_exact_supports_multiple_collections():
     result = _compile_exact(query, record)
 
     assert expected == result
+
+
+def test_compile_exact_supports_non_list_fields():
+    query = {
+        'match': 'reference.arxiv_eprint',
+        'search': 'arxiv_eprints.value.raw',
+        'type': 'exact',
+    }
+    reference = {
+        'reference': {
+            'arxiv_eprint': 'hep-th/9711200',
+        },
+    }
+
+    expected = {
+        'query': {
+            'bool': {
+                'minimum_should_match': 1,
+                'should': [
+                    {
+                        'term': {
+                            'arxiv_eprints.value.raw': {
+                                'value': 'hep-th/9711200',
+                            },
+                        },
+                    },
+                ],
+            },
+        },
+    }
+    result = _compile_exact(query, reference)
+
+    assert expected == result
