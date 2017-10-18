@@ -65,10 +65,8 @@ def _compile_exact(query, record):
 
     for value in values:
         result['query']['bool']['should'].append({
-            'term': {
-                search: {
-                    'value': value,
-                },
+            'match': {
+                search: value,
             },
         })
 

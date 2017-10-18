@@ -48,10 +48,8 @@ def test_compile_exact():
                 'minimum_should_match': 1,
                 'should': [
                     {
-                        'term': {
-                            'arxiv_eprints.value.raw': {
-                                'value': 'hep-th/9711200',
-                            },
+                        'match': {
+                            'arxiv_eprints.value.raw': 'hep-th/9711200',
                         },
                     },
                 ],
@@ -100,10 +98,8 @@ def test_compile_exact_supports_a_collection():
                 },
                 'should': [
                     {
-                        'term': {
-                            'arxiv_eprints.value.raw': {
-                                'value': 'hep-th/9711200',
-                            },
+                        'match': {
+                            'arxiv_eprints.value.raw': 'hep-th/9711200',
                         },
                     },
                 ],
@@ -158,10 +154,8 @@ def test_compile_exact_supports_multiple_collections():
                 },
                 'should': [
                     {
-                        'term': {
-                            'arxiv_eprints.value.raw': {
-                                'value': 'hep-th/9711200',
-                            },
+                        'match': {
+                            'arxiv_eprints.value.raw': 'hep-th/9711200',
                         },
                     },
                 ],
@@ -191,10 +185,8 @@ def test_compile_exact_supports_non_list_fields():
                 'minimum_should_match': 1,
                 'should': [
                     {
-                        'term': {
-                            'arxiv_eprints.value.raw': {
-                                'value': 'hep-th/9711200',
-                            },
+                        'match': {
+                            'arxiv_eprints.value.raw': 'hep-th/9711200',
                         },
                     },
                 ],
