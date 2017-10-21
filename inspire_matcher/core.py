@@ -22,6 +22,8 @@
 
 from __future__ import absolute_import, division, print_function
 
+import os
+
 from inspire_utils.helpers import force_list
 from inspire_utils.record import get_value
 
@@ -31,6 +33,8 @@ def compile(query, record):
 
     if type_ == 'exact':
         return _compile_exact(query, record)
+    elif type_ == 'nested':
+        return _compile_nested(query, record)
 
     raise NotImplementedError(type_)
 
@@ -71,3 +75,44 @@ def _compile_exact(query, record):
         })
 
     return result
+
+
+def _compile_nested(query, record):
+    paths, search_paths = query['paths'], query['search_paths']
+
+    if len(paths) != len(search_paths):
+        raise ValueError('paths and search_paths must be of the same length')
+
+    common_path = _get_common_path(search_paths)
+    if not common_path:
+        raise ValueError('search_paths must share a common path')
+
+    result = {
+        'query': {
+            'nested': {
+                'path': common_path,
+                'query': {
+                    'bool': {
+                        'must': [],
+                    },
+                },
+            },
+        },
+    }
+
+    for path, search_path in zip(paths, search_paths):
+        value = get_value(record, path)
+        if not value:
+            continue
+
+        result['query']['nested']['query']['bool']['must'].append({
+            'match': {
+                search_path: value,
+            },
+        })
+
+    return result
+
+
+def _get_common_path(paths):
+    return '.'.join(os.path.commonprefix([path.split('.') for path in paths]))
