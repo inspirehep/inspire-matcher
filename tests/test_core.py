@@ -22,7 +22,9 @@
 
 from __future__ import absolute_import, division, print_function
 
-from inspire_matcher.core import _compile_exact
+import pytest
+
+from inspire_matcher.core import _compile_exact, _compile_nested
 
 
 def test_compile_exact():
@@ -196,3 +198,157 @@ def test_compile_exact_supports_non_list_fields():
     result = _compile_exact(query, reference)
 
     assert expected == result
+
+
+def test_compile_nested():
+    query = {
+        'paths': [
+            'reference.publication_info.journal_title',
+            'reference.publication_info.journal_volume',
+            'reference.publication_info.artid',
+        ],
+        'search_paths': [
+            'publication_info.journal_title',
+            'publication_info.journal_volume',
+            'publication_info.artid',
+        ],
+        'type': 'nested',
+    }
+    reference = {
+        'reference': {
+            'publication_info': {
+                'journal_title': 'Phys.Rev.',
+                'journal_volume': 'D94',
+                'artid': '124054',
+            },
+        },
+    }
+
+    expected = {
+        'query': {
+            'nested': {
+                'path': 'publication_info',
+                'query': {
+                    'bool': {
+                        'must': [
+                            {
+                                'match': {
+                                    'publication_info.journal_title': 'Phys.Rev.',
+                                },
+                            },
+                            {
+                                'match': {
+                                    'publication_info.journal_volume': 'D94',
+                                },
+                            },
+                            {
+                                'match': {
+                                    'publication_info.artid': '124054',
+                                },
+                            },
+                        ],
+                    },
+                },
+            },
+        },
+    }
+    result = _compile_nested(query, reference)
+
+    assert expected == result
+
+
+def test_compile_nested_skips_non_existing_paths():
+    query = {
+        'paths': [
+            'reference.publication_info.journal_title',
+            'reference.publication_info.journal_volume',
+            'reference.publication_info.journal_issue',
+            'reference.publication_info.artid',
+            'reference.publication_info.page_start',
+            'reference.publication_info.page_end',
+        ],
+        'search_paths': [
+            'publication_info.journal_title',
+            'publication_info.journal_volume',
+            'publication_info.journal_issue',
+            'publication_info.artid',
+            'publication_info.page_start',
+            'publication_info.page_end',
+        ],
+    }
+    reference = {
+        'reference': {
+            'publication_info': {
+                'journal_title': 'Phys.Rev.',
+                'journal_volume': 'D94',
+                'artid': '124054',
+            },
+        },
+    }
+
+    expected = {
+        'query': {
+            'nested': {
+                'path': 'publication_info',
+                'query': {
+                    'bool': {
+                        'must': [
+                            {
+                                'match': {
+                                    'publication_info.journal_title': 'Phys.Rev.',
+                                },
+                            },
+                            {
+                                'match': {
+                                    'publication_info.journal_volume': 'D94',
+                                },
+                            },
+                            {
+                                'match': {
+                                    'publication_info.artid': '124054',
+                                },
+                            },
+                        ],
+                    },
+                },
+            },
+        },
+    }
+    result = _compile_nested(query, reference)
+
+    assert expected == result
+
+
+def test_compile_nested_raises_when_search_paths_dont_share_a_common_path():
+    query = {
+        'paths': [
+            'foo.bar',
+            'foo.baz',
+        ],
+        'search_paths': [
+            'bar',
+            'baz',
+        ],
+        'type': 'nested',
+    }
+
+    with pytest.raises(ValueError) as excinfo:
+        _compile_nested(query, None)
+    assert 'common path' in str(excinfo.value)
+
+
+def test_compile_nested_raises_when_paths_and_search_paths_dont_have_the_same_length():
+    query = {
+        'paths': [
+            'foo',
+            'bar',
+        ],
+        'search_paths': [
+            'baz'
+        ],
+        'type': 'nested',
+    }
+
+    with pytest.raises(ValueError) as excinfo:
+        _compile_nested(query, None)
+    assert 'same length' in str(excinfo.value)
