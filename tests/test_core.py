@@ -319,6 +319,39 @@ def test_compile_nested_skips_non_existing_paths():
     assert expected == result
 
 
+def test_compile_nested_does_not_generate_an_empty_query():
+    query = {
+        'paths': [
+            'reference.publication_info.journal_title',
+            'reference.publication_info.journal_volume',
+            'reference.publication_info.journal_issue',
+            'reference.publication_info.artid',
+            'reference.publication_info.page_start',
+            'reference.publication_info.page_end',
+        ],
+        'search_paths': [
+            'publication_info.journal_title',
+            'publication_info.journal_volume',
+            'publication_info.journal_issue',
+            'publication_info.artid',
+            'publication_info.page_start',
+            'publication_info.page_end',
+        ],
+    }
+    reference = {
+        'reference': {
+            'publication_info': {
+                'label': '23',
+                'misc': [
+                    'Strai~burger, C., this Conference',
+                ],
+            },
+        },
+    }
+
+    assert _compile_nested(query, reference) is None
+
+
 def test_compile_nested_raises_when_search_paths_dont_share_a_common_path():
     query = {
         'paths': [
