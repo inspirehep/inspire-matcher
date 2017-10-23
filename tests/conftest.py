@@ -30,11 +30,16 @@ from invenio_search import InvenioSearch
 from inspire_matcher import InspireMatcher
 
 
-@pytest.fixture(autouse=True, scope='session')
+@pytest.fixture(scope='session')
 def app():
     app = Flask(__name__)
     InvenioSearch(app)
     InspireMatcher(app)
 
+    yield app
+
+
+@pytest.fixture(autouse=True, scope='function')
+def app_context(app):
     with app.app_context():
         yield app
