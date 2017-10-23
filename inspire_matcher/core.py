@@ -111,6 +111,9 @@ def _compile_nested(query, record):
             },
         })
 
+    if not result['query']['nested']['query']['bool']['must']:
+        return
+
     return result
 
 
