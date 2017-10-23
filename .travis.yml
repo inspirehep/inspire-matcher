@@ -56,4 +56,3 @@ deploy:
     branch: master
     python: 2.7
   distribution: sdist
-
