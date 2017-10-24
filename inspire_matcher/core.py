@@ -103,16 +103,13 @@ def _compile_nested(query, record):
     for path, search_path in zip(paths, search_paths):
         value = get_value(record, path)
         if not value:
-            continue
+            return
 
         result['query']['nested']['query']['bool']['must'].append({
             'match': {
                 search_path: value,
             },
         })
-
-    if not result['query']['nested']['query']['bool']['must']:
-        return
 
     return result
 

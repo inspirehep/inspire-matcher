@@ -257,85 +257,17 @@ def test_compile_nested():
     assert expected == result
 
 
-def test_compile_nested_skips_non_existing_paths():
+def test_compile_nested_requires_all_paths_to_contain_a_value_in_order_to_generate_a_query():
     query = {
         'paths': [
             'reference.publication_info.journal_title',
             'reference.publication_info.journal_volume',
-            'reference.publication_info.journal_issue',
             'reference.publication_info.artid',
-            'reference.publication_info.page_start',
-            'reference.publication_info.page_end',
         ],
         'search_paths': [
             'publication_info.journal_title',
             'publication_info.journal_volume',
-            'publication_info.journal_issue',
             'publication_info.artid',
-            'publication_info.page_start',
-            'publication_info.page_end',
-        ],
-    }
-    reference = {
-        'reference': {
-            'publication_info': {
-                'journal_title': 'Phys.Rev.',
-                'journal_volume': 'D94',
-                'artid': '124054',
-            },
-        },
-    }
-
-    expected = {
-        'query': {
-            'nested': {
-                'path': 'publication_info',
-                'query': {
-                    'bool': {
-                        'must': [
-                            {
-                                'match': {
-                                    'publication_info.journal_title': 'Phys.Rev.',
-                                },
-                            },
-                            {
-                                'match': {
-                                    'publication_info.journal_volume': 'D94',
-                                },
-                            },
-                            {
-                                'match': {
-                                    'publication_info.artid': '124054',
-                                },
-                            },
-                        ],
-                    },
-                },
-            },
-        },
-    }
-    result = _compile_nested(query, reference)
-
-    assert expected == result
-
-
-def test_compile_nested_does_not_generate_an_empty_query():
-    query = {
-        'paths': [
-            'reference.publication_info.journal_title',
-            'reference.publication_info.journal_volume',
-            'reference.publication_info.journal_issue',
-            'reference.publication_info.artid',
-            'reference.publication_info.page_start',
-            'reference.publication_info.page_end',
-        ],
-        'search_paths': [
-            'publication_info.journal_title',
-            'publication_info.journal_volume',
-            'publication_info.journal_issue',
-            'publication_info.artid',
-            'publication_info.page_start',
-            'publication_info.page_end',
         ],
     }
     reference = {
