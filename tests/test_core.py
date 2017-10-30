@@ -47,7 +47,6 @@ def test_compile_exact():
     expected = {
         'query': {
             'bool': {
-                'minimum_should_match': 1,
                 'should': [
                     {
                         'match': {
@@ -184,7 +183,6 @@ def test_compile_exact_supports_non_list_fields():
     expected = {
         'query': {
             'bool': {
-                'minimum_should_match': 1,
                 'should': [
                     {
                         'match': {

@@ -51,13 +51,13 @@ def _compile_exact(query, record):
     result = {
         'query': {
             'bool': {
-                'minimum_should_match': 1,
                 'should': [],
             },
         },
     }
 
     if collections:
+        result['query']['bool']['minimum_should_match'] = 1
         result['query']['bool']['filter'] = {'bool': {'should': []}}
 
         for collection in collections:
