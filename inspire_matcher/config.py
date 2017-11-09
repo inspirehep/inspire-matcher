@@ -30,13 +30,13 @@ MATCHER_DEFAULT_CONFIGURATION = {
         {
             'queries': [
                 {
-                    'match': 'arxiv_eprints.value',
-                    'search': 'arxiv_eprints.value.raw',
+                    'path': 'arxiv_eprints.value',
+                    'search_path': 'arxiv_eprints.value.raw',
                     'type': 'exact',
                 },
                 {
-                    'match': 'dois.value',
-                    'search': 'dois.value.raw',
+                    'path': 'dois.value',
+                    'search_path': 'dois.value.raw',
                     'type': 'exact',
                 },
             ],

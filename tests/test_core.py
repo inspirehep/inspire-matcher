@@ -29,8 +29,8 @@ from inspire_matcher.core import _compile_exact, _compile_nested
 
 def test_compile_exact():
     query = {
-        'match': 'arxiv_eprints.value',
-        'search': 'arxiv_eprints.value.raw',
+        'path': 'arxiv_eprints.value',
+        'search_path': 'arxiv_eprints.value.raw',
         'type': 'exact',
     }
     record = {
@@ -67,8 +67,8 @@ def test_compile_exact_supports_a_collection():
         'collections': [
             'HAL Hidden',
         ],
-        'match': 'arxiv_eprints.value',
-        'search': 'arxiv_eprints.value.raw',
+        'path': 'arxiv_eprints.value',
+        'search_path': 'arxiv_eprints.value.raw',
         'type': 'exact',
     }
     record = {
@@ -118,8 +118,8 @@ def test_compile_exact_supports_multiple_collections():
             'CDS Hidden',
             'HAL Hidden',
         ],
-        'match': 'arxiv_eprints.value',
-        'search': 'arxiv_eprints.value.raw',
+        'path': 'arxiv_eprints.value',
+        'search_path': 'arxiv_eprints.value.raw',
         'type': 'exact',
     }
     record = {
@@ -170,8 +170,8 @@ def test_compile_exact_supports_multiple_collections():
 
 def test_compile_exact_supports_non_list_fields():
     query = {
-        'match': 'reference.arxiv_eprint',
-        'search': 'arxiv_eprints.value.raw',
+        'path': 'reference.arxiv_eprint',
+        'search_path': 'arxiv_eprints.value.raw',
         'type': 'exact',
     }
     reference = {

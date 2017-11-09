@@ -94,7 +94,7 @@ def test_match_raises_if_an_exact_query_does_not_have_all_the_keys():
             {
                 'queries': [
                     {
-                        'search': 'arxiv_eprints.value.raw',
+                        'search_path': 'arxiv_eprints.value.raw',
                         'type': 'exact',
                     },
                 ],
