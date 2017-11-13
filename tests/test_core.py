@@ -24,7 +24,11 @@ from __future__ import absolute_import, division, print_function
 
 import pytest
 
-from inspire_matcher.core import _compile_exact, _compile_nested
+from inspire_matcher.core import (
+    _compile_exact,
+    _compile_fuzzy,
+    _compile_nested,
+)
 
 
 def test_compile_exact():
@@ -194,6 +198,60 @@ def test_compile_exact_supports_non_list_fields():
         },
     }
     result = _compile_exact(query, reference)
+
+    assert expected == result
+
+
+def test_compile_fuzzy():
+    query = {
+        'clauses': [
+            {
+                'boost': 20,
+                'path': 'abstracts',
+            },
+        ],
+        'type': 'fuzzy',
+    }
+    record = {
+        'abstracts': [
+            {
+                'source': 'arXiv',
+                'value': 'Probably not.',
+            },
+        ],
+    }
+
+    expected = {
+        'min_score': 1,
+        'query': {
+            'dis_max': {
+                'queries': [
+                    {
+                        'more_like_this': {
+                            'boost': 20,
+                            'docs': [
+                                {
+                                    'doc': {
+                                        'abstracts': [
+                                            {
+                                                'source': 'arXiv',
+                                                'value': 'Probably not.',
+                                            },
+                                        ],
+                                    },
+                                },
+                            ],
+                            'max_query_terms': 25,
+                            'min_doc_freq': 1,
+                            'min_term_freq': 1,
+                        },
+                    },
+                ],
+                'tie_breaker': 0.3,
+            },
+        },
+    }
+    result = _compile_fuzzy(query, record)
 
     assert expected == result
 
