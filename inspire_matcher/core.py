@@ -34,6 +34,8 @@ def compile(query, record):
 
     if type_ == 'exact':
         return _compile_exact(query, record)
+    elif type_ == 'fuzzy':
+        return _compile_fuzzy(query, record)
     elif type_ == 'nested':
         return _compile_nested(query, record)
 
@@ -82,6 +84,48 @@ def _compile_exact(query, record):
                 search_path: value,
             },
         })
+
+    return result
+
+
+def _compile_fuzzy(query, record):
+    clauses = query['clauses']
+
+    result = {
+        'min_score': 1,
+        'query': {
+            'dis_max': {
+                'queries': [],
+                'tie_breaker': 0.3,
+            },
+        },
+    }
+
+    for clause in clauses:
+        boost, path = clause['boost'], clause['path']
+
+        values = get_value(record, path)
+        if not values:
+            continue
+
+        result['query']['dis_max']['queries'].append({
+            'more_like_this': {
+                'boost': boost,
+                'docs': [
+                    {
+                        'doc': {
+                            path: values,
+                        },
+                    },
+                ],
+                'max_query_terms': 25,
+                'min_doc_freq': 1,
+                'min_term_freq': 1,
+            },
+        })
+
+    if not result['query']['dis_max']['queries']:
+        return
 
     return result
 
