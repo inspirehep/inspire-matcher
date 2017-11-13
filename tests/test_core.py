@@ -256,6 +256,84 @@ def test_compile_fuzzy():
     assert expected == result
 
 
+def test_compile_fuzzy_supports_slicing_in_paths():
+    query = {
+        'clauses': [
+            {
+                'boost': 10,
+                'path': 'authors[:3]',
+            },
+        ],
+        'type': 'fuzzy',
+    }
+    record = {
+        'authors': [
+            {'full_name': 'Aharony, Ofer'},
+            {'full_name': 'Gubser, Steven S.'},
+            {'full_name': 'Maldacena, Juan Martin'},
+            {'full_name': 'Ooguri, Hirosi'},
+            {'full_name': 'Oz, Yaron'},
+        ],
+    }
+
+    expected = {
+        'min_score': 1,
+        'query': {
+            'dis_max': {
+                'queries': [
+                    {
+                        'more_like_this': {
+                            'boost': 10,
+                            'docs': [
+                                {
+                                    'doc': {
+                                        'authors': [
+                                            {'full_name': 'Aharony, Ofer'},
+                                            {'full_name': 'Gubser, Steven S.'},
+                                            {'full_name': 'Maldacena, Juan Martin'},
+                                        ],
+                                    },
+                                },
+                            ],
+                            'max_query_terms': 25,
+                            'min_doc_freq': 1,
+                            'min_term_freq': 1,
+                        },
+                    },
+                ],
+                'tie_breaker': 0.3,
+            },
+        },
+    }
+    result = _compile_fuzzy(query, record)
+
+    assert expected == result
+
+
+def test_compile_fuzzy_raises_if_path_contains_a_dot():
+    query = {
+        'clauses': [
+            {
+                'boost': 10,
+                'path': 'authors.full_name',
+            },
+        ],
+    }
+    record = {
+        'authors': [
+            {'full_name': 'Aharony, Ofer'},
+            {'full_name': 'Gubser, Steven S.'},
+            {'full_name': 'Maldacena, Juan Martin'},
+            {'full_name': 'Ooguri, Hirosi'},
+            {'full_name': 'Oz, Yaron'},
+        ],
+    }
+
+    with pytest.raises(ValueError) as excinfo:
+        _compile_fuzzy(query, record)
+    assert 'dots' in str(excinfo.value)
+
+
 def test_compile_nested():
     query = {
         'paths': [
