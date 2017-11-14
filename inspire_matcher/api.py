@@ -32,6 +32,23 @@ from invenio_search import current_search_client as es
 from .core import compile
 
 
+def _get_validator(validator_param):
+    if callable(validator_param):
+        return validator_param
+
+    try:
+        validator = import_string(validator_param)
+    except (KeyError, ImportError):
+        current_app.logger.debug(
+            'No validator provided. Falling back to the default validator.'
+        )
+        validator = import_string(
+            'inspire_matcher.validators:default_validator'
+        )
+
+    return validator
+
+
 def match(record, config=None):
     """Given a record, yield the records in INSPIRE most similar to it.
 
@@ -54,11 +71,7 @@ def match(record, config=None):
         except KeyError:
             raise KeyError('Malformed algorithm: step %d has no queries.' % i)
 
-        try:
-            validator = import_string(step['validator'])
-        except (KeyError, ImportError):
-            current_app.logger.debug('No validator provided. Falling back to the default validator.')
-            validator = import_string('inspire_matcher.validators:default_validator')
+        validator = _get_validator(step.get('validator'))
 
         for j, query in enumerate(queries):
             try:

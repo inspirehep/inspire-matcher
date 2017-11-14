@@ -22,6 +22,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+import mock
 import pytest
 
 from inspire_matcher.api import match
@@ -50,6 +51,45 @@ def test_match_raises_if_one_step_of_the_algorithm_has_no_queries():
     with pytest.raises(KeyError) as excinfo:
         list(match(None, config))
     assert 'Malformed algorithm' in str(excinfo.value)
+
+
+@mock.patch('inspire_matcher.api.es')
+def test_match_uses_the_given_validator_callable(es_mock):
+    es_mock.search.return_value = {
+        'hits': {
+            'hits': {
+                'dummy result',
+            }
+        }
+    }
+    dummy_validator = mock.Mock()
+    dummy_validator.return_value = False
+
+    config = {
+        'algorithm': [
+            {
+                'queries': [
+                    {
+                        'type': 'exact',
+                        'path': 'dummy.path',
+                        'search_path': 'dummy.search.path',
+                    },
+                ],
+                'validator': dummy_validator,
+            },
+        ],
+        'doc_type': 'records',
+        'index': 'records-hep',
+    }
+
+    record = {
+        'dummy': {
+            'path': 'Non empty value',
+        },
+    }
+    result = list(match(record, config))
+    assert not result
+    dummy_validator.assert_called_with(record, 'dummy result')
 
 
 def test_match_raises_if_one_query_does_not_have_a_type():
