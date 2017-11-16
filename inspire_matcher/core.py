@@ -108,6 +108,10 @@ def _compile_fuzzy(query, record):
         if not values:
             continue
 
+        path = path.split('[')[0]
+        if '.' in path:
+            raise ValueError('the "path" key can\'t contain dots')
+
         result['query']['dis_max']['queries'].append({
             'more_like_this': {
                 'boost': boost,
