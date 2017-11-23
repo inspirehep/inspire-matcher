@@ -310,6 +310,56 @@ def test_compile_fuzzy_supports_slicing_in_paths():
     assert expected == result
 
 
+def test_compile_fuzzy_falls_back_to_boost_1():
+    query = {
+        'clauses': [
+            {'path': 'abstracts'},
+        ],
+    }
+    record = {
+        'abstracts': [
+            {
+                'source': 'arXiv',
+                'value': 'Probably not.',
+            },
+        ],
+    }
+
+    expected = {
+        'min_score': 1,
+        'query': {
+            'dis_max': {
+                'queries': [
+                    {
+                        'more_like_this': {
+                            'boost': 1,
+                            'docs': [
+                                {
+                                    'doc': {
+                                        'abstracts': [
+                                            {
+                                                'source': 'arXiv',
+                                                'value': 'Probably not.',
+                                            },
+                                        ],
+                                    },
+                                },
+                            ],
+                            'max_query_terms': 25,
+                            'min_doc_freq': 1,
+                            'min_term_freq': 1,
+                        },
+                    },
+                ],
+                'tie_breaker': 0.3,
+            },
+        },
+    }
+    result = _compile_fuzzy(query, record)
+
+    assert expected == result
+
+
 def test_compile_fuzzy_raises_if_path_contains_a_dot():
     query = {
         'clauses': [

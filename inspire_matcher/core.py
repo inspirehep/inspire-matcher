@@ -102,7 +102,9 @@ def _compile_fuzzy(query, record):
     }
 
     for clause in clauses:
-        boost, path = clause['boost'], clause['path']
+        path = clause['path']
+
+        boost = clause.get('boost', 1)
 
         values = get_value(record, path)
         if not values:
