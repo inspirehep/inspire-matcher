@@ -41,7 +41,7 @@ install_requires = [
     'elasticsearch-dsl~=2.0,>=2.2.0',
     'elasticsearch~=2.0,>=2.4.1',
     'inspire-json-merger~=2.0,>=2.0.0',
-    'inspire-utils~=0.0,>=0.0.10',
+    'inspire-utils~=1.0,>=1.0.0',
     'invenio-search>=1.0.0a10',
     'six~=1.0,>=1.11.0',
 ]
