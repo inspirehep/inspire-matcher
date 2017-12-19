@@ -50,15 +50,18 @@ docs_require = []
 
 tests_require = [
     'flake8-future-import~=0.0,>=0.4.3',
-    'pytest~=3.0,>=3.2.2',
+    'mock~=2.0,>=2.0.0',
     'pytest-cov~=2.0,>=2.5.1',
     'pytest-flake8~=0.0,>=0.9',
-    'mock~=2.0',
+    'pytest~=3.0,>=3.2.2',
 ]
 
 extras_require = {
     'docs': docs_require,
     'tests': tests_require,
+    'tests:python_version=="2.7"': [
+        'unicode-string-literal~=1.0,>=1.1',
+    ],
 }
 
 extras_require['all'] = []
