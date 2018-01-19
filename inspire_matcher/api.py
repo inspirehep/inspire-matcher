@@ -61,6 +61,8 @@ def match(record, config=None):
     except KeyError as e:
         raise KeyError('Malformed configuration: %s.' % repr(e))
 
+    source = config.get('source', [])
+
     for i, step in enumerate(algorithm):
         try:
             queries = step['queries']
@@ -78,7 +80,10 @@ def match(record, config=None):
             if not body:
                 continue
 
-            result = es.search(index=index, doc_type=doc_type, body=body)
+            if source:
+                result = es.search(index=index, doc_type=doc_type, body=body, _source=source)
+            else:
+                result = es.search(index=index, doc_type=doc_type, body=body)
 
             for hit in result['hits']['hits']:
                 if validator(record, hit):
