@@ -39,12 +39,8 @@ def _get_validator(validator_param):
     try:
         validator = import_string(validator_param)
     except (KeyError, ImportError):
-        current_app.logger.debug(
-            'No validator provided. Falling back to the default validator.'
-        )
-        validator = import_string(
-            'inspire_matcher.validators:default_validator'
-        )
+        current_app.logger.debug('No validator provided. Falling back to the default validator.')
+        validator = import_string('inspire_matcher.validators:default_validator')
 
     return validator
 
@@ -82,8 +78,8 @@ def match(record, config=None):
             if not body:
                 continue
 
-            results = es.search(index=index, doc_type=doc_type, body=body)
+            result = es.search(index=index, doc_type=doc_type, body=body)
 
-            for result in results['hits']['hits']:
-                if validator(record, result):
-                    yield result
+            for hit in result['hits']['hits']:
+                if validator(record, hit):
+                    yield hit
