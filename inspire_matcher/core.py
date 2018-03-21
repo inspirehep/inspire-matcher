@@ -113,7 +113,7 @@ def _compile_fuzzy(query, record):
         path = path.split('[')[0]
         if '.' in path:
             raise ValueError('the "path" key can\'t contain dots')
-
+        # TODO: This query should be refined instead of relying on validation to filter out irrelevant results.
         result['query']['dis_max']['queries'].append({
             'more_like_this': {
                 'boost': boost,
