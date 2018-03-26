@@ -22,8 +22,709 @@
 
 from __future__ import absolute_import, division, print_function
 
-from inspire_matcher.validators import default_validator
+from inspire_matcher.validators import (
+    authors_titles_validator,
+    default_validator,
+)
 
 
 def test_default_validator_is_not_very_exciting():
     assert default_validator(None, None)
+
+
+def test_authors_titles_validator_authors_only_passes_first_five_many_match():
+    record = {
+        '_collections': ['Literature'],
+        'document_type': ['article'],
+        'authors': [
+            {
+                'full_name': 'Smith, J.'
+            },
+            {
+                'full_name': 'Zappacosta, L.',
+            },
+            {
+                'full_name': 'Comastri, A.',
+            }
+
+        ]
+    }
+
+    result = {
+        '_source': {
+            '_collections': ['Literature'],
+            'document_type': ['article'],
+            'authors': [
+                {
+                    'full_name': 'Smith, J.'
+                },
+                {
+                    'full_name': 'Zappacosta, L.',
+                },
+                {
+                    'full_name': 'Comastri, A.',
+                },
+                {
+                    'full_name': 'Masini, A.'
+                },
+                {
+                    'full_name': 'Civano, F.'
+                },
+                {
+                    'full_name': 'Fornasini, F.'
+                },
+                {
+                    'full_name': 'Treister, E.'
+                },
+                {
+                    'full_name': 'Alexander, A.'
+                },
+                {
+                    'full_name': 'Boorman, P.G.'
+                },
+                {
+                    'full_name': 'Brandt, D.'
+                },
+                {
+                    'full_name': 'Lanz, L.'
+                }
+            ]
+        }
+    }  # Jaccard index > 0.5 for first 5 authors
+
+    assert authors_titles_validator(record, result)
+
+
+def test_authors_titles_validator_authors_only_fails_first_five_few_match():
+    record = {
+        '_collections': ['Literature'],
+        'document_type': ['article'],
+        'authors': [
+            {
+                'full_name': 'Smith, J.'
+            },
+            {
+                'full_name': 'Comastri, A.',
+            }
+        ]
+    }
+
+    result = {
+        '_source': {
+            '_collections': ['Literature'],
+            'document_type': ['article'],
+            'authors': [
+                {
+                    'full_name': 'Smith, J.'
+                },
+                {
+                    'full_name': 'Zappacosta, L.',
+                },
+                {
+                    'full_name': 'Comastri, A.',
+                },
+                {
+                    'full_name': 'Masini, A.'
+                },
+                {
+                    'full_name': 'Civano, F.'
+                },
+                {
+                    'full_name': 'Fornasini, F.'
+                },
+                {
+                    'full_name': 'Treister, E.'
+                },
+                {
+                    'full_name': 'Alexander, A.'
+                },
+                {
+                    'full_name': 'Boorman, P.G.'
+                },
+                {
+                    'full_name': 'Brandt, D.'
+                },
+                {
+                    'full_name': 'Lanz, L.'
+                }
+            ]
+        }
+    }  # Jaccard index < 0.5 for first 5 authors
+
+    assert not authors_titles_validator(record, result)
+
+
+def test_authors_titles_validator_titles_only_passes_exact_match():
+    record = {
+        '_collections': ['Literature'],
+        'document_type': ['article'],
+        'titles': [
+            {
+                'title': 'A MATCHING TITLE',  # Jaccard index == 1.0
+            },
+            {
+                'title': 'CMB anisotropies: A Decadal survey'
+            }
+        ]
+    }
+
+    result = {
+        '_source': {
+            '_collections': ['Literature'],
+            'document_type': ['article'],
+            'titles': [
+                {
+                    'title': 'a matching title'
+                },
+                {
+                    'title': 'Exotic RG Flows from Holography'
+                },
+                {
+                    'title': 'CP violation in the B system'
+                },
+                {
+                    'title': 'Supersymmetry'
+                },
+                {
+                    'title': 'PYTHIA 6.4 Physics and Manual'
+                }
+            ]
+        }
+    }
+
+    assert authors_titles_validator(record, result)
+
+
+def test_authors_titles_validator_titles_only_passes_partial_match():
+    record = {
+        '_collections': ['Literature'],
+        'document_type': ['article'],
+        'titles': [
+            {
+                'title': 'A PARTIAL MATCHING TITLE ONLY'  # 0.5 < Jaccard index < 1.0
+            },
+            {
+                'title': 'CMB anisotropies: A Decadal survey'
+            }
+        ]
+    }
+
+    result = {
+        '_source': {
+            '_collections': ['Literature'],
+            'document_type': ['article'],
+            'titles': [
+                {
+                    'title': 'a matching title'
+                },
+                {
+                    'title': 'Exotic RG Flows from Holography'
+
+                },
+                {
+                    'title': 'CP violation in the B system'
+                },
+                {
+                    'title': 'Supersymmetry'
+                },
+                {
+                    'title': 'PYTHIA 6.4 Physics and Manual'
+                }
+            ]
+        }
+    }
+
+    assert authors_titles_validator(record, result)
+
+
+def test_authors_titles_validator_titles_only_fails_no_match():
+    record = {
+        '_collections': ['Literature'],
+        'document_type': ['article'],
+        'titles': [
+            {
+                'title': 'CMB anisotropies: A Decadal survey'  # Jaccard index == 0.0.
+            }
+        ]
+    }
+
+    result = {
+        '_source': {
+            '_collections': ['Literature'],
+            'document_type': ['article'],
+            'titles': [
+                {
+                    'title': 'Exotic RG Flows from Holography',
+
+                },
+                {
+                    'title': 'CP violation in the B system',
+                },
+                {
+                    'title': 'Supersymmetry',
+                },
+                {
+                    'title': 'PYTHIA 6.4 Physics and Manual',
+                }
+            ]
+        }
+    }
+
+    assert not authors_titles_validator(record, result)
+
+
+def test_authors_titles_validator_titles_only_fails_partial_match():
+    record = {
+        '_collections': ['Literature'],
+        'document_type': ['article'],
+        'titles': [
+            {
+                'title': 'CMB anisotropies: A Decadal survey'
+            },
+            {
+                'title': 'partial matching title but not enough'  # 0.0 < Jaccard index < 0.5
+            }
+        ]
+    }
+
+    result = {
+        '_source': {
+            '_collections': ['Literature'],
+            'document_type': ['article'],
+            'titles': [
+                {
+                    'title': 'partial matching title'
+                },
+                {
+                    'title': 'Exotic RG Flows from Holography',
+
+                },
+                {
+                    'title': 'CP violation in the B system',
+                },
+                {
+                    'title': 'Supersymmetry',
+                },
+                {
+                    'title': 'PYTHIA 6.4 Physics and Manual',
+                }
+            ]
+        }
+    }
+
+    assert not authors_titles_validator(record, result)
+
+
+def test_authors_titles_validator_passes_authors_and_titles_match_authors():
+    record = {
+        '_collections': ['Literature'],
+        'document_type': ['article'],
+        'authors': [
+            {
+                'full_name': 'Smith, J.'
+            },
+            {
+                'full_name': 'Zappacosta, L.'
+            },
+            {
+                'full_name': 'Comastri, A.'
+            }
+        ],
+        'titles': [
+            {
+                'title': 'CMB anisotropies: A Decadal survey'
+            }
+        ],
+    }
+
+    result = {
+        '_source': {
+            '_collections': ['Literature'],
+            'document_type': ['article'],
+            'authors': [
+                {
+                    'full_name': 'Smith, J.'
+                },
+                {
+                    'full_name': 'Zappacosta, L.'
+                },
+
+            ],
+            'titles': [
+                {
+                    'title': 'Exotic RG Flows from Holography',
+
+                },
+                {
+                    'title': 'CP violation in the B system',
+                },
+                {
+                    'title': 'Supersymmetry',
+                },
+                {
+                    'title': 'PYTHIA 6.4 Physics and Manual',
+                }
+            ]
+        }
+    }
+
+    assert authors_titles_validator(record, result)
+
+
+def test_authors_titles_validator_passes_authors_and_titles_match_both():
+    record = {
+        '_collections': ['Literature'],
+        'document_type': ['article'],
+        'authors': [
+            {
+                'full_name': 'Smith, J.'
+            },
+            {
+                'full_name': 'Zappacosta, L.'
+            },
+            {
+                'full_name': 'Comastri, A.'
+            }
+        ],
+        'titles': [
+            {
+                'title': 'A MATCHING TITLE'  # 0.0 < Jaccard index < 0.5
+            },
+            {
+                'title': 'CMB anisotropies: A Decadal survey'
+            }
+        ],
+    }
+
+    result = {
+        '_source': {
+            '_collections': ['Literature'],
+            'document_type': ['article'],
+            'authors': [
+                {
+                    'full_name': 'Smith, J.'
+                },
+                {
+                    'full_name': 'Zappacosta, L.'
+                },
+
+            ],
+            'titles': [
+                {
+                    'title': 'a good matching title'
+                },
+                {
+                    'title': 'Exotic RG Flows from Holography'
+
+                },
+                {
+                    'title': 'CP violation in the B system'
+                },
+                {
+                    'title': 'Supersymmetry'
+                },
+                {
+                    'title': 'PYTHIA 6.4 Physics and Manual'
+                }
+            ]
+        }
+    }
+
+    assert authors_titles_validator(record, result)
+
+
+def test_authors_titles_validator_fails_authors_and_titles_match_author():
+    record = {
+        '_collections': ['Literature'],
+        'document_type': ['article'],
+        'authors': [
+            {
+                'full_name': 'Smith, J.'
+            },
+            {
+                'full_name': 'Zappacosta, L.'
+            },
+            {
+                'full_name': 'Comastri, A.'
+            }
+        ],
+        'titles': [
+            {
+                'title': 'CMB anisotropies: A Decadal survey'
+            }
+        ],
+    }
+
+    result = {
+        '_source': {
+            '_collections': ['Literature'],
+            'document_type': ['article'],
+            'authors': [
+                {
+                    'full_name': 'Smith, J.'
+                },
+                {
+                    'full_name': 'Black, J.'
+                },
+
+            ],
+            'titles': [
+                {
+                    'title': 'Exotic RG Flows from Holography',
+
+                },
+                {
+                    'title': 'CP violation in the B system',
+                },
+                {
+                    'title': 'Supersymmetry',
+                },
+                {
+                    'title': 'PYTHIA 6.4 Physics and Manual',
+                }
+            ]
+        }
+    }
+
+    assert not authors_titles_validator(record, result)
+
+
+def test_authors_titles_validator_fails_authors_and_titles_match_title_but_not_authors():
+    record = {
+        '_collections': ['Literature'],
+        'document_type': ['article'],
+        'authors': [
+            {
+                'full_name': 'Bentley, M.'
+            },
+            {
+                'full_name': 'Zappacosta, L.'
+            },
+            {
+                'full_name': 'Comastri, A.'
+            }
+        ],
+        'titles': [
+            {
+                'title': 'A MATCHING TITLE'  # 0.0 < Jaccard index < 0.5
+            },
+            {
+                'title': 'CMB anisotropies: A Decadal survey'
+            }
+        ],
+    }
+
+    result = {
+        '_source': {
+            '_collections': ['Literature'],
+            'document_type': ['article'],
+            'authors': [
+                {
+                    'full_name': 'Smith, J.'
+                },
+                {
+                    'full_name': 'Black, J.'
+                },
+
+            ],
+            'titles': [
+                {
+                    'title': 'a matching title'  # 0.0 < Jaccard index < 0.5
+                },
+                {
+                    'title': 'Exotic RG Flows from Holography',
+
+                },
+                {
+                    'title': 'CP violation in the B system',
+                },
+                {
+                    'title': 'Supersymmetry',
+                },
+                {
+                    'title': 'PYTHIA 6.4 Physics and Manual',
+                }
+            ]
+        }
+    }
+
+    assert not authors_titles_validator(record, result)
+
+
+def test_authors_titles_validator_fails_authors_and_titles_partial_match_title():
+    record = {
+        '_collections': ['Literature'],
+        'document_type': ['article'],
+        'authors': [
+            {
+                'full_name': 'Bentley, M.'
+            },
+            {
+                'full_name': 'Zappacosta, L.'
+            },
+            {
+                'full_name': 'Comastri, A.'
+            }
+        ],
+        'titles': [
+            {
+                'title': 'partial matching title but not enough'  # 0.0 < Jaccard index < 0.5
+            },
+            {
+                'title': 'CMB anisotropies: A Decadal survey'
+            }
+        ],
+    }
+
+    result = {
+        '_source': {
+            '_collections': ['Literature'],
+            'document_type': ['article'],
+            'authors': [
+                {
+                    'full_name': 'Smith, J.'
+                },
+                {
+                    'full_name': 'Black, J.'
+                },
+
+            ],
+            'titles': [
+                {
+                    'title': 'partial matching title'  # 0.0 < Jaccard index < 0.5
+                },
+                {
+                    'title': 'Exotic RG Flows from Holography',
+
+                },
+                {
+                    'title': 'CP violation in the B system',
+                },
+                {
+                    'title': 'Supersymmetry',
+                },
+                {
+                    'title': 'PYTHIA 6.4 Physics and Manual',
+                }
+            ]
+        }
+    }
+
+    assert not authors_titles_validator(record, result)
+
+
+def test_authors_titles_validator_fails_authors_and_titles_partial_match_both():
+    record = {
+        '_collections': ['Literature'],
+        'document_type': ['article'],
+        'authors': [
+            {
+                'full_name': 'Smith, J.'
+            },
+            {
+                'full_name': 'Zappacosta, L.'
+            },
+            {
+                'full_name': 'Comastri, A.'
+            }
+        ],
+        'titles': [
+            {
+                'title': 'partial matching title but not enough'  # 0.0 < Jaccard index < 0.5
+            },
+            {
+                'title': 'CMB anisotropies: A Decadal survey'
+            }
+        ],
+    }
+
+    result = {
+        '_source': {
+            '_collections': ['Literature'],
+            'document_type': ['article'],
+            'authors': [
+                {
+                    'full_name': 'Smith, J.'
+                },
+                {
+                    'full_name': 'Black, J.'
+                },
+
+            ],
+            'titles': [
+                {
+                    'title': 'partial matching title'
+                },
+                {
+                    'title': 'Exotic RG Flows from Holography',
+
+                },
+                {
+                    'title': 'CP violation in the B system',
+                },
+                {
+                    'title': 'Supersymmetry',
+                },
+                {
+                    'title': 'PYTHIA 6.4 Physics and Manual',
+                }
+            ]
+        }
+    }
+
+    assert not authors_titles_validator(record, result)
+
+
+def test_authors_titles_validator_fails_authors_and_titles_no_match_both():
+    record = {
+        '_collections': ['Literature'],
+        'document_type': ['article'],
+        'titles': [
+            {
+                'title': 'CMB anisotropies: A Decadal survey'
+            }
+        ],
+        'authors': [
+            {
+                'full_name': 'Smith, J.'
+            },
+            {
+                'full_name': 'Zappacosta, L.'
+            },
+            {
+                'full_name': 'Comastri, A.'
+            }
+        ]
+    }
+
+    result = {
+        '_source': {
+            '_collections': ['Literature'],
+            'document_type': ['article'],
+            'authors': [
+                {
+                    'full_name': 'Bentley, M.'
+                },
+                {
+                    'full_name': 'Black, J.'
+                }
+            ],
+            'titles': [
+                {
+                    'title': 'Exotic RG Flows from Holography',
+
+                },
+                {
+                    'title': 'CP violation in the B system',
+                },
+                {
+                    'title': 'Supersymmetry',
+                },
+                {
+                    'title': 'PYTHIA 6.4 Physics and Manual',
+                }
+            ]
+        }
+    }
+
+    assert not authors_titles_validator(record, result)

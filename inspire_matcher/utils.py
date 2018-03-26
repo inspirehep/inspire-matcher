@@ -37,3 +37,61 @@ def get_number_of_author_matches(x_authors, y_authors):
 
     """
     return len(AuthorComparator(x_authors, y_authors).matches)
+
+
+def compute_authors_jaccard_index(x_authors, y_authors):
+    """Return the Jaccard similarity coefficient between 2 author sets.
+
+    Args:
+        x_authors (list(dict)): first schema-compliant list of authors.
+        y_authors (list(dict)): second schema-compliant list of authors.
+
+    Returns:
+        float: Jaccard similarity coefficient between the 2 author sets.
+
+    """
+    intersection_cardinal = get_number_of_author_matches(x_authors, y_authors)
+    union_cardinal = max(len(x_authors), len(y_authors))
+
+    if union_cardinal:
+        return intersection_cardinal / float(union_cardinal)
+    else:
+        return 0.0
+
+
+def compute_titles_jaccard_index(x_title, y_title):
+    """Return the Jaccard similarity coefficient between 2 titles.
+
+    Args:
+        x_title (string): first title.
+        y_title (string): second title.
+
+    Returns:
+        float: Jaccard similarity coefficient between the 2 titles token sets.
+
+    """
+    record_title_tokens = get_tokenized_title(x_title)
+    result_title_tokens = get_tokenized_title(y_title)
+
+    intersection_cardinal = len(record_title_tokens & result_title_tokens)
+    union_cardinal = len(record_title_tokens | result_title_tokens)
+
+    if union_cardinal:
+        return intersection_cardinal / float(union_cardinal)
+    else:
+        return 0.0
+
+
+def get_tokenized_title(title):
+    """Return the tokenised title.
+
+    The title is lowercased and split on the spaces. Then, duplicate tokens are removed by adding the tokens to a set.
+
+    Args:
+        title (string): a titles.
+
+    Returns:
+        set: contains the resulting tokens.
+
+    """
+    return set(title.lower().split())
