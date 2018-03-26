@@ -32,7 +32,70 @@ def test_default_validator_is_not_very_exciting():
     assert default_validator(None, None)
 
 
-def test_authors_titles_validator_authors_only_passes():
+def test_authors_titles_validator_authors_only_passes_first_five_many_match():
+    record = {
+        '_collections': ['Literature'],
+        'document_type': ['article'],
+        'authors': [
+            {
+                'full_name': 'Smith, J.'
+            },
+            {
+                'full_name': 'Zappacosta, L.',
+            },
+            {
+                'full_name': 'Comastri, A.',
+            }
+
+        ]
+    }
+
+    result = {
+        '_source': {
+            '_collections': ['Literature'],
+            'document_type': ['article'],
+            'authors': [
+                {
+                    'full_name': 'Smith, J.'
+                },
+                {
+                    'full_name': 'Zappacosta, L.',
+                },
+                {
+                    'full_name': 'Comastri, A.',
+                },
+                {
+                    'full_name': 'Masini, A.'
+                },
+                {
+                    'full_name': 'Civano, F.'
+                },
+                {
+                    'full_name': 'Fornasini, F.'
+                },
+                {
+                    'full_name': 'Treister, E.'
+                },
+                {
+                    'full_name': 'Alexander, A.'
+                },
+                {
+                    'full_name': 'Boorman, P.G.'
+                },
+                {
+                    'full_name': 'Brandt, D.'
+                },
+                {
+                    'full_name': 'Lanz, L.'
+                }
+            ]
+        }
+    }  # Jaccard index > 0.5 for first 5 authors
+
+    assert authors_titles_validator(record, result)
+
+
+def test_authors_titles_validator_authors_only_fails_first_five_few_match():
     record = {
         '_collections': ['Literature'],
         'document_type': ['article'],
@@ -42,60 +105,6 @@ def test_authors_titles_validator_authors_only_passes():
             },
             {
                 'full_name': 'Comastri, A.',
-                'full_name_unicode_normalized': 'comastri, a.',
-                'inspire_roles': [
-                    'author'
-                ]
-            }
-
-        ]
-    }
-
-    result = {
-        '_source': {
-            '_collections': ['Literature'],
-            'document_type': ['article'],
-            'authors': [
-                {
-                    'full_name': 'Smith, J.'
-                },
-                {
-                    'full_name': 'Zappacosta, L.',
-                    'signature_block': 'ZAPACASTl',
-                    'uuid': '2160fa69-9efa-44a9-bbe9-2121a8bd52e4'
-                },
-                {
-                    'full_name': 'Comastri, A.',
-                    'name_variations': [
-                        'comastri a',
-                        'comastri a.',
-                        'a comastri',
-                        'comastri',
-                        'comastri, a',
-                        'a. comastri',
-                        'comastri, a.',
-                        'a, comastri',
-                        'a., comastri'
-                    ]
-                }
-            ]
-        }
-    }  # Jaccard index > 0.5
-
-    assert authors_titles_validator(record, result)
-
-
-def test_authors_titles_validator_authors_only_fails():
-    record = {
-        '_collections': ['Literature'],
-        'document_type': ['article'],
-        'authors': [
-            {
-                'full_name': 'Comastri, A.',
-                'full_name_unicode_normalized': 'comastri, a.',
-                'inspire_roles': [
-                    'author'
-                ]
             }
         ]
     }
@@ -110,26 +119,37 @@ def test_authors_titles_validator_authors_only_fails():
                 },
                 {
                     'full_name': 'Zappacosta, L.',
-                    'signature_block': 'ZAPACASTl',
-                    'uuid': '2160fa69-9efa-44a9-bbe9-2121a8bd52e4'
                 },
                 {
                     'full_name': 'Comastri, A.',
-                    'name_variations': [
-                        'comastri a',
-                        'comastri a.',
-                        'a comastri',
-                        'comastri',
-                        'comastri, a',
-                        'a. comastri',
-                        'comastri, a.',
-                        'a, comastri',
-                        'a., comastri'
-                    ]
+                },
+                {
+                    'full_name': 'Masini, A.'
+                },
+                {
+                    'full_name': 'Civano, F.'
+                },
+                {
+                    'full_name': 'Fornasini, F.'
+                },
+                {
+                    'full_name': 'Treister, E.'
+                },
+                {
+                    'full_name': 'Alexander, A.'
+                },
+                {
+                    'full_name': 'Boorman, P.G.'
+                },
+                {
+                    'full_name': 'Brandt, D.'
+                },
+                {
+                    'full_name': 'Lanz, L.'
                 }
             ]
         }
-    }  # Jaccard index < 0.5
+    }  # Jaccard index < 0.5 for first 5 authors
 
     assert not authors_titles_validator(record, result)
 
@@ -140,12 +160,9 @@ def test_authors_titles_validator_titles_only_passes_exact_match():
         'document_type': ['article'],
         'titles': [
             {
-                'source': 'submitter',
                 'title': 'A MATCHING TITLE',  # Jaccard index == 1.0
-                'subtitle': 'a subtitle'
             },
             {
-                'source': 'submitter',
                 'title': 'CMB anisotropies: A Decadal survey'
             }
         ]
@@ -160,22 +177,16 @@ def test_authors_titles_validator_titles_only_passes_exact_match():
                     'title': 'a matching title'
                 },
                 {
-                    'source': 'submitter',
-                    'title': 'Exotic RG Flows from Holography',
-
+                    'title': 'Exotic RG Flows from Holography'
                 },
                 {
-                    'title': 'CP violation in the B system',
-                    'subtitle': 'a subtitle '
+                    'title': 'CP violation in the B system'
                 },
                 {
-                    'source': 'submitter',
-                    'title': 'Supersymmetry',
-                    'subtitle': 'a subtitle 4'
+                    'title': 'Supersymmetry'
                 },
                 {
-                    'source': 'submitter',
-                    'title': 'PYTHIA 6.4 Physics and Manual',
+                    'title': 'PYTHIA 6.4 Physics and Manual'
                 }
             ]
         }
@@ -190,12 +201,9 @@ def test_authors_titles_validator_titles_only_passes_partial_match():
         'document_type': ['article'],
         'titles': [
             {
-                'source': 'submitter',
-                'title': 'A PARTIAL MATCHING TITLE ONLY',  # 0.5 < Jaccard index < 1.0
-                'subtitle': 'a subtitle'
+                'title': 'A PARTIAL MATCHING TITLE ONLY'  # 0.5 < Jaccard index < 1.0
             },
             {
-                'source': 'submitter',
                 'title': 'CMB anisotropies: A Decadal survey'
             }
         ]
@@ -210,22 +218,17 @@ def test_authors_titles_validator_titles_only_passes_partial_match():
                     'title': 'a matching title'
                 },
                 {
-                    'source': 'submitter',
-                    'title': 'Exotic RG Flows from Holography',
+                    'title': 'Exotic RG Flows from Holography'
 
                 },
                 {
-                    'title': 'CP violation in the B system',
-                    'subtitle': 'a subtitle '
+                    'title': 'CP violation in the B system'
                 },
                 {
-                    'source': 'submitter',
-                    'title': 'Supersymmetry',
-                    'subtitle': 'a subtitle 4'
+                    'title': 'Supersymmetry'
                 },
                 {
-                    'source': 'submitter',
-                    'title': 'PYTHIA 6.4 Physics and Manual',
+                    'title': 'PYTHIA 6.4 Physics and Manual'
                 }
             ]
         }
@@ -321,23 +324,10 @@ def test_authors_titles_validator_passes_authors_and_titles_match_authors():
                 'full_name': 'Smith, J.'
             },
             {
-                'full_name': 'Zappacosta, L.',
-                'signature_block': 'ZAPACASTl',
-                'uuid': '2160fa69-9efa-44a9-bbe9-2121a8bd52e4'
+                'full_name': 'Zappacosta, L.'
             },
             {
-                'full_name': 'Comastri, A.',
-                'name_variations': [
-                    'comastri a',
-                    'comastri a.',
-                    'a comastri',
-                    'comastri',
-                    'comastri, a',
-                    'a. comastri',
-                    'comastri, a.',
-                    'a, comastri',
-                    'a., comastri'
-                ]
+                'full_name': 'Comastri, A.'
             }
         ],
         'titles': [
@@ -356,9 +346,7 @@ def test_authors_titles_validator_passes_authors_and_titles_match_authors():
                     'full_name': 'Smith, J.'
                 },
                 {
-                    'full_name': 'Zappacosta, L.',
-                    'signature_block': 'ZAPACASTl',
-                    'uuid': '2160fa69-9efa-44a9-bbe9-2121a8bd52e4'
+                    'full_name': 'Zappacosta, L.'
                 },
 
             ],
@@ -392,23 +380,10 @@ def test_authors_titles_validator_passes_authors_and_titles_match_both():
                 'full_name': 'Smith, J.'
             },
             {
-                'full_name': 'Zappacosta, L.',
-                'signature_block': 'ZAPACASTl',
-                'uuid': '2160fa69-9efa-44a9-bbe9-2121a8bd52e4'
+                'full_name': 'Zappacosta, L.'
             },
             {
-                'full_name': 'Comastri, A.',
-                'name_variations': [
-                    'comastri a',
-                    'comastri a.',
-                    'a comastri',
-                    'comastri',
-                    'comastri, a',
-                    'a. comastri',
-                    'comastri, a.',
-                    'a, comastri',
-                    'a., comastri'
-                ]
+                'full_name': 'Comastri, A.'
             }
         ],
         'titles': [
@@ -430,9 +405,7 @@ def test_authors_titles_validator_passes_authors_and_titles_match_both():
                     'full_name': 'Smith, J.'
                 },
                 {
-                    'full_name': 'Zappacosta, L.',
-                    'signature_block': 'ZAPACASTl',
-                    'uuid': '2160fa69-9efa-44a9-bbe9-2121a8bd52e4'
+                    'full_name': 'Zappacosta, L.'
                 },
 
             ],
@@ -441,17 +414,17 @@ def test_authors_titles_validator_passes_authors_and_titles_match_both():
                     'title': 'a good matching title'
                 },
                 {
-                    'title': 'Exotic RG Flows from Holography',
+                    'title': 'Exotic RG Flows from Holography'
 
                 },
                 {
-                    'title': 'CP violation in the B system',
+                    'title': 'CP violation in the B system'
                 },
                 {
-                    'title': 'Supersymmetry',
+                    'title': 'Supersymmetry'
                 },
                 {
-                    'title': 'PYTHIA 6.4 Physics and Manual',
+                    'title': 'PYTHIA 6.4 Physics and Manual'
                 }
             ]
         }
@@ -469,23 +442,10 @@ def test_authors_titles_validator_fails_authors_and_titles_match_author():
                 'full_name': 'Smith, J.'
             },
             {
-                'full_name': 'Zappacosta, L.',
-                'signature_block': 'ZAPACASTl',
-                'uuid': '2160fa69-9efa-44a9-bbe9-2121a8bd52e4'
+                'full_name': 'Zappacosta, L.'
             },
             {
-                'full_name': 'Comastri, A.',
-                'name_variations': [
-                    'comastri a',
-                    'comastri a.',
-                    'a comastri',
-                    'comastri',
-                    'comastri, a',
-                    'a. comastri',
-                    'comastri, a.',
-                    'a, comastri',
-                    'a., comastri'
-                ]
+                'full_name': 'Comastri, A.'
             }
         ],
         'titles': [
@@ -504,9 +464,7 @@ def test_authors_titles_validator_fails_authors_and_titles_match_author():
                     'full_name': 'Smith, J.'
                 },
                 {
-                    'full_name': 'Black, J.',
-                    'signature_block': 'BLACKJO',
-                    'uuid': '2160fa69-9rfa-44a9-bba8-2121a8bd52e4'
+                    'full_name': 'Black, J.'
                 },
 
             ],
@@ -540,23 +498,10 @@ def test_authors_titles_validator_fails_authors_and_titles_match_title_but_not_a
                 'full_name': 'Bentley, M.'
             },
             {
-                'full_name': 'Zappacosta, L.',
-                'signature_block': 'ZAPACASTl',
-                'uuid': '2160fa69-9efa-44a9-bbe9-2121a8bd52e4'
+                'full_name': 'Zappacosta, L.'
             },
             {
-                'full_name': 'Comastri, A.',
-                'name_variations': [
-                    'comastri a',
-                    'comastri a.',
-                    'a comastri',
-                    'comastri',
-                    'comastri, a',
-                    'a. comastri',
-                    'comastri, a.',
-                    'a, comastri',
-                    'a., comastri'
-                ]
+                'full_name': 'Comastri, A.'
             }
         ],
         'titles': [
@@ -578,9 +523,7 @@ def test_authors_titles_validator_fails_authors_and_titles_match_title_but_not_a
                     'full_name': 'Smith, J.'
                 },
                 {
-                    'full_name': 'Black, J.',
-                    'signature_block': 'BLACKJO',
-                    'uuid': '2160fa69-9rfa-44a9-bba8-2121a8bd52e4'
+                    'full_name': 'Black, J.'
                 },
 
             ],
@@ -617,23 +560,10 @@ def test_authors_titles_validator_fails_authors_and_titles_partial_match_title()
                 'full_name': 'Bentley, M.'
             },
             {
-                'full_name': 'Zappacosta, L.',
-                'signature_block': 'ZAPACASTl',
-                'uuid': '2160fa69-9efa-44a9-bbe9-2121a8bd52e4'
+                'full_name': 'Zappacosta, L.'
             },
             {
-                'full_name': 'Comastri, A.',
-                'name_variations': [
-                    'comastri a',
-                    'comastri a.',
-                    'a comastri',
-                    'comastri',
-                    'comastri, a',
-                    'a. comastri',
-                    'comastri, a.',
-                    'a, comastri',
-                    'a., comastri'
-                ]
+                'full_name': 'Comastri, A.'
             }
         ],
         'titles': [
@@ -655,9 +585,7 @@ def test_authors_titles_validator_fails_authors_and_titles_partial_match_title()
                     'full_name': 'Smith, J.'
                 },
                 {
-                    'full_name': 'Black, J.',
-                    'signature_block': 'BLACKJO',
-                    'uuid': '2160fa69-9rfa-44a9-bba8-2121a8bd52e4'
+                    'full_name': 'Black, J.'
                 },
 
             ],
@@ -694,23 +622,10 @@ def test_authors_titles_validator_fails_authors_and_titles_partial_match_both():
                 'full_name': 'Smith, J.'
             },
             {
-                'full_name': 'Zappacosta, L.',
-                'signature_block': 'ZAPACASTl',
-                'uuid': '2160fa69-9efa-44a9-bbe9-2121a8bd52e4'
+                'full_name': 'Zappacosta, L.'
             },
             {
-                'full_name': 'Comastri, A.',
-                'name_variations': [
-                    'comastri a',
-                    'comastri a.',
-                    'a comastri',
-                    'comastri',
-                    'comastri, a',
-                    'a. comastri',
-                    'comastri, a.',
-                    'a, comastri',
-                    'a., comastri'
-                ]
+                'full_name': 'Comastri, A.'
             }
         ],
         'titles': [
@@ -732,9 +647,7 @@ def test_authors_titles_validator_fails_authors_and_titles_partial_match_both():
                     'full_name': 'Smith, J.'
                 },
                 {
-                    'full_name': 'Black, J.',
-                    'signature_block': 'BLACKJO',
-                    'uuid': '2160fa69-9rfa-44a9-bba8-2121a8bd52e4'
+                    'full_name': 'Black, J.'
                 },
 
             ],
@@ -776,23 +689,10 @@ def test_authors_titles_validator_fails_authors_and_titles_no_match_both():
                 'full_name': 'Smith, J.'
             },
             {
-                'full_name': 'Zappacosta, L.',
-                'signature_block': 'ZAPACASTl',
-                'uuid': '2160fa69-9efa-44a9-bbe9-2121a8bd52e4'
+                'full_name': 'Zappacosta, L.'
             },
             {
-                'full_name': 'Comastri, A.',
-                'name_variations': [
-                    'comastri a',
-                    'comastri a.',
-                    'a comastri',
-                    'comastri',
-                    'comastri, a',
-                    'a. comastri',
-                    'comastri, a.',
-                    'a, comastri',
-                    'a., comastri'
-                ]
+                'full_name': 'Comastri, A.'
             }
         ]
     }
@@ -806,9 +706,7 @@ def test_authors_titles_validator_fails_authors_and_titles_no_match_both():
                     'full_name': 'Bentley, M.'
                 },
                 {
-                    'full_name': 'Black, J.',
-                    'signature_block': 'BLACKJO',
-                    'uuid': '2160fa69-9rfa-44a9-bba8-2121a8bd52e4'
+                    'full_name': 'Black, J.'
                 }
             ],
             'titles': [

@@ -59,7 +59,9 @@ def authors_titles_validator(record, possible_match):
     result_authors = get_value(possible_match, '_source.authors', [])
 
     if record_authors and result_authors:
-        author_score = compute_authors_jaccard_index(record_authors, result_authors)
+        record_sample_nr = min(len(record_authors), 5)
+        match_sample_nr = min(len(result_authors), 5)
+        author_score = compute_authors_jaccard_index(record_authors[:record_sample_nr], result_authors[:match_sample_nr])
 
     title_max_score = 0.5
     record_titles = get_value(record, 'titles.title', [])
