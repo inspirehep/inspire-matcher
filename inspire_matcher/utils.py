@@ -53,7 +53,10 @@ def compute_authors_jaccard_index(x_authors, y_authors):
     intersection_cardinal = get_number_of_author_matches(x_authors, y_authors)
     union_cardinal = max(len(x_authors), len(y_authors))
 
-    return intersection_cardinal / float(union_cardinal)
+    if union_cardinal:
+        return intersection_cardinal / float(union_cardinal)
+    else:
+        return 0.0
 
 
 def compute_titles_jaccard_index(x_title, y_title):
@@ -73,7 +76,10 @@ def compute_titles_jaccard_index(x_title, y_title):
     intersection_cardinal = len(record_title_tokens & result_title_tokens)
     union_cardinal = len(record_title_tokens | result_title_tokens)
 
-    return intersection_cardinal / float(union_cardinal)
+    if union_cardinal:
+        return intersection_cardinal / float(union_cardinal)
+    else:
+        return 0.0
 
 
 def get_tokenized_title(title):
