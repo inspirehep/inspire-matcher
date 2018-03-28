@@ -23,8 +23,8 @@
 from __future__ import absolute_import, division, print_function
 
 from inspire_matcher.utils import (
-    compute_authors_jaccard_index,
-    compute_titles_jaccard_index,
+    compute_author_match_score,
+    compute_jaccard_index,
     get_number_of_author_matches,
     get_tokenized_title,
 )
@@ -36,6 +36,7 @@ def test_get_number_of_author_matches():
         {'full_name': 'Kobayashi, Makoto'},
         {'full_name': 'Maskawa, Toshihide'},
     ]
+
     y_authors = [
         {'full_name': 'Kobayashi, Makoto'},
         {'full_name': 'Maskawa, Toshihide'},
@@ -47,6 +48,109 @@ def test_get_number_of_author_matches():
     assert expected == result
 
 
+def test_compute_author_match_score_matching_authors():
+    x_authors = [
+        {'full_name': 'Cabibbo, Nicola'},
+        {'full_name': 'Kobayashi, Makoto'},
+        {'full_name': 'Maskawa, Toshihide'},
+        {'full_name': 'Smith, John'}
+    ]
+    y_authors = [
+        {'full_name': 'Cabibbo, Nicola'},
+        {'full_name': 'Kobayashi, Makoto'},
+        {'full_name': 'Maskawa, Toshihide'},
+        {'full_name': 'Smith, John'}
+    ]
+
+    result = compute_author_match_score(x_authors, y_authors)
+
+    assert result == 1.0
+
+
+def test_compute_author_match_score_different_authors():
+    x_authors = [
+        {'full_name': 'Cabibbo, Nicola'},
+        {'full_name': 'Kobayashi, Makoto'},
+        {'full_name': 'Maskawa, Toshihide'},
+        {'full_name': 'Smith, John'}
+    ]
+    y_authors = [
+        {'full_name': 'Sinatra, Mary'},
+        {'full_name': 'Blueds, Michael'},
+    ]
+
+    result = compute_author_match_score(x_authors, y_authors)
+
+    assert result == 0.0
+
+
+def test_compute_author_match_score_similar_authors():
+    x_authors = [
+        {'full_name': 'Cabibbo, Nicola'},
+        {'full_name': 'Kobayashi, Makoto'},
+        {'full_name': 'Maskawa, Toshihide'},
+        {'full_name': 'Smith, John'}
+    ]
+    y_authors = [
+        {'full_name': 'Kobayashi, Makoto'},
+        {'full_name': 'Maskawa, Toshihide'},
+    ]
+
+    result = compute_author_match_score(x_authors, y_authors)
+
+    assert result == 0.5
+
+
+def test_compute_author_match_one_empty_list():
+    x_authors = []
+    y_authors = [
+        {'full_name': 'Kobayashi, Makoto'},
+        {'full_name': 'Maskawa, Toshihide'},
+    ]
+
+    result = compute_author_match_score(x_authors, y_authors)
+
+    assert result == 0.5
+
+
+def test_compute_author_match_one_element_list():
+    x_authors = [
+        {'full_name': 'Kobayashi, Makoto'}
+    ]
+    y_authors = []
+
+    result = compute_author_match_score(x_authors, y_authors)
+
+    assert result == 0.5
+
+
+def test_compute_jaccard_index_perfect_matching_titles():
+    title1_tokens = {'cp', 'violation', 'in', 'the', 'b', 'system'}
+    title2_tokens = {'cp', 'violation', 'in', 'the', 'b', 'system'}
+
+    result = compute_jaccard_index(title1_tokens, title2_tokens)
+
+    assert result == 1.0
+
+
+def test_compute_jaccard_index_different_titles():
+    title1_tokens = {'pythia', '6.4', 'physics', 'and', 'manual'}
+    title2_tokens = {'cp', 'violation', 'in', 'the', 'b', 'system'}
+
+    result = compute_jaccard_index(title1_tokens, title2_tokens)
+
+    assert result == 0.0
+
+
+def test_compute_jaccard_index_similar_titles():
+    title1_tokens = {'cp', 'violation', 'b'}
+    title2_tokens = {'cp', 'violation', 'in', 'the', 'b', 'system'}
+
+    result = compute_jaccard_index(title1_tokens, title2_tokens)
+
+    assert result == 0.5
+
+
 def test_get_tokenized_title():
     title = 'Exotic Exotic RG RG Flows from Holography'
 
@@ -55,166 +159,3 @@ def test_get_tokenized_title():
     result = get_tokenized_title(title)
 
     assert expected == result
-
-
-def test_compute_authors_jaccard_index_perfect_matching_authors():
-    author_list1 = [
-        {
-            'full_name': 'Smith, J.'
-        },
-        {
-            'full_name': 'Zappacosta, L.',
-        },
-        {
-            'full_name': 'Comastri, A.',
-            'name_variations': [
-                'comastri a',
-                'comastri a.',
-                'a comastri',
-                'comastri',
-                'comastri, a',
-                'a. comastri',
-                'comastri, a.',
-                'a, comastri',
-                'a., comastri'
-            ]
-        }
-    ]
-
-    author_list2 = [
-        {
-            'full_name': 'Smith, J.',
-            'signature_block': 'SMITHJO',
-        },
-        {
-            'full_name': 'Zappacosta, L.',
-            'uuid': '2160fa69-9efa-44a9-bbe9-2121a8bd52e4'
-        },
-        {
-            'full_name': 'Comastri, A.',
-        }
-    ]
-
-    result = compute_authors_jaccard_index(author_list1, author_list2)
-
-    assert result == 1.0
-
-
-def test_compute_authors_jaccard_index_no_author_match():
-    author_list1 = [
-        {
-            'full_name': 'Smith, J.'
-        },
-        {
-            'full_name': 'Zappacosta, L.',
-        },
-        {
-            'full_name': 'Black, S.',
-            'signature_block': 'BLACKS',
-        },
-        {
-            'full_name': 'Comastri, A.',
-            'name_variations': [
-                'comastri a',
-                'comastri a.',
-                'a comastri',
-                'comastri',
-                'comastri, a',
-                'a. comastri',
-                'comastri, a.',
-                'a, comastri',
-                'a., comastri'
-            ]
-        }
-    ]
-
-    author_list2 = [
-        {
-            'full_name': 'Roberts, A.',
-        }
-    ]
-
-    result = compute_authors_jaccard_index(author_list1, author_list2)
-
-    assert result == 0.0
-
-
-def test_compute_authors_jaccard_index_half_authors_match():
-    author_list1 = [
-        {
-            'full_name': 'Smith, J.'
-        },
-        {
-            'full_name': 'Zappacosta, L.',
-        },
-        {
-            'full_name': 'Black, S.',
-            'signature_block': 'BLACKS',
-        },
-        {
-            'full_name': 'Comastri, A.',
-            'name_variations': [
-                'comastri a',
-                'comastri a.',
-                'a comastri',
-                'comastri',
-                'comastri, a',
-                'a. comastri',
-                'comastri, a.',
-                'a, comastri',
-                'a., comastri'
-            ]
-        }
-    ]
-
-    author_list2 = [
-        {
-            'full_name': 'Smith, J.',
-            'signature_block': 'SMITHJO',
-        },
-        {
-            'full_name': 'Zappacosta, L.',
-            'name_variations': [
-                'zappacosta l',
-                'zappacosta l.',
-                'l zappacosta',
-                'zappacosta',
-                'zappacosta, l',
-                'l. zappacosta',
-                'zappacosta, l.',
-                'l, zappacosta',
-                'l., zappacosta'
-            ]
-        },
-    ]
-
-    result = compute_authors_jaccard_index(author_list1, author_list2)
-
-    assert result == 0.5
-
-
-def test_compute_titles_jaccard_index_perfect_matching_titles():
-    title1 = 'CP VIOLATION IN THE B SYSTEM'
-    title2 = 'cp violation in the b system'
-
-    result = compute_titles_jaccard_index(title1, title2)
-
-    assert result == 1.0
-
-
-def test_compute_titles_jaccard_index_different_titles():
-    title1 = 'PYTHIA 6.4 Physics and Manual'
-    title2 = 'cp violation in the b system'
-
-    result = compute_titles_jaccard_index(title1, title2)
-
-    assert result == 0.0
-
-
-def test_compute_titles_jaccard_index_similar_titles():
-    title1 = 'CP violation B'
-    title2 = 'CP violation in the B system'
-
-    result = compute_titles_jaccard_index(title1, title2)
-
-    assert result == 0.5

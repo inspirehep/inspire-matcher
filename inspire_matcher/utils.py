@@ -39,47 +39,44 @@ def get_number_of_author_matches(x_authors, y_authors):
     return len(AuthorComparator(x_authors, y_authors).matches)
 
 
-def compute_authors_jaccard_index(x_authors, y_authors):
-    """Return the Jaccard similarity coefficient between 2 author sets.
+def compute_author_match_score(x_authors, y_authors):
+    """Return the matching score of 2 given lists of authors.
 
     Args:
         x_authors (list(dict)): first schema-compliant list of authors.
         y_authors (list(dict)): second schema-compliant list of authors.
 
     Returns:
-        float: Jaccard similarity coefficient between the 2 author sets.
+        float: matching score of authors; deafult is 0.5 .
 
     """
-    intersection_cardinal = get_number_of_author_matches(x_authors, y_authors)
-    union_cardinal = max(len(x_authors), len(y_authors))
+    if len(x_authors) <= 1 or len(y_authors) <= 1:
+        return 0.5
 
-    if union_cardinal:
-        return intersection_cardinal / float(union_cardinal)
-    else:
-        return 0.0
+    matches = get_number_of_author_matches(x_authors, y_authors)
+    max_length = max(len(x_authors), len(y_authors))
+
+    return matches / float(max_length)
 
 
-def compute_titles_jaccard_index(x_title, y_title):
-    """Return the Jaccard similarity coefficient between 2 titles.
+def compute_jaccard_index(x_set, y_set):
+    """Return the Jaccard similarity coefficient of 2 given sets.
 
     Args:
-        x_title (string): first title.
-        y_title (string): second title.
+        x_set (set): first set.
+        y_set (set): second set.
 
     Returns:
-        float: Jaccard similarity coefficient between the 2 titles token sets.
+        float: Jaccard similarity coefficient.
 
     """
-    record_title_tokens = get_tokenized_title(x_title)
-    result_title_tokens = get_tokenized_title(y_title)
-
-    intersection_cardinal = len(record_title_tokens & result_title_tokens)
-    union_cardinal = len(record_title_tokens | result_title_tokens)
-
-    if union_cardinal:
-        return intersection_cardinal / float(union_cardinal)
-    else:
+    if not x_set or not y_set:
         return 0.0
+
+    intersection_cardinal = len(x_set & y_set)
+    union_cardinal = len(x_set | y_set)
+
+    return intersection_cardinal / float(union_cardinal)
 
 
 def get_tokenized_title(title):
@@ -88,7 +85,7 @@ def get_tokenized_title(title):
     The title is lowercased and split on the spaces. Then, duplicate tokens are removed by adding the tokens to a set.
 
     Args:
-        title (string): a titles.
+        title (string): a title.
 
     Returns:
         set: contains the resulting tokens.
