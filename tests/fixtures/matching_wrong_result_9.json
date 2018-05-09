@@ -1,0 +1,831 @@
+{"_type":"hep",
+  "_source":{
+    "$schema":"https://qa.inspirehep.net/schemas/records/hep.json",
+    "_collections":[
+      "Literature"
+    ],
+    "_created":"2017-07-25T00:00:00+00:00",
+    "_updated":"2018-03-29T21:29:39.039746+00:00",
+    "abstracts":[
+      {
+        "abstract_source_suggest":{
+          "input":"arXiv",
+          "output":"arXiv"
+        },
+        "source":"arXiv",
+        "value":"In a recent letter, J. Cardy, Phys. Rev. Lett. \\textbf{112}, 220401 (2014), the author made a very interesting observation that complete revivals of quantum states after quantum quench can happen in a period which is a fraction of the system size. This is possible for critical systems that can be described by minimal conformal field theories (CFT) with central charge $c<1$. In this article, we show that these complete revivals are impossible in microscopic realizations of those minimal models. We will prove the absence of the mentioned complete revivals for the critical transverse field Ising chain analytically, and present numerical results for the critical line of the XY chain. In particular, for the considered initial states, we will show that criticality has no significant effect in partial revivals. We also comment on the applicability of quasi-particle picture to determine the period of the partial revivals qualitatively. In particular, we detect a regime in the phase diagram of the XY chain which one can not determine the period of the partial revivals using the quasi-particle picture."
+      }
+    ],
+    "acquisition_source":{
+      "method":"oai",
+      "source":"arxiv"
+    },
+    "arxiv_eprints":[
+      {
+        "categories":[
+          "cond-mat.str-el",
+          "hep-th"
+        ],
+        "value":"1707.07178"
+      }
+    ],
+    "author_count":2,
+    "authors":[
+      {
+        "full_name":"Najafi, Khadijeh",
+        "full_name_unicode_normalized":"najafi, khadijeh",
+        "ids":[
+          {
+            "schema":"INSPIRE BAI",
+            "value":"K.Najafi.1"
+          }
+        ],
+        "name_suggest":{
+          "input":[
+            "k, najafi",
+            "najafi, khadijeh",
+            "khadijeh najafi",
+            "najafi, k",
+            "najafi k",
+            "k najafi",
+            "najafi khadijeh",
+            "najafi",
+            "khadijeh, najafi"
+          ],
+          "output":"Najafi, Khadijeh",
+          "payload":{
+            "bai":"K.Najafi.1"
+          }
+        },
+        "name_variations":[
+          "k, najafi",
+          "najafi, khadijeh",
+          "khadijeh najafi",
+          "najafi, k",
+          "najafi k",
+          "k najafi",
+          "najafi khadijeh",
+          "najafi",
+          "khadijeh, najafi"
+        ],
+        "signature_block":"NAJAFk",
+        "uuid":"1060f837-94b6-48fa-aec8-b8a643e7b96f"
+      },
+      {
+        "full_name":"Rajabpour, M.A.",
+        "full_name_unicode_normalized":"rajabpour, m.a.",
+        "ids":[
+          {
+            "schema":"INSPIRE BAI",
+            "value":"M.A.Rajabpour.1"
+          }
+        ],
+        "name_suggest":{
+          "input":[
+            "m.a., rajabpour",
+            "rajabpour, m",
+            "m, rajabpour",
+            "rajabpour",
+            "m.a. rajabpour",
+            "rajabpour m.a.",
+            "m rajabpour",
+            "rajabpour, m.a.",
+            "rajabpour m"
+          ],
+          "output":"Rajabpour, M.A.",
+          "payload":{
+            "bai":"M.A.Rajabpour.1"
+          }
+        },
+        "name_variations":[
+          "m.a., rajabpour",
+          "rajabpour, m",
+          "m, rajabpour",
+          "rajabpour",
+          "m.a. rajabpour",
+          "rajabpour m.a.",
+          "m rajabpour",
+          "rajabpour, m.a.",
+          "rajabpour m"
+        ],
+        "signature_block":"RAJABPARm",
+        "uuid":"07690bb6-14e1-46c7-92e6-e32baf34b4da"
+      }
+    ],
+    "citeable":true,
+    "control_number":1611330,
+    "curated":false,
+    "document_type":[
+      "article"
+    ],
+    "documents":[
+      {
+        "key":"arXiv:1707.07178.pdf",
+        "source":"arXiv",
+        "url":"file:///afs/cern.ch/project/inspire/PROD/var/data/files/g148/2969204/content.pdf%3B1"
+      }
+    ],
+    "dois":[
+      {
+        "value":"10.1103/PhysRevB.96.014305"
+      }
+    ],
+    "earliest_date":"2017-07-22",
+    "external_system_identifiers":[
+      {
+        "schema":"ADS",
+        "value":"2017PhRvB..96a4305N"
+      }
+    ],
+    "facet_inspire_doc_type":[
+      "article",
+      "peer reviewed"
+    ],
+    "figures":[
+      {
+        "caption":"Color online) Different regions in the phase diagram of the quantum $XY$ chain. The critical $XX$ chain has central charge $c=1$ and critical $XY$ line has $c=\\frac{1}{2}$. The region $a^2+h^2&lt;1$ is depicted with the yellow color.",
+        "key":"fig1.png",
+        "url":"file:///afs/cern.ch/project/inspire/PROD/var/data/files/g148/2968750/content.png%3B2"
+      },
+      {
+        "caption":"(Color online) logarithmic fidelity for the periodic critical Ising chain starting from the all aligned spins $\\sigma^z$ initial state.",
+        "key":"fig2.png",
+        "url":"file:///afs/cern.ch/project/inspire/PROD/var/data/files/g148/2968748/content.png%3B2"
+      },
+      {
+        "caption":"(Color online) logarithmic fidelity for the open critical Ising chain starting from the all aligned spins $\\sigma^z$ initial state.",
+        "key":"fig3.png",
+        "url":"file:///afs/cern.ch/project/inspire/PROD/var/data/files/g148/2968749/content.png%3B2"
+      },
+      {
+        "caption":"(Color online) Group velocity $v_{\\phi}$ with respect to $\\phi$ for different values of $a$ and $h$.",
+        "key":"fig4.png",
+        "url":"file:///afs/cern.ch/project/inspire/PROD/var/data/files/g148/2968746/content.png%3B2"
+      },
+      {
+        "caption":"(Color online) Maximum group velocity for different values of $a$ and $h$.",
+        "key":"fig5.png",
+        "url":"file:///afs/cern.ch/project/inspire/PROD/var/data/files/g148/2968747/content.png%3B2"
+      },
+      {
+        "caption":"(Color online) Loschmidt echo on the Ising line for periodic and open chains in top and bottom panel  respectively($L=80$). The revivals are compatible with quasi-particle picture with maximum group velocity $v_g^{max}=2h$.",
+        "key":"fig6a.png",
+        "url":"file:///afs/cern.ch/project/inspire/PROD/var/data/files/g148/2968751/content.png%3B2"
+      },
+      {
+        "caption":"(Color online) Loschmidt echo on the Ising line for periodic and open chains in top and bottom panel  respectively($L=80$). The revivals are compatible with quasi-particle picture with maximum group velocity $v_g^{max}=2h$.",
+        "key":"fig6b.png",
+        "url":"file:///afs/cern.ch/project/inspire/PROD/var/data/files/g148/2968752/content.png%3B2"
+      },
+      {
+        "caption":"(Color online) Loschmidt echo on the XY critical line for periodic and open chains in top and bottom panel respectively($L=80$). The revivals are compatible with quasi-particle picture with the Fermi group velocity $v_g^f=2a$.",
+        "key":"fig7a.png",
+        "url":"file:///afs/cern.ch/project/inspire/PROD/var/data/files/g148/2968742/content.png%3B2"
+      },
+      {
+        "caption":"(Color online) Loschmidt echo on the XY critical line for periodic and open chains in top and bottom panel respectively($L=80$). The revivals are compatible with quasi-particle picture with the Fermi group velocity $v_g^f=2a$.",
+        "key":"fig7b.png",
+        "url":"file:///afs/cern.ch/project/inspire/PROD/var/data/files/g148/2968745/content.png%3B2"
+      },
+      {
+        "caption":"(Color online) Loschmidt echo on the line $h=0.8$ for periodic and open chains in left and right panel respectively($L=80$). The revivals are compatible with quasi-particle picture with maximum group velocity (see Figure 5) as far as $a^2+h^2&gt;1$. For the region $a^2+h^2\\leq 1$ there are no clean periodic revivals.",
+        "key":"fig8a.png",
+        "url":"file:///afs/cern.ch/project/inspire/PROD/var/data/files/g148/2968744/content.png%3B2"
+      },
+      {
+        "caption":"(Color online) Loschmidt echo on the line $h=0.8$ for periodic and open chains in left and right panel respectively($L=80$). The revivals are compatible with quasi-particle picture with maximum group velocity (see Figure 5) as far as $a^2+h^2&gt;1$. For the region $a^2+h^2\\leq 1$ there are no clean periodic revivals.",
+        "key":"fig8b.png",
+        "url":"file:///afs/cern.ch/project/inspire/PROD/var/data/files/g148/2968743/content.png%3B2"
+      }
+    ],
+    "inspire_categories":[
+      {
+        "term":"General Physics"
+      }
+    ],
+    "legacy_creation_date":"2017-07-25",
+    "license":[
+      {
+        "imposing":"arXiv",
+        "url":"http://arxiv.org/licenses/nonexclusive-distrib/1.0/"
+      }
+    ],
+    "number_of_pages":7,
+    "preprint_date":"2017-07-22",
+    "public_notes":[
+      {
+        "source":"arXiv",
+        "value":"7 pages, 8 figures, published version"
+      }
+    ],
+    "publication_info":[
+      {
+        "artid":"014305",
+        "journal_title":"Phys.Rev.B",
+        "journal_volume":"96",
+        "pubinfo_freetext":"Phys. Rev. B 96, 014305(2017)",
+        "year":2017
+      }
+    ],
+    "refereed":true,
+    "references":[
+      {
+        "curated_relation":false,
+        "recid":1285509,
+        "record":{
+          "$ref":"http://qa.inspirehep.net/api/literature/1285509"
+        },
+        "reference":{
+          "label":"1",
+          "misc":[
+            "John Cardy"
+          ],
+          "publication_info":{
+            "artid":"220401",
+            "journal_title":"Phys.Rev.Lett.",
+            "journal_volume":"112",
+            "year":2014
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Quan, H.T."
+            },
+            {
+              "full_name":"Song, Z."
+            },
+            {
+              "full_name":"Liu, X.F."
+            },
+            {
+              "full_name":"Zanardi, P."
+            },
+            {
+              "full_name":"Sun, C.P."
+            }
+          ],
+          "label":"2",
+          "publication_info":{
+            "artid":"140604",
+            "journal_title":"Phys.Rev.Lett.",
+            "journal_volume":"96",
+            "year":2006
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Yuan, Z.-G."
+            },
+            {
+              "full_name":"Zhang, P."
+            },
+            {
+              "full_name":"Li, S.-S."
+            }
+          ],
+          "label":"3",
+          "publication_info":{
+            "artid":"012102",
+            "journal_title":"Phys.Rev.A",
+            "journal_volume":"75",
+            "year":2007
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Rossini, D."
+            },
+            {
+              "full_name":"Calarco, T."
+            },
+            {
+              "full_name":"Giovannetti, V."
+            },
+            {
+              "full_name":"Montangero, S."
+            },
+            {
+              "full_name":"Fazio, R."
+            }
+          ],
+          "label":"4",
+          "publication_info":{
+            "artid":"032333",
+            "journal_title":"Phys.Rev.A",
+            "journal_volume":"75",
+            "year":2007
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Zhong, M."
+            },
+            {
+              "full_name":"Tong, P."
+            }
+          ],
+          "label":"5",
+          "publication_info":{
+            "artid":"052105",
+            "journal_title":"Phys.Rev.A",
+            "journal_volume":"84",
+            "year":2011
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"H\u00e4pp\u00f6l, J."
+            },
+            {
+              "full_name":"Hal\u00e1sz, G.B."
+            },
+            {
+              "full_name":"Hamma, A."
+            }
+          ],
+          "label":"6",
+          "publication_info":{
+            "artid":"032114",
+            "journal_title":"Phys.Rev.A",
+            "journal_volume":"85",
+            "year":2012
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Montes, S."
+            },
+            {
+              "full_name":"Hamma, A."
+            }
+          ],
+          "label":"7",
+          "publication_info":{
+            "artid":"021101",
+            "journal_title":"Phys.Rev.E",
+            "journal_volume":"86",
+            "year":2012
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Sharma, S."
+            },
+            {
+              "full_name":"Mukherjee, V."
+            },
+            {
+              "full_name":"Dutta, A."
+            }
+          ],
+          "label":"8",
+          "publication_info":{
+            "artid":"143",
+            "journal_title":"Eur.Phys.J.B",
+            "journal_volume":"85",
+            "page_start":"143",
+            "year":2012
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Rajak, A."
+            },
+            {
+              "full_name":"Divakaran, U."
+            }
+          ],
+          "label":"9",
+          "misc":[
+            "J. Stat Mech.: Theor. Exp. P04023"
+          ],
+          "publication_info":{
+            "year":2014
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Jafari, R."
+            },
+            {
+              "full_name":"Johannesson, H."
+            }
+          ],
+          "label":"10",
+          "publication_info":{
+            "artid":"015701",
+            "journal_title":"Phys.Rev.Lett.",
+            "journal_volume":"118",
+            "year":2017
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Igl\u00f3i, F."
+            },
+            {
+              "full_name":"Rieger, H."
+            }
+          ],
+          "label":"11",
+          "publication_info":{
+            "artid":"035701",
+            "journal_title":"Phys.Rev.Lett.",
+            "journal_volume":"106",
+            "year":2011
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Zhang, J."
+            },
+            {
+              "full_name":"Cucchietti, F.M."
+            },
+            {
+              "full_name":"Chandrashekar, C.M."
+            },
+            {
+              "full_name":"Laforest, M."
+            },
+            {
+              "full_name":"Ryan, C.A."
+            },
+            {
+              "full_name":"Ditty, M."
+            },
+            {
+              "full_name":"Hubbard, A."
+            },
+            {
+              "full_name":"Gamble, J.K."
+            },
+            {
+              "full_name":"Laflamme, R."
+            }
+          ],
+          "label":"12",
+          "publication_info":{
+            "artid":"012305",
+            "journal_title":"Phys.Rev.A",
+            "journal_volume":"79",
+            "year":2009
+          }
+        }
+      },
+      {
+        "curated_relation":false,
+        "recid":1416522,
+        "record":{
+          "$ref":"http://qa.inspirehep.net/api/literature/1416522"
+        },
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Sacramento, P.D."
+            }
+          ],
+          "label":"13",
+          "publication_info":{
+            "artid":"062117",
+            "journal_title":"Phys.Rev.E",
+            "journal_volume":"93",
+            "year":2016
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"St\u00e9phan, J-M"
+            },
+            {
+              "full_name":"Dubail, J."
+            },
+            {
+              "full_name":"Stat, J."
+            }
+          ],
+          "label":"14",
+          "misc":[
+            "Mech.  P08019"
+          ],
+          "publication_info":{
+            "year":2011
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Heyl, M."
+            },
+            {
+              "full_name":"Polkovnikov, A."
+            },
+            {
+              "full_name":"Kehrein, S."
+            }
+          ],
+          "label":"15",
+          "publication_info":{
+            "artid":"135704",
+            "journal_title":"Phys.Rev.Lett.",
+            "journal_volume":"110",
+            "year":2013
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Pollmann, F."
+            },
+            {
+              "full_name":"Mukerjee, S."
+            },
+            {
+              "full_name":"Green, A.G."
+            },
+            {
+              "full_name":"Moore, J.E."
+            }
+          ],
+          "label":"16",
+          "misc":[
+            "R)"
+          ],
+          "publication_info":{
+            "artid":"020101",
+            "journal_title":"Phys.Rev.E",
+            "journal_volume":"81",
+            "year":2010
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Karrasch, C."
+            },
+            {
+              "full_name":"Schuricht, D."
+            }
+          ],
+          "label":"17",
+          "misc":[
+            "F. Andraschko and J. Sirker Szabolcs Vajna and Bal\u00e1zs D\u00f3ra",
+            "Additional pubnote: Phys.Rev.,B89,125120",
+            "Additional pubnote: Phys.Rev.,B91,155127"
+          ],
+          "publication_info":{
+            "artid":"195104",
+            "journal_title":"Phys.Rev.B",
+            "journal_volume":"87",
+            "year":2013
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Heyl, M."
+            }
+          ],
+          "label":"18",
+          "publication_info":{
+            "artid":"085416",
+            "journal_title":"Phys.Rev.B",
+            "journal_volume":"93",
+            "year":2017
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Cardy, J."
+            }
+          ],
+          "label":"19",
+          "publication_info":{
+            "artid":"023103",
+            "journal_title":"J.Stat.Mech.",
+            "journal_volume":"2016"
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Kurmann, J."
+            },
+            {
+              "full_name":"Thomas, H."
+            },
+            {
+              "full_name":"M\u00fcller, G."
+            }
+          ],
+          "label":"20",
+          "misc":[
+            "G. M\u00c2\u013auller, and R.E. Shrock",
+            "Additional pubnote: Phys.Rev.,B32,5845"
+          ],
+          "publication_info":{
+            "artid":"235",
+            "journal_title":"Physica A",
+            "journal_volume":"112",
+            "page_start":"235",
+            "year":1982
+          }
+        }
+      },
+      {
+        "curated_relation":false,
+        "recid":58883,
+        "record":{
+          "$ref":"http://qa.inspirehep.net/api/literature/58883"
+        },
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Balian, R."
+            },
+            {
+              "full_name":"Br\u00e9zin, E."
+            }
+          ],
+          "label":"21",
+          "publication_info":{
+            "artid":"37",
+            "journal_title":"Nuovo Cim.B",
+            "journal_volume":"64",
+            "page_start":"37",
+            "year":1969
+          }
+        }
+      },
+      {
+        "curated_relation":false,
+        "recid":708545,
+        "record":{
+          "$ref":"http://qa.inspirehep.net/api/literature/708545"
+        },
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Calabrese, P."
+            },
+            {
+              "full_name":"Cardy, J."
+            }
+          ],
+          "label":"22",
+          "publication_info":{
+            "artid":"136801",
+            "journal_title":"Phys.Rev.Lett.",
+            "journal_volume":"96",
+            "year":2006
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Calabrese, P."
+            },
+            {
+              "full_name":"Cardy, J."
+            }
+          ],
+          "label":"23",
+          "misc":[
+            "J. Stat Mech.  P10004"
+          ],
+          "publication_info":{
+            "year":2007
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Fagotti, M."
+            },
+            {
+              "full_name":"Calabrese, P."
+            }
+          ],
+          "label":"24",
+          "misc":[
+            "R)"
+          ],
+          "publication_info":{
+            "artid":"010306",
+            "journal_title":"Phys.Rev.A",
+            "journal_volume":"78",
+            "year":2008
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Stat, B.Pozsgay J."
+            }
+          ],
+          "label":"25",
+          "misc":[
+            "Mech.  P10028"
+          ],
+          "publication_info":{
+            "year":2013
+          }
+        }
+      },
+      {
+        "reference":{
+          "authors":[
+            {
+              "full_name":"Piroli, L."
+            },
+            {
+              "full_name":"Pozsgay, B."
+            },
+            {
+              "full_name":"Vernier, E."
+            },
+            {
+              "full_name":"Stat, J."
+            }
+          ],
+          "label":"26",
+          "misc":[
+            "Mech.  023106"
+          ],
+          "publication_info":{
+            "year":2017
+          }
+        }
+      }
+    ],
+    "self":{
+      "$ref":"http://qa.inspirehep.net/api/literature/1611330"
+    },
+    "self_recid":1611330,
+    "texkeys":[
+      "Najafi:2017esc"
+    ],
+    "titles":[
+      {
+        "source":"arXiv",
+        "title":"On the possibility of complete revivals after quantum quenches to a critical point"
+      }
+    ]
+  },
+  "_index":"records-hep"
+}

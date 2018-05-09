@@ -1,0 +1,209 @@
+{"_score":4.901988,
+  "_type":"hep",
+  "_id":"89c74ced-2a57-4454-8290-7bba7202dd8f",
+  "_source":{
+    "control_number":1498590,
+    "public_notes":[
+      {
+        "source":"arXiv",
+        "value":"7 pages, 2 figures, Accepted to JCAP"
+      }
+    ],
+    "number_of_pages":7,
+    "authors":[
+      {
+        "uuid":"4a428e45-d5eb-49e6-bac7-4caf15b95be4",
+        "name_suggest":{
+          "output":"Baushev, Anton N.",
+          "payload":{
+            "bai":null
+          },
+          "input":[
+            "a n., baushev",
+            "anton baushev",
+            "baushev, a n.",
+            "a n baushev",
+            "anton n., baushev",
+            "baushev, anton",
+            "baushev n",
+            "a, baushev",
+            "n, baushev",
+            "n., baushev",
+            "baushev, anton n",
+            "n baushev",
+            "baushev, n.",
+            "baushev, anton n.",
+            "baushev, n",
+            "anton n baushev",
+            "baushev a n",
+            "n. baushev",
+            "baushev, a",
+            "a n. baushev",
+            "baushev anton n",
+            "anton, baushev",
+            "baushev anton",
+            "baushev a",
+            "a n, baushev",
+            "baushev anton n.",
+            "anton n. baushev",
+            "baushev a n.",
+            "baushev n.",
+            "anton n, baushev",
+            "baushev",
+            "baushev, a n",
+            "a baushev"
+          ]
+        },
+        "full_name_unicode_normalized":"baushev, anton n.",
+        "full_name":"Baushev, Anton N.",
+        "name_variations":[
+          "a n., baushev",
+          "anton baushev",
+          "baushev, a n.",
+          "a n baushev",
+          "anton n., baushev",
+          "baushev, anton",
+          "baushev n",
+          "a, baushev",
+          "n, baushev",
+          "n., baushev",
+          "baushev, anton n",
+          "n baushev",
+          "baushev, n.",
+          "baushev, anton n.",
+          "baushev, n",
+          "anton n baushev",
+          "baushev a n",
+          "n. baushev",
+          "baushev, a",
+          "a n. baushev",
+          "baushev anton n",
+          "anton, baushev",
+          "baushev anton",
+          "baushev a",
+          "a n, baushev",
+          "baushev anton n.",
+          "anton n. baushev",
+          "baushev a n.",
+          "baushev n.",
+          "anton n, baushev",
+          "baushev",
+          "baushev, a n",
+          "a baushev"
+        ],
+        "signature_block":"BASAFa"
+      },
+      {
+        "uuid":"8c6be2f9-1b41-4300-b3bf-cc536413d665",
+        "name_suggest":{
+          "output":"Barkov, Maxim V.",
+          "payload":{
+            "bai":null
+          },
+          "input":[
+            "barkov m v",
+            "m, barkov",
+            "barkov maxim v.",
+            "maxim v barkov",
+            "barkov, maxim",
+            "v., barkov",
+            "v. barkov",
+            "barkov, v.",
+            "v, barkov",
+            "m v. barkov",
+            "barkov",
+            "maxim, barkov",
+            "m v barkov",
+            "barkov m v.",
+            "m v., barkov",
+            "m v, barkov",
+            "barkov, maxim v.",
+            "v barkov",
+            "maxim v., barkov",
+            "m barkov",
+            "barkov, m",
+            "maxim barkov",
+            "barkov, m v",
+            "barkov, v",
+            "barkov v.",
+            "barkov maxim",
+            "maxim v. barkov",
+            "barkov, maxim v",
+            "barkov, m v.",
+            "barkov v",
+            "barkov m",
+            "barkov maxim v",
+            "maxim v, barkov"
+          ]
+        },
+        "full_name_unicode_normalized":"barkov, maxim v.",
+        "full_name":"Barkov, Maxim V.",
+        "name_variations":[
+          "barkov m v",
+          "m, barkov",
+          "barkov maxim v.",
+          "maxim v barkov",
+          "barkov, maxim",
+          "v., barkov",
+          "v. barkov",
+          "barkov, v.",
+          "v, barkov",
+          "m v. barkov",
+          "barkov",
+          "maxim, barkov",
+          "m v barkov",
+          "barkov m v.",
+          "m v., barkov",
+          "m v, barkov",
+          "barkov, maxim v.",
+          "v barkov",
+          "maxim v., barkov",
+          "m barkov",
+          "barkov, m",
+          "maxim barkov",
+          "barkov, m v",
+          "barkov, v",
+          "barkov v.",
+          "barkov maxim",
+          "maxim v. barkov",
+          "barkov, maxim v",
+          "barkov, m v.",
+          "barkov v",
+          "barkov m",
+          "barkov maxim v",
+          "maxim v, barkov"
+        ],
+        "signature_block":"BARCAVm"
+      }
+    ],
+    "titles":[
+      {
+        "source":"arXiv",
+        "title":"Why does Einasto profile index $n\\\\sim 6$ occur so frequently?"
+      }
+    ],
+    "arxiv_eprints":[
+      {
+        "value":"1705.05302",
+        "categories":[
+          "astro-ph.GA",
+          "astro-ph.CO",
+          "astro-ph.HE",
+          "astro-ph.IM"
+        ]
+      }
+    ],
+    "abstracts":[
+      {
+        "source":"arXiv",
+        "abstract_source_suggest":{
+          "output":"arXiv",
+          "input":"arXiv"
+        },
+        "value":"We consider the behavior of spherically symmetric Einasto halos composed of gravitating particles in the Fokker-Planck approximation. This approach allows us to consider the undesirable influence of close encounters in the N-body simulations more adequately than the generally accepted criteria. The Einasto profile with index $n \\\\approx 6$ is a stationary solution of the Fokker-Planck equation in the halo center. There are some reasons to believe that the solution is an attractor. Then the Fokker-Planck diffusion tends to transform a density profile to the equilibrium one with the Einasto index $n \\\\approx 6$. We suggest this effect as a possible reason why the Einasto index $n \\\\approx 6$ occurs so frequently in the interpretation of N-body simulation results. The results obtained cast doubt on generally accepted criteria of N-body simulation convergence."
+      }
+    ],
+    "earliest_date":"2017-05-15"
+  },
+  "_index":"records-hep"
+}

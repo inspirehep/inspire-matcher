@@ -1,0 +1,76 @@
+{"preprint_date":"2018-03-10",
+  "citeable":true,
+  "license":[
+    {
+      "url":"http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "material":"preprint",
+      "license":"arXiv nonexclusive-distrib 1.0"
+    }
+  ],
+  "authors":[
+    {
+      "full_name":"Najafi, Khadijeh"
+    },
+    {
+      "full_name":"Rajabpour, M.A."
+    },
+    {
+      "full_name":"Viti, J."
+    }
+  ],
+  "public_notes":[
+    {
+      "source":"arXiv",
+      "value":"13 pages, 6 figuers!"
+    }
+  ],
+  "number_of_pages":13,
+  "acquisition_source":{
+    "source":"arXiv",
+    "method":"hepcrawl",
+    "submission_number":"f2d64d5e551411e8a96d0242ac120009",
+    "datetime":"2018-05-11T12:15:20.299344"
+  },
+  "_collections":[
+    "Literature"
+  ],
+  "titles":[
+    {
+      "source":"arXiv",
+      "title":"Light-cone velocities after a global quench in a non-interacting model"
+    }
+  ],
+  "dois":[
+    {
+      "source":"arXiv",
+      "material":"publication",
+      "value":"10.1103/PhysRevB.97.205103"
+    }
+  ],
+  "arxiv_eprints":[
+    {
+      "categories":[
+        "cond-mat.str-el",
+        "cond-mat.stat-mech"
+      ],
+      "value":"1803.03856"
+    }
+  ],
+  "publication_info":[
+    {
+      "material":"publication",
+      "pubinfo_freetext":"Phys. Rev. B 97, 205103 (2018)"
+    }
+  ],
+  "$schema":"http://localhost:5000/schemas/records/hep.json",
+  "document_type":[
+    "article"
+  ],
+  "abstracts":[
+    {
+      "source":"arXiv",
+      "value":"We study the light-cone velocity for global quenches in the non-interacting XY chain starting from a class of initial states that are eigenstates of the local $z$-component of the spin. We point out how translation invariance of the initial state can affect the maximal speed at which correlations spread. As a consequence the light-cone velocity can be state-dependent also for non-interacting systems: a new effect of which we provide clear numerical evidence and analytic predictions. Analogous considerations, based on numerical results, are drawn for the evolution of the entanglement entropy."
+    }
+  ],
+  "curated":false
+}

@@ -1,0 +1,79 @@
+{"preprint_date":"2017-12-27",
+  "citeable":true,
+  "license":[
+    {
+      "url":"http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "material":"preprint",
+      "license":"arXiv nonexclusive-distrib 1.0"
+    }
+  ],
+  "authors":[
+    {
+      "full_name":"Zhao, H."
+    },
+    {
+      "full_name":"Ruan, M."
+    },
+    {
+      "full_name":"Fu, C."
+    },
+    {
+      "full_name":"Yu, D."
+    },
+    {
+      "full_name":"Wang, Z."
+    },
+    {
+      "full_name":"Hu, T."
+    }
+  ],
+  "public_notes":[
+    {
+      "source":"arXiv",
+      "value":"13 pages, 12 figures, submitted to JINST"
+    }
+  ],
+  "number_of_pages":13,
+  "acquisition_source":{
+    "source":"arXiv",
+    "method":"hepcrawl",
+    "submission_number":"06b41554538511e8a96d0242ac120009",
+    "datetime":"2018-05-09T12:32:35.376426"
+  },
+  "_collections":[
+    "Literature"
+  ],
+  "titles":[
+    {
+      "source":"arXiv",
+      "title":"PFA Oriented ECAL Optimization for the CEPC"
+    }
+  ],
+  "dois":[
+    {
+      "source":"arXiv",
+      "material":"publication",
+      "value":"10.1088/1748-0221/13/03/P03010"
+    }
+  ],
+  "arxiv_eprints":[
+    {
+      "categories":[
+        "physics.ins-det",
+        "hep-ex"
+      ],
+      "value":"1712.09625"
+    }
+  ],
+  "$schema":"http://localhost:5000/schemas/records/hep.json",
+  "document_type":[
+    "article"
+  ],
+  "abstracts":[
+    {
+      "source":"arXiv",
+      "value":"The design and optimization of the Electromagnetic Calorimeter (ECAL) are crucial for the Circular Electron Positron Collider (CEPC) project, a proposed future Higgs/Z factory. Following the reference design of the International Large Detector (ILD), a set of silicon-tungsten sampling ECAL geometries are implemented into the Geant4 simulation, whose performance is then scanned using Arbor algorithm. At single particle level, the photon energy response at different ECAL longitudinal structures is analyzed. At bi-particle sample, the separation performance with different ECAL transverse cell sizes is investigated and parametrized. The overall performance is characterized by a set of physics benchmarks, including $\\nu\\nu H$ events where Higgs boson decays into a pair of photons (EM objects) or gluons (jets) and $Z\\to\\tau^+\\tau^-$ events. Based on these results, we proposed an optimized ECAL geometry for the CEPC project."
+    }
+  ],
+  "curated":false
+}

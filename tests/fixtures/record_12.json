@@ -1,0 +1,73 @@
+{"preprint_date":"2017-09-07",
+  "citeable":true,
+  "license":[
+    {
+      "url":"http://creativecommons.org/licenses/by/4.0/",
+      "material":"preprint",
+      "license":"CC BY 4.0"
+    }
+  ],
+  "authors":[
+    {
+      "full_name":"Litinski, Daniel"
+    },
+    {
+      "full_name":"von Oppen, Felix"
+    }
+  ],
+  "public_notes":[
+    {
+      "source":"arXiv",
+      "value":"16 pages, 18 figures"
+    }
+  ],
+  "number_of_pages":16,
+  "acquisition_source":{
+    "source":"arXiv",
+    "method":"hepcrawl",
+    "submission_number":"64f4214c551811e8a96d0242ac120009",
+    "datetime":"2018-05-11T12:40:00.276287"
+  },
+  "_collections":[
+    "Literature"
+  ],
+  "titles":[
+    {
+      "source":"arXiv",
+      "title":"Lattice Surgery with a Twist: Simplifying Clifford Gates of Surface Codes"
+    }
+  ],
+  "dois":[
+    {
+      "source":"arXiv",
+      "material":"publication",
+      "value":"10.22331/q-2018-05-04-62"
+    }
+  ],
+  "arxiv_eprints":[
+    {
+      "categories":[
+        "quant-ph",
+        "cond-mat.mes-hall"
+      ],
+      "value":"1709.02318"
+    }
+  ],
+  "publication_info":[
+    {
+      "material":"publication",
+      "pubinfo_freetext":"Quantum 2, 62 (2018)"
+    }
+  ],
+  "$schema":"http://localhost:5000/schemas/records/hep.json",
+  "document_type":[
+    "article"
+  ],
+  "abstracts":[
+    {
+      "source":"arXiv",
+      "value":"We present a planar surface-code-based scheme for fault-tolerant quantum computation which eliminates the time overhead of single-qubit Clifford gates, and implements long-range multi-target CNOT gates with a time overhead that scales only logarithmically with the control-target separation. This is done by replacing hardware operations for single-qubit Clifford gates with a classical tracking protocol. Inter-qubit communication is added via a modified lattice surgery protocol that employs twist defects of the surface code. The long-range multi-target CNOT gates facilitate magic state distillation, which renders our scheme fault-tolerant and universal."
+    }
+  ],
+  "curated":false
+}

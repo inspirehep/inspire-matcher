@@ -1,0 +1,69 @@
+{"preprint_date":"2017-05-15",
+  "citeable":true,
+  "license":[
+    {
+      "url":"http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "material":"preprint",
+      "license":"arXiv nonexclusive-distrib 1.0"
+    }
+  ],
+  "authors":[
+    {
+      "full_name":"Baushev, Anton N."
+    },
+    {
+      "full_name":"Barkov, Maxim V."
+    }
+  ],
+  "public_notes":[
+    {
+      "source":"arXiv",
+      "value":"7 pages, 2 figures, Accepted to JCAP"
+    }
+  ],
+  "number_of_pages":7,
+  "acquisition_source":{
+    "source":"arXiv",
+    "method":"hepcrawl",
+    "submission_number":"1690a83c536e11e8a96d0242ac120009",
+    "datetime":"2018-05-09T09:48:25.205146"
+  },
+  "_collections":[
+    "Literature"
+  ],
+  "titles":[
+    {
+      "source":"arXiv",
+      "title":"Why does Einasto profile index $n\\sim 6$ occur so frequently?"
+    }
+  ],
+  "dois":[
+    {
+      "source":"arXiv",
+      "material":"publication",
+      "value":"10.1088/1475-7516/2018/03/034"
+    }
+  ],
+  "arxiv_eprints":[
+    {
+      "categories":[
+        "astro-ph.GA",
+        "astro-ph.CO",
+        "astro-ph.HE",
+        "astro-ph.IM"
+      ],
+      "value":"1705.05302"
+    }
+  ],
+  "$schema":"http://localhost:5000/schemas/records/hep.json",
+  "document_type":[
+    "article"
+  ],
+  "abstracts":[
+    {
+      "source":"arXiv",
+      "value":"We consider the behavior of spherically symmetric Einasto halos composed of gravitating particles in the Fokker-Planck approximation. This approach allows us to consider the undesirable influence of close encounters in the N-body simulations more adequately than the generally accepted criteria. The Einasto profile with index $n \\approx 6$ is a stationary solution of the Fokker-Planck equation in the halo center. There are some reasons to believe that the solution is an attractor. Then the Fokker-Planck diffusion tends to transform a density profile to the equilibrium one with the Einasto index $n \\approx 6$. We suggest this effect as a possible reason why the Einasto index $n \\approx 6$ occurs so frequently in the interpretation of N-body simulation results. The results obtained cast doubt on generally accepted criteria of N-body simulation convergence."
+    }
+  ],
+  "curated":false
+}

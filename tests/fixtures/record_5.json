@@ -1,0 +1,119 @@
+{"preprint_date":"2018-01-10",
+  "curated":false,
+  "citeable":true,
+  "license":[
+    {
+      "url":"http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "material":"preprint",
+      "license":"arXiv nonexclusive-distrib 1.0"
+    }
+  ],
+  "authors":[
+    {
+      "full_name":"Margutti, Raffaella"
+    },
+    {
+      "full_name":"Alexander, K.D."
+    },
+    {
+      "full_name":"Xie, X."
+    },
+    {
+      "full_name":"Sironi, L."
+    },
+    {
+      "full_name":"Metzger, B.D."
+    },
+    {
+      "full_name":"Kathirgamaraju, A."
+    },
+    {
+      "full_name":"Fong, W."
+    },
+    {
+      "full_name":"Blanchard, P.K."
+    },
+    {
+      "full_name":"Berger, E."
+    },
+    {
+      "full_name":"MacFadyen, A."
+    },
+    {
+      "full_name":"Giannios, D."
+    },
+    {
+      "full_name":"Guidorzi, C."
+    },
+    {
+      "full_name":"Hajela, A."
+    },
+    {
+      "full_name":"Chornock, R."
+    },
+    {
+      "full_name":"Cowperthwaite, P.S."
+    },
+    {
+      "full_name":"Eftekhari, T."
+    },
+    {
+      "full_name":"Nicholl, M."
+    },
+    {
+      "full_name":"Villar, V.A."
+    },
+    {
+      "full_name":"Williams, P.K.G."
+    },
+    {
+      "full_name":"Zrake, J."
+    }
+  ],
+  "public_notes":[
+    {
+      "source":"arXiv",
+      "value":"Updated with the latest VLA and Chandra data"
+    }
+  ],
+  "dois":[
+    {
+      "source":"arXiv",
+      "material":"publication",
+      "value":"10.3847/2041-8213/aab2ad"
+    }
+  ],
+  "_collections":[
+    "Literature"
+  ],
+  "titles":[
+    {
+      "source":"arXiv",
+      "title":"The Binary Neutron Star event LIGO/VIRGO GW170817 a hundred and sixty days after merger: synchrotron emission across the electromagnetic spectrum"
+    }
+  ],
+  "arxiv_eprints":[
+    {
+      "categories":[
+        "astro-ph.HE"
+      ],
+      "value":"1801.03531"
+    }
+  ],
+  "$schema":"http://localhost:5000/schemas/records/hep.json",
+  "document_type":[
+    "article"
+  ],
+  "abstracts":[
+    {
+      "source":"arXiv",
+      "value":"We report deep Chandra, HST and VLA observations of the binary neutron star event GW170817 at $t&lt;160$ d after merger. These observations show that GW170817 has been steadily brightening with time and might have now reached its peak, and constrain the emission process as non-thermal synchrotron emission where the cooling frequency $\\nu_c$ is above the X-ray band and the synchrotron frequency $\\nu_m$ is below the radio band. The very simple power-law spectrum extending for eight orders of magnitude in frequency enables the most precise measurement of the index $p$ of the distribution of non-thermal relativistic electrons $N(\\gamma)\\propto \\gamma^{-p}$ accelerated by a shock launched by a NS-NS merger to date. We find $p=2.17\\pm0.01$, which indicates that radiation from ejecta with $\\Gamma\\sim3-10$ dominates the observed emission. While constraining the nature of the emission process, these observations do \\emph{not} constrain the nature of the relativistic ejecta. We employ simulations of explosive outflows launched in NS ejecta clouds to show that the spectral and temporal evolution of the non-thermal emission from GW170817 is consistent with both emission from radially stratified quasi-spherical ejecta traveling at mildly relativistic speeds, \\emph{and} emission from off-axis collimated ejecta characterized by a narrow cone of ultra-relativistic material with slower wings extending to larger angles. In the latter scenario, GW170817 harbored a normal SGRB directed away from our line of sight. Observations at $t\\le 200$ days are unlikely to settle the debate as in both scenarios the observed emission is effectively dominated by radiation from mildly relativistic material."
+    }
+  ],
+  "acquisition_source":{
+    "source":"arXiv",
+    "method":"hepcrawl",
+    "submission_number":"07cdf55c538211e8a96d0242ac120009",
+    "datetime":"2018-05-09T12:11:10.503194"
+  }
+}
