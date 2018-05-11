@@ -58,9 +58,9 @@ def authors_titles_validator(record, result):
     record_authors = get_value(record, 'authors', [])
     result_authors = get_value(result, '_source.authors', [])
 
-    author_score = compute_author_match_score(record_authors[:5], result_authors[:5])
+    author_score = compute_author_match_score(record_authors, result_authors)
 
-    title_max_score = 0.5
+    title_max_score = 0.0
     record_titles = get_value(record, 'titles.title', [])
     result_titles = get_value(result, '_source.titles.title', [])
 
@@ -69,7 +69,7 @@ def authors_titles_validator(record, result):
         result_title_tokens = get_tokenized_title(cartesian_pair[1])
         current_title_jaccard = compute_jaccard_index(record_title_tokens, result_title_tokens)
 
-        if current_title_jaccard > title_max_score:
+        if current_title_jaccard > title_max_score and current_title_jaccard >= 0.5:
             title_max_score = current_title_jaccard
 
     return (author_score + title_max_score) / 2 > 0.5
