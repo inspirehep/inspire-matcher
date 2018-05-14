@@ -36,121 +36,31 @@ def test_default_validator_is_not_very_exciting():
     assert default_validator(None, None)
 
 
-def test_authors_titles_validator_matching_result_1_similar_authors_and_similar_titles():
+def test_authors_titles_validator_does_match_when_authors_are_same_and_titles_contain_perfect_match():
     record = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'record_1.json')))
+        __name__, os.path.join('fixtures', 'harvest_record_1601.02340.json')))
 
     result = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'matching_result_1.json')))
+        __name__, os.path.join('fixtures', 'matching_result_1601.02340.json')))
 
     assert authors_titles_validator(record, result)
 
 
-def test_authors_titles_validator_matching_result_2_similar_authors_and_similar_titles():
+def test_authors_titles_validator_does_not_match_when_authors_are_similar_but_titles_are_too_different():
     record = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'record_2.json')))
+        __name__, os.path.join('fixtures', 'harvest_record_1804.09082.json')))
 
     result = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'matching_result_2.json')))
-
-    assert authors_titles_validator(record, result)
-
-
-def test_authors_titles_validator_matching_result_3_similar_authors_and_similar_titles():
-    record = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'record_3.json')))
-
-    result = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'matching_result_3.json')))
-
-    assert authors_titles_validator(record, result)
-
-
-def test_authors_titles_validator_matching_result_4_similar_authors_and_similar_titles():
-    record = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'record_4.json')))
-
-    result = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'matching_result_4.json')))
-
-    assert authors_titles_validator(record, result)
-
-
-def test_authors_titles_validator_matching_result_5_similar_authors_and_similar_titles():
-    record = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'record_5.json')))
-
-    result = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'matching_result_5.json')))
-
-    assert authors_titles_validator(record, result)
-
-
-def test_authors_titles_validator_matching_result_6_similar_authors_and_similar_titles():
-    record = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'record_6.json')))
-
-    result = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'matching_result_6.json')))
-
-    assert authors_titles_validator(record, result)
-
-
-def test_authors_titles_validator_not_matching_result_7_similar_authors_but_too_different_titles():
-    record = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'record_7.json')))
-
-    result = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'matching_wrong_result_7.json')))
+        __name__, os.path.join('fixtures', 'matching_wrong_result_1211.4028.json')))
 
     assert not authors_titles_validator(record, result)
 
 
-def test_authors_titles_validator_not_matching_result_8_similar_authors_but_too_different_titles():
+def test_authors_titles_validator_does_not_match_when_authors_are_same_but_titles_are_too_different():
     record = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'record_8.json')))
+        __name__, os.path.join('fixtures', 'harvest_record_1712.05946.json')))
 
     result = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'matching_wrong_result_8.json')))
-
-    assert not authors_titles_validator(record, result)
-
-
-def test_authors_titles_validator_not_matching_result_9_similar_authors_but_too_different_titles():
-    record = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'record_9.json')))
-
-    result = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'matching_wrong_result_9.json')))
-
-    assert not authors_titles_validator(record, result)
-
-
-def test_authors_titles_validator_not_matching_result_10_similar_authors_but_too_different_titles():
-    record = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'record_10.json')))
-
-    result = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'matching_wrong_result_10.json')))
-
-    assert not authors_titles_validator(record, result)
-
-
-def test_authors_titles_validator_not_matching_result_11_similar_authors_but_too_different_titles():
-    record = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'record_11.json')))
-
-    result = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'matching_wrong_result_11.json')))
-
-    assert not authors_titles_validator(record, result)
-
-
-def test_authors_titles_validator_not_matching_result_12_similar_authors_but_too_different_titles():
-    record = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'record_12.json')))
-
-    result = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'matching_wrong_result_12.json')))
+        __name__, os.path.join('fixtures', 'matching_wrong_result_10.1103.json')))
 
     assert not authors_titles_validator(record, result)
