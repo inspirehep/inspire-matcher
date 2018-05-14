@@ -47,11 +47,11 @@ def compute_author_match_score(x_authors, y_authors):
         y_authors (list(dict)): second schema-compliant list of authors.
 
     Returns:
-        float: matching score of authors; deafult is 0.5 .
+        float: matching score of authors.
 
     """
-    if len(x_authors) <= 1 or len(y_authors) <= 1:
-        return 0.5
+    if not x_authors or not y_authors:
+        return 0.0
 
     matches = get_number_of_author_matches(x_authors, y_authors)
     max_length = max(len(x_authors), len(y_authors))

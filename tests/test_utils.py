@@ -110,18 +110,7 @@ def test_compute_author_match_one_empty_list():
 
     result = compute_author_match_score(x_authors, y_authors)
 
-    assert result == 0.5
-
-
-def test_compute_author_match_one_element_list():
-    x_authors = [
-        {'full_name': 'Kobayashi, Makoto'}
-    ]
-    y_authors = []
-
-    result = compute_author_match_score(x_authors, y_authors)
-
-    assert result == 0.5
+    assert result == 0.0
 
 
 def test_compute_jaccard_index_perfect_matching_titles():
@@ -149,6 +138,15 @@ def test_compute_jaccard_index_similar_titles():
     result = compute_jaccard_index(title1_tokens, title2_tokens)
 
     assert result == 0.5
+
+
+def test_compute_jaccard_index_one_empty_set():
+    title1_tokens = {}
+    title2_tokens = {'cp', 'violation', 'in', 'the', 'b', 'system'}
+
+    result = compute_jaccard_index(title1_tokens, title2_tokens)
+
+    assert result == 0.0
 
 
 def test_get_tokenized_title():
