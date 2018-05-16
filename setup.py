@@ -36,7 +36,7 @@ setup_requires = [
 ]
 
 install_requires = [
-    'Flask~=0.0,>=0.12.2',
+    'Flask~=1.0,>=1.0',
     'Werkzeug~=0.0,>=0.12.2',
     'elasticsearch-dsl~=2.0,>=2.2.0',
     'elasticsearch~=2.0,>=2.4.1',
