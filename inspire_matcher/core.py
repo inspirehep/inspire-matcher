@@ -23,7 +23,6 @@
 from __future__ import absolute_import, division, print_function
 
 import os
-import warnings
 
 from inspire_utils.helpers import force_list
 from inspire_utils.record import get_value
@@ -43,14 +42,6 @@ def compile(query, record):
 
 
 def _compile_exact(query, record):
-    if 'match' in query:
-        query['path'] = query.get('path', query['match'])
-        warnings.warn('The "match" key is deprecated. Use "path" instead.', DeprecationWarning)
-
-    if 'search' in query:
-        query['search_path'] = query.get('search_path', query['search'])
-        warnings.warn('The "search" key is deprecated. Use "search_path" instead.', DeprecationWarning)
-
     path, search_path = query['path'], query['search_path']
 
     collections = query.get('collections', [])
