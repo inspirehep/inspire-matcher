@@ -414,6 +414,47 @@ def test_compile_without_optional_args():
     expected = {
         'query': {
             'bool': {
+                'must': {
+                    'bool': {
+                        'should': [{
+                            'match': {
+                                'dummy.search.path': 'foo',
+                            },
+                        }],
+                    },
+                },
+                'filter': {
+                    'bool': {
+                        'must_not': {
+                            'match': {
+                                'deleted': True,
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    }
+
+    assert expected == result
+
+
+def test_compile_with_match_deleted():
+    query = {
+        'type': 'exact',
+        'path': 'dummy.path',
+        'search_path': 'dummy.search.path',
+    }
+    record = {
+        'dummy': {
+            'path': 'foo',
+        },
+    }
+
+    result = compile(query, record, match_deleted=True)
+    expected = {
+        'query': {
+            'bool': {
                 'should': [{
                     'match': {
                         'dummy.search.path': 'foo',
@@ -465,6 +506,11 @@ def test_compile_with_collections():
                                 },
                             }
                         ],
+                        'must_not': {
+                            'match': {
+                                'deleted': True,
+                            },
+                        },
                     },
                 },
             },

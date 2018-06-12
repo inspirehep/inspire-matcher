@@ -29,15 +29,15 @@ from inspire_utils.helpers import force_list
 from inspire_utils.record import get_value
 
 
-def compile(query, record, collections=None):
+def compile(query, record, collections=None, match_deleted=False):
     result = _compile_inner(query, record)
-    result = _compile_filters(result, collections)
+    result = _compile_filters(result, collections, match_deleted)
 
     return result
 
 
-def _compile_filters(query, collections):
-    if not collections:
+def _compile_filters(query, collections, match_deleted):
+    if match_deleted and not collections:
         return query
 
     result = {
@@ -51,7 +51,14 @@ def _compile_filters(query, collections):
         },
     }
 
-    result['query']['bool']['filter']['bool']['should'] = _compile_collections(collections)
+    if collections:
+        result['query']['bool']['filter']['bool']['should'] = _compile_collections(collections)
+    if not match_deleted:
+        result['query']['bool']['filter']['bool']['must_not'] = {
+            'match': {
+                'deleted': True,
+            },
+        }
 
     return result
 

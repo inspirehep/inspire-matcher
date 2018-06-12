@@ -63,6 +63,7 @@ def match(record, config=None):
         raise KeyError('Malformed configuration: %s.' % repr(e))
 
     source = config.get('source', [])
+    match_deleted = config.get('match_deleted', False)
     collections = config.get('collections')
     if not (collections is None or (
             isinstance(collections, (list, tuple)) and
@@ -80,7 +81,7 @@ def match(record, config=None):
 
         for j, query in enumerate(queries):
             try:
-                body = compile(query, record, collections=collections)
+                body = compile(query, record, collections=collections, match_deleted=match_deleted)
             except Exception as e:
                 raise ValueError('Malformed query. Query %d of step %d does not compile: %s.' % (j, i, repr(e)))
 
