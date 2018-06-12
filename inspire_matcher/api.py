@@ -25,6 +25,7 @@
 from __future__ import absolute_import, division, print_function
 
 from flask import current_app
+from six import string_types
 from werkzeug.utils import import_string
 
 from invenio_search import current_search_client as es
@@ -62,6 +63,12 @@ def match(record, config=None):
         raise KeyError('Malformed configuration: %s.' % repr(e))
 
     source = config.get('source', [])
+    collections = config.get('collections')
+    if not (collections is None or (
+            isinstance(collections, (list, tuple)) and
+            all(isinstance(collection, string_types) for collection in collections)
+    )):
+        raise ValueError('Malformed collections. Expected a list of strings bug got: %s' % repr(collections))
 
     for i, step in enumerate(algorithm):
         try:
@@ -73,12 +80,14 @@ def match(record, config=None):
 
         for j, query in enumerate(queries):
             try:
-                body = compile(query, record)
+                body = compile(query, record, collections=collections)
             except Exception as e:
                 raise ValueError('Malformed query. Query %d of step %d does not compile: %s.' % (j, i, repr(e)))
 
             if not body:
                 continue
+
+            current_app.logger.debug('Sending ES query: %s' % repr(body))
 
             if source:
                 result = es.search(index=index, doc_type=doc_type, body=body, _source=source)
