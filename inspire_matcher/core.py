@@ -37,6 +37,9 @@ def compile(query, record, collections=None, match_deleted=False):
 
 
 def _compile_filters(query, collections, match_deleted):
+    if not query:
+        return None
+
     if match_deleted and not collections:
         return query
 
