@@ -518,3 +518,14 @@ def test_compile_with_collections():
     }
 
     assert expected == result
+
+
+def test_compile_returns_none_if_empty_inner():
+    query = {
+        'type': 'exact',
+        'path': 'dummy.path',
+        'search_path': 'dummy.search.path',
+    }
+    record = {}
+
+    assert compile(query, record) is None
