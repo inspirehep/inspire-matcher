@@ -30,7 +30,7 @@ from inspire_matcher.api import match
 
 def test_match_raises_if_the_configuration_does_not_have_all_the_keys():
     config = {
-        'doc_type': 'records',
+        'doc_type': 'hep',
         'index': 'records-hep',
     }
 
@@ -44,7 +44,7 @@ def test_match_raises_if_one_step_of_the_algorithm_has_no_queries():
         'algorithm': [
             {'validator': 'inspire_matcher.validators:default_validator'},
         ],
-        'doc_type': 'records',
+        'doc_type': 'hep',
         'index': 'records-hep',
     }
 
@@ -78,7 +78,7 @@ def test_match_uses_the_given_validator_callable(es_mock):
                 'validator': dummy_validator,
             },
         ],
-        'doc_type': 'records',
+        'doc_type': 'hep',
         'index': 'records-hep',
     }
 
@@ -101,7 +101,7 @@ def test_match_raises_if_one_query_does_not_have_a_type():
                 ],
             },
         ],
-        'doc_type': 'records',
+        'doc_type': 'hep',
         'index': 'records-hep',
     }
 
@@ -119,7 +119,7 @@ def test_match_raises_if_one_query_type_is_not_supported():
                 ],
             },
         ],
-        'doc_type': 'records',
+        'doc_type': 'hep',
         'index': 'records-hep',
     }
 
@@ -140,10 +140,33 @@ def test_match_raises_if_an_exact_query_does_not_have_all_the_keys():
                 ],
             },
         ],
-        'doc_type': 'records',
+        'doc_type': 'hep',
         'index': 'records-hep',
     }
 
     with pytest.raises(ValueError) as excinfo:
         list(match(None, config))
     assert 'Malformed query' in str(excinfo.value)
+
+
+def test_match_raises_on_invalid_collections():
+    config = {
+        'algorithm': [
+            {
+                'queries': [
+                    {
+                        'search_path': 'arxiv_eprints.value.raw',
+                        'path': 'arxiv_eprints.value',
+                        'type': 'exact',
+                    },
+                ],
+            },
+        ],
+        'doc_type': 'hep',
+        'index': 'records-hep',
+        'collections': 'Literature',
+    }
+
+    with pytest.raises(ValueError) as excinfo:
+        list(match(None, config))
+    assert 'Malformed collections' in str(excinfo.value)

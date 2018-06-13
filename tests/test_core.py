@@ -28,6 +28,7 @@ from inspire_matcher.core import (
     _compile_exact,
     _compile_fuzzy,
     _compile_nested,
+    compile,
 )
 
 
@@ -51,112 +52,6 @@ def test_compile_exact():
     expected = {
         'query': {
             'bool': {
-                'should': [
-                    {
-                        'match': {
-                            'arxiv_eprints.value.raw': 'hep-th/9711200',
-                        },
-                    },
-                ],
-            },
-        },
-    }
-    result = _compile_exact(query, record)
-
-    assert expected == result
-
-
-def test_compile_exact_supports_a_collection():
-    query = {
-        'collections': [
-            'HAL Hidden',
-        ],
-        'path': 'arxiv_eprints.value',
-        'search_path': 'arxiv_eprints.value.raw',
-        'type': 'exact',
-    }
-    record = {
-        'arxiv_eprints': [
-            {
-                'categories': [
-                    'hep-th',
-                ],
-                'value': 'hep-th/9711200',
-            },
-        ],
-    }
-
-    expected = {
-        'query': {
-            'bool': {
-                'minimum_should_match': 1,
-                'filter': {
-                    'bool': {
-                        'should': [
-                            {
-                                'match': {
-                                    '_collections': 'HAL Hidden',
-                                },
-                            },
-                        ],
-                    },
-                },
-                'should': [
-                    {
-                        'match': {
-                            'arxiv_eprints.value.raw': 'hep-th/9711200',
-                        },
-                    },
-                ],
-            },
-        },
-    }
-    result = _compile_exact(query, record)
-
-    assert expected == result
-
-
-def test_compile_exact_supports_multiple_collections():
-    query = {
-        'collections': [
-            'CDS Hidden',
-            'HAL Hidden',
-        ],
-        'path': 'arxiv_eprints.value',
-        'search_path': 'arxiv_eprints.value.raw',
-        'type': 'exact',
-    }
-    record = {
-        'arxiv_eprints': [
-            {
-                'categories': [
-                    'hep-th',
-                ],
-                'value': 'hep-th/9711200',
-            },
-        ],
-    }
-
-    expected = {
-        'query': {
-            'bool': {
-                'minimum_should_match': 1,
-                'filter': {
-                    'bool': {
-                        'should': [
-                            {
-                                'match': {
-                                    '_collections': 'CDS Hidden',
-                                },
-                            },
-                            {
-                                'match': {
-                                    '_collections': 'HAL Hidden',
-                                },
-                            },
-                        ],
-                    },
-                },
                 'should': [
                     {
                         'match': {
@@ -501,3 +396,125 @@ def test_compile_nested_raises_when_paths_and_search_paths_dont_have_the_same_le
     with pytest.raises(ValueError) as excinfo:
         _compile_nested(query, None)
     assert 'same length' in str(excinfo.value)
+
+
+def test_compile_without_optional_args():
+    query = {
+        'type': 'exact',
+        'path': 'dummy.path',
+        'search_path': 'dummy.search.path',
+    }
+    record = {
+        'dummy': {
+            'path': 'foo',
+        },
+    }
+
+    result = compile(query, record)
+    expected = {
+        'query': {
+            'bool': {
+                'must': {
+                    'bool': {
+                        'should': [{
+                            'match': {
+                                'dummy.search.path': 'foo',
+                            },
+                        }],
+                    },
+                },
+                'filter': {
+                    'bool': {
+                        'must_not': {
+                            'match': {
+                                'deleted': True,
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    }
+
+    assert expected == result
+
+
+def test_compile_with_match_deleted():
+    query = {
+        'type': 'exact',
+        'path': 'dummy.path',
+        'search_path': 'dummy.search.path',
+    }
+    record = {
+        'dummy': {
+            'path': 'foo',
+        },
+    }
+
+    result = compile(query, record, match_deleted=True)
+    expected = {
+        'query': {
+            'bool': {
+                'should': [{
+                    'match': {
+                        'dummy.search.path': 'foo',
+                    },
+                }],
+            },
+        },
+    }
+
+    assert expected == result
+
+
+def test_compile_with_collections():
+    query = {
+        'type': 'exact',
+        'path': 'dummy.path',
+        'search_path': 'dummy.search.path',
+    }
+    record = {
+        'dummy': {
+            'path': 'foo',
+        },
+    }
+
+    result = compile(query, record, collections=['Literature', 'HAL Hidden'])
+    expected = {
+        'query': {
+            'bool': {
+                'must': {
+                    'bool': {
+                        'should': [{
+                            'match': {
+                                'dummy.search.path': 'foo',
+                            },
+                        }],
+                    },
+                },
+                'filter': {
+                    'bool': {
+                        'should': [
+                            {
+                                'match': {
+                                    '_collections': 'Literature',
+                                },
+                            },
+                            {
+                                'match': {
+                                    '_collections': 'HAL Hidden',
+                                },
+                            }
+                        ],
+                        'must_not': {
+                            'match': {
+                                'deleted': True,
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    }
+
+    assert expected == result

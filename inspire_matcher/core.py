@@ -29,7 +29,41 @@ from inspire_utils.helpers import force_list
 from inspire_utils.record import get_value
 
 
-def compile(query, record):
+def compile(query, record, collections=None, match_deleted=False):
+    result = _compile_inner(query, record)
+    result = _compile_filters(result, collections, match_deleted)
+
+    return result
+
+
+def _compile_filters(query, collections, match_deleted):
+    if match_deleted and not collections:
+        return query
+
+    result = {
+        'query': {
+            'bool': {
+                'must': query['query'],
+                'filter': {
+                    'bool': {},
+                },
+            },
+        },
+    }
+
+    if collections:
+        result['query']['bool']['filter']['bool']['should'] = _compile_collections(collections)
+    if not match_deleted:
+        result['query']['bool']['filter']['bool']['must_not'] = {
+            'match': {
+                'deleted': True,
+            },
+        }
+
+    return result
+
+
+def _compile_inner(query, record):
     type_ = query['type']
 
     if type_ == 'exact':
@@ -40,6 +74,14 @@ def compile(query, record):
         return _compile_nested(query, record)
 
     raise NotImplementedError(type_)
+
+
+def _compile_collections(collections):
+    return [{
+        'match': {
+            '_collections': collection,
+        },
+    } for collection in collections]
 
 
 def _compile_exact(query, record):
@@ -53,8 +95,6 @@ def _compile_exact(query, record):
 
     path, search_path = query['path'], query['search_path']
 
-    collections = query.get('collections', [])
-
     values = force_list(get_value(record, path))
     if not values:
         return
@@ -66,17 +106,6 @@ def _compile_exact(query, record):
             },
         },
     }
-
-    if collections:
-        result['query']['bool']['minimum_should_match'] = 1
-        result['query']['bool']['filter'] = {'bool': {'should': []}}
-
-        for collection in collections:
-            result['query']['bool']['filter']['bool']['should'].append({
-                'match': {
-                    '_collections': collection,
-                },
-            })
 
     for value in values:
         result['query']['bool']['should'].append({
