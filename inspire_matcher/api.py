@@ -29,6 +29,7 @@ from six import string_types
 from werkzeug.utils import import_string
 
 from invenio_search import current_search_client as es
+from invenio_search.utils import prefix_index
 
 from .core import compile
 
@@ -90,10 +91,11 @@ def match(record, config=None):
 
             current_app.logger.debug('Sending ES query: %s' % repr(body))
 
+            prefixed_index = prefix_index(app=current_app, index=index)
             if source:
-                result = es.search(index=index, doc_type=doc_type, body=body, _source=source)
+                result = es.search(index=prefixed_index, doc_type=doc_type, body=body, _source=source)
             else:
-                result = es.search(index=index, doc_type=doc_type, body=body)
+                result = es.search(index=prefixed_index, doc_type=doc_type, body=body)
 
             for hit in result['hits']['hits']:
                 if validator(record, hit):
