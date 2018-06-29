@@ -149,7 +149,7 @@ def _compile_fuzzy(query, record):
         result['query']['dis_max']['queries'].append({
             'more_like_this': {
                 'boost': boost,
-                'docs': [
+                'like': [
                     {
                         'doc': {
                             path: values,

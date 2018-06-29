@@ -38,8 +38,8 @@ setup_requires = [
 install_requires = [
     'Flask~=0.0,>=0.12.2',
     'Werkzeug~=0.0,>=0.12.2',
-    'elasticsearch-dsl~=2.0,>=2.2.0',
-    'elasticsearch~=2.0,>=2.4.1',
+    'elasticsearch-dsl>=2.2.0,<6.0',
+    'elasticsearch>=2.4.1,<6.0',
     'inspire-json-merger~=7.0,>=7.0.0',
     'inspire-utils~=2.0,>=2.0.0',
     'invenio-search>=1.0.0a10',

@@ -124,7 +124,7 @@ def test_compile_fuzzy():
                     {
                         'more_like_this': {
                             'boost': 20,
-                            'docs': [
+                            'like': [
                                 {
                                     'doc': {
                                         'abstracts': [
@@ -179,7 +179,7 @@ def test_compile_fuzzy_supports_slicing_in_paths():
                     {
                         'more_like_this': {
                             'boost': 10,
-                            'docs': [
+                            'like': [
                                 {
                                     'doc': {
                                         'authors': [
@@ -228,7 +228,7 @@ def test_compile_fuzzy_falls_back_to_boost_1():
                     {
                         'more_like_this': {
                             'boost': 1,
-                            'docs': [
+                            'like': [
                                 {
                                     'doc': {
                                         'abstracts': [
