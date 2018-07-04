@@ -38,8 +38,6 @@ setup_requires = [
 install_requires = [
     'Flask~=0.0,>=0.12.2',
     'Werkzeug~=0.0,>=0.12.2',
-    'elasticsearch-dsl~=2.0,>=2.2.0',
-    'elasticsearch~=2.0,>=2.4.1',
     'inspire-json-merger~=7.0,>=7.0.0',
     'inspire-utils~=2.0,>=2.0.0',
     'invenio-search>=1.0.0a10',
@@ -61,11 +59,20 @@ extras_require = {
     'tests:python_version=="2.7"': [
         'unicode-string-literal~=1.0,>=1.1',
     ],
+    'elasticsearch2': [
+        'elasticsearch-dsl>=2.2.0,~=2.0',
+        'elasticsearch>=2.4.1,~=2.0',
+    ],
+    'elasticsearch5': [
+        'elasticsearch-dsl~=5.0',
+        'elasticsearch~=5.0',
+    ]
 }
 
 extras_require['all'] = []
 for name, reqs in extras_require.items():
-    extras_require['all'].extend(reqs)
+    if name not in ('elasticsearch2', 'elasticsearch5'):
+        extras_require['all'].extend(reqs)
 
 packages = find_packages(exclude=['docs'])
 
