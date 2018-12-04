@@ -38,8 +38,8 @@ setup_requires = [
 install_requires = [
     'Flask~=0.0,>=0.12.2',
     'Werkzeug~=0.0,>=0.12.2',
-    'inspire-json-merger~=9.0,>=9.0.0',
-    'inspire-utils~=2.0,>=2.0.0',
+    'inspire-json-merger~=10.0,>=10.0.0',
+    'inspire-utils~=3.0,>=3.0.0',
     'invenio-search>=1.0.0a10',
     'six~=1.0,>=1.11.0',
 ]
