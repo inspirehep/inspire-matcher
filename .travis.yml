@@ -41,7 +41,7 @@ before_install:
   - travis_retry pip install coveralls
 
 install:
-  - travis_retry pip install -e .[tests,elasticsearch2]
+  - travis_retry pip install -e .[tests,elasticsearch5]
 
 script:
   - ./run-tests.sh
