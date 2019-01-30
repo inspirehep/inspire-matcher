@@ -73,3 +73,29 @@ def authors_titles_validator(record, result):
             title_max_score = current_title_jaccard
 
     return (author_score + title_max_score) / 2 > 0.5
+
+
+def cds_identifier_validator(record, result):
+    """Ensure that the two records have the same CDS identifier.
+
+    This is needed because the search is done only for
+    ``external_system_identifiers.value``, which might cause false positives in
+    case the matched record has an identifier with the same ``value`` but
+    ``schema`` different from CDS.
+
+    Args:
+        record (dict): the given record we are trying to match with similar ones in INSPIRE.
+        result (dict): possible match returned by the ES query that needs to be validated.
+
+    Returns:
+        bool: validation decision.
+
+    """
+
+    record_external_identifiers = record.get('external_system_identifiers', [])
+    result_external_identifiers = result.get('external_system_identifiers', [])
+
+    record_external_identifiers = {external_id["value"] for external_id in record_external_identifiers if external_id["schema"] == 'CDS'}
+    result_external_identifiers = {external_id["value"] for external_id in result_external_identifiers if external_id["schema"] == 'CDS'}
+
+    return bool(record_external_identifiers & result_external_identifiers)

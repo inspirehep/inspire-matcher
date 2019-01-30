@@ -28,6 +28,7 @@ import pkg_resources
 
 from inspire_matcher.validators import (
     authors_titles_validator,
+    cds_identifier_validator,
     default_validator,
 )
 
@@ -64,3 +65,23 @@ def test_authors_titles_validator_does_not_match_when_authors_are_same_but_title
         __name__, os.path.join('fixtures', 'matching_wrong_result_10.1103.json')))
 
     assert not authors_titles_validator(record, result)
+
+
+def test_cds_identifier_validator_does_match_when_external_system_identifiers_contain_perfect_match():
+    record = json.loads(pkg_resources.resource_string(
+        __name__, os.path.join('fixtures', 'harvest_record_2654944.json')))
+
+    result = json.loads(pkg_resources.resource_string(
+        __name__, os.path.join('fixtures', 'matching_result_2654944.json')))
+
+    assert cds_identifier_validator(record, result)
+
+
+def test_cds_identifier_validator_does_not_match_when_system_identifiers_are_from_different_sources():
+    record = json.loads(pkg_resources.resource_string(
+        __name__, os.path.join('fixtures', 'harvest_record_2654944.json')))
+
+    result = json.loads(pkg_resources.resource_string(
+        __name__, os.path.join('fixtures', 'matching_wrong_2654944.json')))
+
+    assert not cds_identifier_validator(record, result)

@@ -41,6 +41,16 @@ MATCHER_DEFAULT_CONFIGURATION = {
                 },
             ],
         },
+        {
+            'queries': [
+                {
+                    'path': 'external_system_identifiers.value',
+                    'search_path': 'external_system_identifiers.value.raw',
+                    'type': 'exact',
+                },
+            ],
+            'validator': 'inspire_matcher.validators:cds_identifier_validator',
+        },
     ],
     'doc_type': 'hep',
     'index': 'records-hep',
