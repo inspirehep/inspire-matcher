@@ -24,6 +24,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+from elasticsearch import VERSION as ES_VERSION
 from flask import current_app
 from six import string_types
 from werkzeug.utils import import_string
@@ -58,11 +59,17 @@ def match(record, config=None):
         config = current_app.config['MATCHER_DEFAULT_CONFIGURATION']
 
     try:
-        algorithm, doc_type, index = config['algorithm'], config['doc_type'], config['index']
+        algorithm = config['algorithm']
+        if ES_VERSION[0] >= 7:
+            query_config = {'index': config['index']}
+        else:
+            query_config = {'index': config['index'], 'doc_type': config['doc_type']}
     except KeyError as e:
         raise KeyError('Malformed configuration: %s.' % repr(e))
 
     source = config.get('source', [])
+    if source:
+        query_config['_source'] = source
     match_deleted = config.get('match_deleted', False)
     collections = config.get('collections')
     if not (collections is None or (
@@ -87,13 +94,10 @@ def match(record, config=None):
 
             if not body:
                 continue
-
+            query_config['body'] = body
             current_app.logger.debug('Sending ES query: %s' % repr(body))
 
-            if source:
-                result = es.search(index=index, doc_type=doc_type, body=body, _source=source)
-            else:
-                result = es.search(index=index, doc_type=doc_type, body=body)
+            result = es.search(**query_config)
 
             for hit in result['hits']['hits']:
                 if validator(record, hit):

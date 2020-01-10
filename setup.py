@@ -66,12 +66,17 @@ extras_require = {
     'elasticsearch5': [
         'elasticsearch-dsl~=5.0',
         'elasticsearch~=5.0',
+    ],
+    'elasticsearch7': [
+        'elasticsearch-dsl~=7.0',
+        'elasticsearch~=7.0',
     ]
+
 }
 
 extras_require['all'] = []
 for name, reqs in extras_require.items():
-    if name not in ('elasticsearch2', 'elasticsearch5'):
+    if name not in ('elasticsearch2', 'elasticsearch5', 'elasticsearch7'):
         extras_require['all'].extend(reqs)
 
 packages = find_packages(exclude=['docs'])
