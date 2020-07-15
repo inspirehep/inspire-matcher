@@ -75,6 +75,8 @@ def _compile_inner(query, record):
         return _compile_fuzzy(query, record)
     elif type_ == 'nested':
         return _compile_nested(query, record)
+    elif type_ == 'nested-prefix':
+        return _compile_nested_prefix(query, record)
 
     raise NotImplementedError(type_)
 
@@ -201,6 +203,29 @@ def _compile_nested(query, record):
                 search_path: value,
             },
         })
+
+    return result
+
+
+def _compile_nested_prefix(query, record):
+    path, search_path = query['path'], query['search_path']
+    value = get_value(record, path)
+    if not value:
+        return
+
+    nested_path = search_path.split('.')[0]
+    result = {
+        "query": {
+            "nested": {
+                "path": nested_path,
+                "query": {
+                    'match_phrase_prefix': {
+                        search_path: value,
+                    }
+                }
+            }
+        }
+    }
 
     return result
 

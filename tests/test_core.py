@@ -28,6 +28,7 @@ from inspire_matcher.core import (
     _compile_exact,
     _compile_fuzzy,
     _compile_nested,
+    _compile_nested_prefix,
     compile,
 )
 
@@ -529,3 +530,34 @@ def test_compile_returns_none_if_empty_inner():
     record = {}
 
     assert compile(query, record) is None
+
+
+def test_compile_prefix():
+    query = {
+        'path': 'publication_info.journal_title',
+        'search_path': 'publication_info.journal_title',
+        'type': 'nested-prefix',
+    }
+    record = {
+        "publication_info": {
+            "artid": "2901",
+            "journal_title": "Eur.Phys.J.",
+            "journal_volume": "74",
+            "page_start": "2901",
+            "year": 2014
+        }
+    }
+    result = _compile_nested_prefix(query, record)
+    expected = {
+        "query": {
+            "nested": {
+                "path": "publication_info",
+                "query": {
+                    "match_phrase_prefix": {
+                        "publication_info.journal_title": "Eur.Phys.J."
+                    }
+                }
+            }
+        }
+    }
+    assert expected == result
