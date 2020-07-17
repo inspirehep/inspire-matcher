@@ -534,30 +534,55 @@ def test_compile_returns_none_if_empty_inner():
 
 def test_compile_prefix():
     query = {
-        'path': 'publication_info.journal_title',
-        'search_path': 'publication_info.journal_title',
-        'type': 'nested-prefix',
+        'paths': [
+            'reference.publication_info.journal_title',
+            'reference.publication_info.journal_volume',
+            'reference.publication_info.artid',
+        ],
+        'search_paths': [
+            'publication_info.journal_title',
+            'publication_info.journal_volume',
+            'publication_info.artid',
+        ],
+        'prefix_search_path': 'publication_info.journal_title'
     }
-    record = {
-        "publication_info": {
-            "artid": "2901",
-            "journal_title": "Eur.Phys.J.",
-            "journal_volume": "74",
-            "page_start": "2901",
-            "year": 2014
-        }
+    reference = {
+        'reference': {
+            'publication_info': {
+                'journal_title': 'Phys.Rev.D.',
+                'journal_volume': '94',
+                'artid': '124054',
+            },
+        },
     }
-    result = _compile_nested_prefix(query, record)
+    result = _compile_nested_prefix(query, reference)
     expected = {
         "query": {
             "nested": {
                 "path": "publication_info",
                 "query": {
-                    "match_phrase_prefix": {
-                        "publication_info.journal_title": "Eur.Phys.J."
+                    "bool": {
+                        "must": [
+                            {
+                                "match_phrase_prefix": {
+                                    "publication_info.journal_title": "Phys.Rev.D."
+                                }
+                            },
+                            {
+                                "match": {
+                                    "publication_info.journal_volume": "94"
+                                }
+                            },
+                            {
+                                "match": {
+                                    "publication_info.artid": "124054"
+                                }
+                            }
+                        ]
                     }
                 }
             }
         }
     }
+
     assert expected == result

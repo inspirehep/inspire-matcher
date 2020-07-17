@@ -170,7 +170,7 @@ def _compile_fuzzy(query, record):
     return result
 
 
-def _compile_nested(query, record):
+def _create_nested_query(query):
     paths, search_paths = query['paths'], query['search_paths']
 
     if len(paths) != len(search_paths):
@@ -180,7 +180,7 @@ def _compile_nested(query, record):
     if not common_path:
         raise ValueError('search_paths must share a common path')
 
-    result = {
+    nested_query = {
         'query': {
             'nested': {
                 'path': common_path,
@@ -192,42 +192,46 @@ def _compile_nested(query, record):
             },
         },
     }
+    return nested_query, paths, search_paths
 
+
+def _compile_nested(query, record):
+    nested_query, paths, search_paths = _create_nested_query(query)
     for path, search_path in zip(paths, search_paths):
         value = get_value(record, path)
         if not value:
             return
 
-        result['query']['nested']['query']['bool']['must'].append({
+        nested_query['query']['nested']['query']['bool']['must'].append({
             'match': {
                 search_path: value,
             },
         })
 
-    return result
+    return nested_query
 
 
 def _compile_nested_prefix(query, record):
-    path, search_path = query['path'], query['search_path']
-    value = get_value(record, path)
-    if not value:
-        return
-
-    nested_path = search_path.split('.')[0]
-    result = {
-        "query": {
-            "nested": {
-                "path": nested_path,
-                "query": {
-                    'match_phrase_prefix': {
-                        search_path: value,
-                    }
+    nested_query, paths, search_paths = _create_nested_query(query)
+    prefix_field = query.get('prefix_search_path', [])
+    for path, search_path in zip(paths, search_paths):
+        value = get_value(record, path)
+        if not value:
+            return
+        if prefix_field and prefix_field in search_path:
+            nested_query['query']['nested']['query']['bool']['must'].append({
+                'match_phrase_prefix': {
+                    search_path: value
                 }
-            }
-        }
-    }
+            })
+        else:
+            nested_query['query']['nested']['query']['bool']['must'].append({
+                'match': {
+                    search_path: value,
+                },
+            })
 
-    return result
+    return nested_query
 
 
 def _get_common_path(paths):
