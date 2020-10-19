@@ -24,12 +24,12 @@
 
 from __future__ import absolute_import, division, print_function
 
-from elasticsearch import VERSION as ES_VERSION
 from flask import current_app
 from six import string_types
 from werkzeug.utils import import_string
 
 from invenio_search import current_search_client as es
+from invenio_search.utils import prefix_index
 
 from .core import compile
 
@@ -59,11 +59,9 @@ def match(record, config=None):
         config = current_app.config['MATCHER_DEFAULT_CONFIGURATION']
 
     try:
+        index = prefix_index(config['index'])
         algorithm = config['algorithm']
-        if ES_VERSION[0] >= 7:
-            query_config = {'index': config['index']}
-        else:
-            query_config = {'index': config['index'], 'doc_type': config['doc_type']}
+        query_config = {'index': index}
     except KeyError as e:
         raise KeyError('Malformed configuration: %s.' % repr(e))
 
