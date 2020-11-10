@@ -207,6 +207,8 @@ def _compile_nested(query, record):
                 search_path: value,
             },
         })
+    if "inner_hits" in query:
+        nested_query['query']['nested']['inner_hits'] = query['inner_hits']
 
     return nested_query
 
@@ -230,6 +232,9 @@ def _compile_nested_prefix(query, record):
                     search_path: value,
                 },
             })
+
+    if "inner_hits" in query:
+        nested_query['query']['nested']['inner_hits'] = query['inner_hits']
 
     return nested_query
 
