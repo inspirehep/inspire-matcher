@@ -586,3 +586,55 @@ def test_compile_prefix():
     }
 
     assert expected == result
+
+
+def test_compile_nested_with_inner_hits():
+    query = {
+        'paths': [
+            'first_name',
+            'last_name',
+        ],
+        'search_paths': [
+            'authors.first_name',
+            'authors.last_name',
+        ],
+        'type': 'nested',
+        'inner_hits': {"_source": ["authors.full_name"]}
+    }
+    author_data = {
+        "first_name": "Name",
+        "last_name": "Test"
+    }
+
+    expected = {
+        'query': {
+            'nested': {
+                'path': 'authors',
+                'query': {
+                    'bool': {
+                        'must': [
+                            {
+                                'match': {
+                                    'authors.first_name': 'Name',
+                                },
+                            },
+                            {
+                                'match': {
+                                    'authors.last_name': 'Test',
+                                },
+                            },
+                        ],
+                    },
+                },
+                "inner_hits": {
+                    "_source": [
+                        "authors.full_name"
+                    ]
+                }
+            },
+        },
+    }
+
+    result = _compile_nested(query, author_data)
+
+    assert expected == result

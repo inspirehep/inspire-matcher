@@ -170,3 +170,26 @@ def test_match_raises_on_invalid_collections():
     with pytest.raises(ValueError) as excinfo:
         list(match(None, config))
     assert 'Malformed collections' in str(excinfo.value)
+
+
+def test_match_raises_if_inner_hits_param_has_wrong_config():
+    config = {
+        'algorithm': [
+            {
+                "queries": [
+                    {
+                        "paths": ["first_name", "last_name"],
+                        "search_paths": ["authors.first_name", "authors.last_name"],
+                        "type": "nested",
+                        "inner_hits": {"not_existing_argument": ["authors.record"]}
+                    },
+                ],
+            },
+        ],
+        'doc_type': 'hep',
+        'index': 'records-hep',
+    }
+
+    with pytest.raises(ValueError) as excinfo:
+        list(match(None, config))
+    assert 'Malformed query' in str(excinfo.value)
