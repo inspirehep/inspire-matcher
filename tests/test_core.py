@@ -25,6 +25,7 @@ from __future__ import absolute_import, division, print_function
 import pytest
 
 from inspire_matcher.core import (
+    _compile_authors_query,
     _compile_exact,
     _compile_fuzzy,
     _compile_nested,
@@ -638,3 +639,72 @@ def test_compile_nested_with_inner_hits():
     result = _compile_nested(query, author_data)
 
     assert expected == result
+
+
+def test_compile_authors_query():
+    query = {"type": "authors-names", "inner_hits": {"_source": ["authors.full_name"]}}
+    author_data = {"full_name": "Copernicus, Nicholas A.", "last_name": "Test"}
+
+    expected = {
+        "query": {
+            "nested": {
+                "path": "authors",
+                "query": {
+                    "bool": {
+                        "must": [
+                            {
+                                "match": {
+                                    "authors.last_name": {
+                                        "query": "Copernicus",
+                                        "operator": "AND",
+                                    }
+                                }
+                            },
+                            {
+                                "bool": {
+                                    "must": [
+                                        {
+                                            "bool": {
+                                                "should": [
+                                                    {
+                                                        "match_phrase_prefix": {
+                                                            "authors.first_name": {
+                                                                "query": "Nicholas",
+                                                                "analyzer": "names_analyzer",
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "match": {
+                                                            "authors.first_name": {
+                                                                "query": "Nicholas",
+                                                                "operator": "AND",
+                                                                "analyzer": "names_initials_analyzer",
+                                                            }
+                                                        }
+                                                    },
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "match": {
+                                                "authors.first_name.initials": {
+                                                    "query": "A",
+                                                    "operator": "AND",
+                                                    "analyzer": "names_initials_analyzer",
+                                                }
+                                            }
+                                        },
+                                    ]
+                                }
+                            },
+                        ]
+                    }
+                },
+                "inner_hits": {"_source": ["authors.full_name"]},
+            }
+        }
+    }
+
+    result = _compile_authors_query(query, author_data)
+    assert result == expected
