@@ -26,6 +26,7 @@ import os
 import warnings
 
 from inspire_utils.helpers import force_list
+from inspire_utils.name import ParsedName
 from inspire_utils.record import get_value
 
 
@@ -77,6 +78,8 @@ def _compile_inner(query, record):
         return _compile_nested(query, record)
     elif type_ == 'nested-prefix':
         return _compile_nested_prefix(query, record)
+    elif type_ == "author-names":
+        return _compile_authors_query(query, record)
 
     raise NotImplementedError(type_)
 
@@ -241,3 +244,12 @@ def _compile_nested_prefix(query, record):
 
 def _get_common_path(paths):
     return '.'.join(os.path.commonprefix([path.split('.') for path in paths]))
+
+
+def _compile_authors_query(query, record):
+    parsed_name = ParsedName(record["full_name"])
+    nested_query = {"query": parsed_name.generate_es_query()}
+    if "inner_hits" in query:
+        nested_query['query']['nested']['inner_hits'] = query['inner_hits']
+
+    return nested_query
