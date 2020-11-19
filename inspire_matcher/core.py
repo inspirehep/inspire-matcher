@@ -243,6 +243,8 @@ def _compile_nested_prefix(query, record):
 
 
 def _get_common_path(paths):
+    if len(paths) == 1:
+        return paths[0].split('.')[0]
     return '.'.join(os.path.commonprefix([path.split('.') for path in paths]))
 
 

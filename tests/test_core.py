@@ -708,3 +708,25 @@ def test_compile_authors_query():
 
     result = _compile_authors_query(query, author_data)
     assert result == expected
+
+
+def test_nested_query_uses_correct_path_if_only_one_search_path_provided():
+    query = {
+        "type": "nested",
+        "paths": ["full_name"],
+        "search_paths": ["authors.full_name"],
+    }
+    author_data = {"full_name": "John Smith"}
+
+    expected = {
+        "query": {
+            "nested": {
+                "path": "authors",
+                "query": {
+                    "bool": {"must": [{"match": {"authors.full_name": "John Smith"}}]}
+                },
+            }
+        }
+    }
+    result = _compile_nested(query, author_data)
+    assert result == expected
