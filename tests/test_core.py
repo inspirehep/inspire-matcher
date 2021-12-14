@@ -314,20 +314,26 @@ def test_compile_nested():
                         'must': [
                             {
                                 'match': {
-                                    'publication_info.journal_title': 'Phys.Rev.',
-                                    'operator': 'OR'
+                                    'publication_info.journal_title': {
+                                        'query': 'Phys.Rev.',
+                                        'operator': 'OR'
+                                    }
                                 },
                             },
                             {
                                 'match': {
-                                    'publication_info.journal_volume': 'D94',
-                                    'operator': 'OR'
+                                    'publication_info.journal_volume': {
+                                        'query': 'D94',
+                                        'operator': 'OR'
+                                    }
                                 },
                             },
                             {
                                 'match': {
-                                    'publication_info.artid': '124054',
-                                    'operator': 'OR'
+                                    'publication_info.artid': {
+                                        'query': '124054',
+                                        'operator': 'OR'
+                                    }
                                 },
                             },
                         ],
@@ -619,14 +625,18 @@ def test_compile_nested_with_inner_hits():
                         'must': [
                             {
                                 'match': {
-                                    'authors.first_name': 'Name',
-                                    'operator': 'OR'
+                                    'authors.first_name': {
+                                        'query': 'Name',
+                                        'operator': 'OR'
+                                    }
                                 },
                             },
                             {
                                 'match': {
-                                    'authors.last_name': 'Test',
-                                    'operator': 'OR'
+                                    'authors.last_name': {
+                                        'query': 'Test',
+                                        'operator': 'OR'
+                                    }
                                 },
                             },
                         ],
@@ -732,8 +742,10 @@ def test_nested_query_uses_correct_path_if_only_one_search_path_provided():
                         "must": [
                             {
                                 "match": {
-                                    "authors.full_name": "John Smith",
-                                    "operator": "OR",
+                                    "authors.full_name": {
+                                        'query': "John Smith",
+                                        "operator": "OR",
+                                    }
                                 }
                             }
                         ]
@@ -746,7 +758,7 @@ def test_nested_query_uses_correct_path_if_only_one_search_path_provided():
     assert result == expected
 
 
-def nested_with_and_operator():
+def test_nested_query_with_and_operator():
     query = {
         "type": "nested",
         "paths": ["full_name"],
@@ -764,8 +776,10 @@ def nested_with_and_operator():
                         "must": [
                             {
                                 "match": {
-                                    "authors.full_name": "John Smith",
-                                    "operator": "AND",
+                                    "authors.full_name": {
+                                        'query': "John Smith",
+                                        "operator": "AND",
+                                    }
                                 }
                             }
                         ]
