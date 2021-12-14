@@ -199,6 +199,7 @@ def _create_nested_query(query):
 
 
 def _compile_nested(query, record):
+    query_operator = query.get('operator', 'OR')
     nested_query, paths, search_paths = _create_nested_query(query)
     for path, search_path in zip(paths, search_paths):
         value = get_value(record, path)
@@ -208,6 +209,7 @@ def _compile_nested(query, record):
         nested_query['query']['nested']['query']['bool']['must'].append({
             'match': {
                 search_path: value,
+                'operator': query_operator
             },
         })
     if "inner_hits" in query:

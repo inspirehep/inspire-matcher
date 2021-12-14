@@ -315,16 +315,19 @@ def test_compile_nested():
                             {
                                 'match': {
                                     'publication_info.journal_title': 'Phys.Rev.',
+                                    'operator': 'OR'
                                 },
                             },
                             {
                                 'match': {
                                     'publication_info.journal_volume': 'D94',
+                                    'operator': 'OR'
                                 },
                             },
                             {
                                 'match': {
                                     'publication_info.artid': '124054',
+                                    'operator': 'OR'
                                 },
                             },
                         ],
@@ -617,11 +620,13 @@ def test_compile_nested_with_inner_hits():
                             {
                                 'match': {
                                     'authors.first_name': 'Name',
+                                    'operator': 'OR'
                                 },
                             },
                             {
                                 'match': {
                                     'authors.last_name': 'Test',
+                                    'operator': 'OR'
                                 },
                             },
                         ],
@@ -723,7 +728,48 @@ def test_nested_query_uses_correct_path_if_only_one_search_path_provided():
             "nested": {
                 "path": "authors",
                 "query": {
-                    "bool": {"must": [{"match": {"authors.full_name": "John Smith"}}]}
+                    "bool": {
+                        "must": [
+                            {
+                                "match": {
+                                    "authors.full_name": "John Smith",
+                                    "operator": "OR",
+                                }
+                            }
+                        ]
+                    }
+                },
+            }
+        }
+    }
+    result = _compile_nested(query, author_data)
+    assert result == expected
+
+
+def nested_with_and_operator():
+    query = {
+        "type": "nested",
+        "paths": ["full_name"],
+        "search_paths": ["authors.full_name"],
+        "operator": "AND"
+    }
+    author_data = {"full_name": "John Smith"}
+
+    expected = {
+        "query": {
+            "nested": {
+                "path": "authors",
+                "query": {
+                    "bool": {
+                        "must": [
+                            {
+                                "match": {
+                                    "authors.full_name": "John Smith",
+                                    "operator": "AND",
+                                }
+                            }
+                        ]
+                    }
                 },
             }
         }
