@@ -208,8 +208,10 @@ def _compile_nested(query, record):
 
         nested_query['query']['nested']['query']['bool']['must'].append({
             'match': {
-                search_path: value,
-                'operator': query_operator
+                search_path: {
+                    'query': value,
+                    'operator': query_operator
+                }
             },
         })
     if "inner_hits" in query:
