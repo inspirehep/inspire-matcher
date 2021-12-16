@@ -24,36 +24,46 @@
 
 from __future__ import absolute_import, division, print_function
 
-
 MATCHER_DEFAULT_CONFIGURATION = {
-    'algorithm': [
+    "algorithm": [
         {
-            'queries': [
+            "queries": [
                 {
-                    'path': 'arxiv_eprints.value',
-                    'search_path': 'arxiv_eprints.value.raw',
-                    'type': 'exact',
+                    "path": "arxiv_eprints.value",
+                    "search_path": "arxiv_eprints.value.raw",
+                    "type": "exact",
                 },
                 {
-                    'path': 'dois.value',
-                    'search_path': 'dois.value.raw',
-                    'type': 'exact',
+                    "path": "dois.value",
+                    "search_path": "dois.value.raw",
+                    "type": "exact",
                 },
             ],
+            "validator": "inspire_matcher.validators:persistent_identifier_validator",
         },
         {
-            'queries': [
+            "queries": [
                 {
-                    'path': 'external_system_identifiers.value',
-                    'search_path': 'external_system_identifiers.value.raw',
-                    'type': 'exact',
+                    "path": "persistent_identifiers.value",
+                    "search_path": "persistent_identifiers.value",
+                    "type": "exact",
                 },
             ],
-            'validator': 'inspire_matcher.validators:cds_identifier_validator',
+            "validator": "inspire_matcher.validators:cds_identifier_validator",
+        },
+        {
+            "queries": [
+                {
+                    "path": "external_system_identifiers.value",
+                    "search_path": "external_system_identifiers.value.raw",
+                    "type": "exact",
+                },
+            ],
+            "validator": "inspire_matcher.validators:cds_identifier_validator",
         },
     ],
-    'source': ['control_number', 'external_system_identifiers'],
-    'doc_type': 'hep',
-    'index': 'records-hep',
+    "source": ["control_number", "external_system_identifiers"],
+    "doc_type": "hep",
+    "index": "records-hep",
 }
 """Default configuration of the matcher."""
