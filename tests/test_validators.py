@@ -30,6 +30,7 @@ from inspire_matcher.validators import (
     authors_titles_validator,
     cds_identifier_validator,
     default_validator,
+    persistent_identifier_validator,
 )
 
 
@@ -85,3 +86,30 @@ def test_cds_identifier_validator_does_not_match_when_system_identifiers_are_fro
         __name__, os.path.join('fixtures', 'matching_wrong_2654944.json')))
 
     assert not cds_identifier_validator(record, result)
+
+
+def test_persistent_identifier_validator():
+    record = {"persistent_identifiers": [{"value": "10324/50675", "schema": "HDL"}]}
+
+    result = {
+        "_source": {
+            "persistent_identifiers": [
+                {"value": "10324/50675", "schema": "other"},
+                {"value": "10324/50675", "schema": "HDL"},
+            ]
+        }
+    }
+
+    assert persistent_identifier_validator(record, result)
+
+
+def test_persistent_identifier_validator_doesnt_validate_when_pid_entry_not_equal():
+    record = {"persistent_identifiers": [{"value": "10324/50675", "schema": "HDL"}]}
+
+    result = {
+        "_source": {
+            "persistent_identifiers": [{"value": "10324/50675", "schema": "other"}]
+        }
+    }
+
+    assert not persistent_identifier_validator(record, result)

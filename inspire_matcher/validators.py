@@ -99,3 +99,13 @@ def cds_identifier_validator(record, result):
     result_external_identifiers = {external_id["value"] for external_id in result_external_identifiers if external_id["schema"] == 'CDS'}
 
     return bool(record_external_identifiers & result_external_identifiers)
+
+
+def persistent_identifier_validator(record, result):
+    record_pids = get_value(record, "persistent_identifiers", [])
+    result_pids = get_value(result, "_source.persistent_identifiers", [])
+
+    record_pid_values = {frozenset(pid.values()) for pid in record_pids}
+    result_pid_values = {frozenset(pid.values()) for pid in result_pids}
+
+    return bool(record_pid_values & result_pid_values)
