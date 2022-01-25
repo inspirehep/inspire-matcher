@@ -60,8 +60,9 @@ def match(record, config=None):
 
     try:
         index = prefix_index(config['index'])
+        size = config.get('size', 10)
         algorithm = config['algorithm']
-        query_config = {'index': index}
+        query_config = {'index': index, 'size': size}
     except KeyError as e:
         raise KeyError('Malformed configuration: %s.' % repr(e))
 
