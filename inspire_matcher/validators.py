@@ -109,3 +109,14 @@ def persistent_identifier_validator(record, result):
     result_pid_values = {frozenset(pid.values()) for pid in result_pids}
 
     return bool(record_pid_values & result_pid_values)
+
+
+def arxiv_eprints_validator(record, result):
+    record_eprints = get_value(record, "arxiv_eprints.value", [])
+    result_eprints = get_value(result, "_source.arxiv_eprints.value", [])
+
+    for record_eprint in record_eprints:
+        if record_eprint in result_eprints:
+            return False
+
+    return True
