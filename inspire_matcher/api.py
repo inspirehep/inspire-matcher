@@ -35,6 +35,7 @@ from .core import compile
 
 
 def _get_validator(validator_param):
+
     if callable(validator_param):
         return validator_param
 
@@ -83,7 +84,14 @@ def match(record, config=None):
         except KeyError:
             raise KeyError('Malformed algorithm: step %d has no queries.' % i)
 
-        validator = _get_validator(step.get('validator'))
+        if not isinstance(step.get('validator'), list):
+            validator_params = [step.get('validator')]
+        else:
+            validator_params = step.get('validator')
+
+        validators = []
+        for validator_param in validator_params:
+            validators.append(_get_validator(validator_param))
 
         for j, query in enumerate(queries):
             try:
@@ -95,9 +103,8 @@ def match(record, config=None):
                 continue
             query_config['body'] = body
             current_app.logger.debug('Sending ES query: %s' % repr(body))
-
             result = es.search(**query_config)
-
             for hit in result['hits']['hits']:
-                if validator(record, hit):
+                is_hit_valid = all([validator(record, hit) for validator in validators])
+                if is_hit_valid:
                     yield hit

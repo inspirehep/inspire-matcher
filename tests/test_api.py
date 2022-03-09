@@ -172,6 +172,50 @@ def test_match_raises_on_invalid_collections():
     assert 'Malformed collections' in str(excinfo.value)
 
 
+@mock.patch('inspire_matcher.api.es')
+def test_validator_list(es_mock):
+
+    es_mock.search.return_value = {
+        'hits': {
+            'hits': {
+                'dummy result',
+            }
+        }
+    }
+
+    dummy_validator_1 = mock.Mock()
+    dummy_validator_1.return_value = True
+    dummy_validator_2 = mock.Mock()
+    dummy_validator_2.return_value = True
+
+    config = {
+        'algorithm': [
+            {
+                'queries': [
+                    {
+                        'type': 'exact',
+                        'path': 'dummy.path',
+                        'search_path': 'dummy.search.path',
+                    },
+                ],
+                'validator': [dummy_validator_1, dummy_validator_2],
+            },
+        ],
+        'doc_type': 'hep',
+        'index': 'records-hep',
+    }
+    record = {
+        'dummy': {
+            'path': 'Non empty value',
+        },
+    }
+
+    result = list(match(record, config))
+    assert 'dummy result' in result
+    dummy_validator_1.assert_called_with(record, 'dummy result')
+    dummy_validator_2.assert_called_with(record, 'dummy result')
+
+
 def test_match_raises_if_inner_hits_param_has_wrong_config():
     config = {
         'algorithm': [
