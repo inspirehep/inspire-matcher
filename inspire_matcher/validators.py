@@ -30,8 +30,7 @@ from inspire_utils.record import get_value
 
 from .utils import (
     compute_author_match_score,
-    compute_jaccard_index,
-    get_tokenized_title,
+    compute_title_score,
 )
 
 
@@ -60,19 +59,15 @@ def authors_titles_validator(record, result):
 
     author_score = compute_author_match_score(record_authors, result_authors)
 
-    title_max_score = 0.0
     record_titles = get_value(record, 'titles.title', [])
     result_titles = get_value(result, '_source.titles.title', [])
 
-    for cartesian_pair in product(record_titles, result_titles):
-        record_title_tokens = get_tokenized_title(cartesian_pair[0])
-        result_title_tokens = get_tokenized_title(cartesian_pair[1])
-        current_title_jaccard = compute_jaccard_index(record_title_tokens, result_title_tokens)
+    title_score = max(
+        compute_title_score(record_title, result_title, threshold=0.5, math_threshold=0.3)
+        for (record_title, result_title) in product(record_titles, result_titles)
+    )
 
-        if current_title_jaccard > title_max_score and current_title_jaccard >= 0.5:
-            title_max_score = current_title_jaccard
-
-    return (author_score + title_max_score) / 2 > 0.5
+    return (author_score + title_score) / 2 > 0.5
 
 
 def cds_identifier_validator(record, result):

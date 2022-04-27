@@ -25,6 +25,7 @@ from __future__ import absolute_import, division, print_function
 from inspire_matcher.utils import (
     compute_author_match_score,
     compute_jaccard_index,
+    compute_title_score,
     get_number_of_author_matches,
     get_tokenized_title,
 )
@@ -157,3 +158,39 @@ def test_get_tokenized_title():
     result = get_tokenized_title(title)
 
     assert expected == result
+
+
+def test_compute_title_score_below_threshold():
+    title1 = "Some random title"
+    title2 = "Some other different title"
+
+    result = compute_title_score(title1, title2, threshold=0.5, math_threshold=0.3)
+
+    assert result == 0.
+
+
+def test_compute_title_score_above_threshold():
+    title1 = "Some random title"
+    title2 = "Some other title"
+
+    result = compute_title_score(title1, title2, threshold=0.5, math_threshold=0.3)
+
+    assert result == 0.5
+
+
+def test_compute_title_score_above_math_threshold():
+    title1 = "Some $\\pi$ title"
+    title2 = "Some other different title"
+
+    result = compute_title_score(title1, title2, threshold=0.5, math_threshold=0.3)
+
+    assert result == 0.4
+
+
+def test_compute_title_score_below_math_threshold():
+    title1 = "Some $\\pi$ title"
+    title2 = "Some other title that really doesn't match at all"
+
+    result = compute_title_score(title1, title2, threshold=0.5, math_threshold=0.3)
+
+    assert result == 0.
