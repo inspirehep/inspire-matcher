@@ -107,11 +107,8 @@ def persistent_identifier_validator(record, result):
 
 
 def arxiv_eprints_validator(record, result):
-    record_eprints = get_value(record, "arxiv_eprints.value", [])
-    result_eprints = get_value(result, "_source.arxiv_eprints.value", [])
-
-    for record_eprint in record_eprints:
-        if record_eprint in result_eprints:
-            return False
-
-    return True
+    record_eprints = set(get_value(record, "arxiv_eprints.value", []))
+    result_eprints = set(get_value(result, "_source.arxiv_eprints.value", []))
+    if not record_eprints or not result_eprints:
+        return True
+    return bool(record_eprints & result_eprints)
