@@ -22,6 +22,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+import pytest
 import json
 import os
 import pkg_resources
@@ -31,6 +32,7 @@ from inspire_matcher.validators import (
     cds_identifier_validator,
     default_validator,
     persistent_identifier_validator,
+    arxiv_eprints_validator,
 )
 
 
@@ -113,3 +115,37 @@ def test_persistent_identifier_validator_doesnt_validate_when_pid_entry_not_equa
     }
 
     assert not persistent_identifier_validator(record, result)
+
+
+@pytest.mark.parametrize(
+    'expected,record,result',
+    [
+        (
+            False,
+            {'arxiv_eprints': [{'value': '2101.12345'}]},
+            {'_source': {'arxiv_eprints': [{'value': '2205.45423'}]}},
+        ),
+        (
+            True,
+            {'arxiv_eprints': [{'value': '2205.45423'}]},
+            {'_source': {'arxiv_eprints': [{'value': '2205.45423'}]}},
+        ),
+        (
+            True,
+            {},
+            {'_source': {'arxiv_eprints': [{'value': '2205.45423'}]}},
+        ),
+        (
+            True,
+            {'arxiv_eprints': [{'value': '2205.45423'}]},
+            {'_source': {}},
+        ),
+        (
+            True,
+            {},
+            {'_source': {}},
+        ),
+    ]
+)
+def test_arxiv_eprints_validator(expected, record, result):
+    assert expected == arxiv_eprints_validator(record, result)
