@@ -49,8 +49,11 @@ def compute_author_match_score(x_authors, y_authors):
         float: matching score of authors.
 
     """
-    if not x_authors or not y_authors:
+    if not x_authors and not y_authors:
         return 0.0
+
+    if not x_authors or not y_authors:
+        return 1.0
 
     matches = get_number_of_author_matches(x_authors, y_authors)
     max_length = max(len(x_authors), len(y_authors))
@@ -116,4 +119,4 @@ def compute_title_score(x_title, y_title, threshold, math_threshold):
     )
     current_threshold = math_threshold if some_title_has_math else threshold
 
-    return current_title_jaccard if current_title_jaccard >= current_threshold else 0.
+    return current_title_jaccard if current_title_jaccard >= current_threshold else 0.0

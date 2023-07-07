@@ -22,6 +22,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+import pytest
 from inspire_matcher.utils import (
     compute_author_match_score,
     compute_jaccard_index,
@@ -33,14 +34,14 @@ from inspire_matcher.utils import (
 
 def test_get_number_of_author_matches():
     x_authors = [
-        {'full_name': 'Cabibbo, Nicola'},
-        {'full_name': 'Kobayashi, Makoto'},
-        {'full_name': 'Maskawa, Toshihide'},
+        {"full_name": "Cabibbo, Nicola"},
+        {"full_name": "Kobayashi, Makoto"},
+        {"full_name": "Maskawa, Toshihide"},
     ]
 
     y_authors = [
-        {'full_name': 'Kobayashi, Makoto'},
-        {'full_name': 'Maskawa, Toshihide'},
+        {"full_name": "Kobayashi, Makoto"},
+        {"full_name": "Maskawa, Toshihide"},
     ]
 
     expected = 2
@@ -51,16 +52,16 @@ def test_get_number_of_author_matches():
 
 def test_compute_author_match_score_matching_authors():
     x_authors = [
-        {'full_name': 'Cabibbo, Nicola'},
-        {'full_name': 'Kobayashi, Makoto'},
-        {'full_name': 'Maskawa, Toshihide'},
-        {'full_name': 'Smith, John'}
+        {"full_name": "Cabibbo, Nicola"},
+        {"full_name": "Kobayashi, Makoto"},
+        {"full_name": "Maskawa, Toshihide"},
+        {"full_name": "Smith, John"},
     ]
     y_authors = [
-        {'full_name': 'Cabibbo, Nicola'},
-        {'full_name': 'Kobayashi, Makoto'},
-        {'full_name': 'Maskawa, Toshihide'},
-        {'full_name': 'Smith, John'}
+        {"full_name": "Cabibbo, Nicola"},
+        {"full_name": "Kobayashi, Makoto"},
+        {"full_name": "Maskawa, Toshihide"},
+        {"full_name": "Smith, John"},
     ]
 
     result = compute_author_match_score(x_authors, y_authors)
@@ -70,14 +71,14 @@ def test_compute_author_match_score_matching_authors():
 
 def test_compute_author_match_score_different_authors():
     x_authors = [
-        {'full_name': 'Cabibbo, Nicola'},
-        {'full_name': 'Kobayashi, Makoto'},
-        {'full_name': 'Maskawa, Toshihide'},
-        {'full_name': 'Smith, John'}
+        {"full_name": "Cabibbo, Nicola"},
+        {"full_name": "Kobayashi, Makoto"},
+        {"full_name": "Maskawa, Toshihide"},
+        {"full_name": "Smith, John"},
     ]
     y_authors = [
-        {'full_name': 'Sinatra, Mary'},
-        {'full_name': 'Blueds, Michael'},
+        {"full_name": "Sinatra, Mary"},
+        {"full_name": "Blueds, Michael"},
     ]
 
     result = compute_author_match_score(x_authors, y_authors)
@@ -87,14 +88,14 @@ def test_compute_author_match_score_different_authors():
 
 def test_compute_author_match_score_similar_authors():
     x_authors = [
-        {'full_name': 'Cabibbo, Nicola'},
-        {'full_name': 'Kobayashi, Makoto'},
-        {'full_name': 'Maskawa, Toshihide'},
-        {'full_name': 'Smith, John'}
+        {"full_name": "Cabibbo, Nicola"},
+        {"full_name": "Kobayashi, Makoto"},
+        {"full_name": "Maskawa, Toshihide"},
+        {"full_name": "Smith, John"},
     ]
     y_authors = [
-        {'full_name': 'Kobayashi, Makoto'},
-        {'full_name': 'Maskawa, Toshihide'},
+        {"full_name": "Kobayashi, Makoto"},
+        {"full_name": "Maskawa, Toshihide"},
     ]
 
     result = compute_author_match_score(x_authors, y_authors)
@@ -102,12 +103,36 @@ def test_compute_author_match_score_similar_authors():
     assert result == 0.5
 
 
-def test_compute_author_match_one_empty_list():
+@pytest.mark.parametrize(
+    "x_authors,y_authors,expected",
+    [
+        (
+            [
+                {"full_name": "Kobayashi, Makoto"},
+                {"full_name": "Maskawa, Toshihide"},
+            ],
+            [],
+            1.0,
+        ),
+        (
+            [],
+            [
+                {"full_name": "Kobayashi, Makoto"},
+                {"full_name": "Maskawa, Toshihide"},
+            ],
+            1.0,
+        ),
+    ],
+)
+def test_compute_author_match_one_empty_list(x_authors, y_authors, expected):
+    result = compute_author_match_score(x_authors, y_authors)
+
+    assert result == expected
+
+
+def test_compute_author_match_both_empty_list():
     x_authors = []
-    y_authors = [
-        {'full_name': 'Kobayashi, Makoto'},
-        {'full_name': 'Maskawa, Toshihide'},
-    ]
+    y_authors = []
 
     result = compute_author_match_score(x_authors, y_authors)
 
@@ -115,8 +140,8 @@ def test_compute_author_match_one_empty_list():
 
 
 def test_compute_jaccard_index_perfect_matching_titles():
-    title1_tokens = {'cp', 'violation', 'in', 'the', 'b', 'system'}
-    title2_tokens = {'cp', 'violation', 'in', 'the', 'b', 'system'}
+    title1_tokens = {"cp", "violation", "in", "the", "b", "system"}
+    title2_tokens = {"cp", "violation", "in", "the", "b", "system"}
 
     result = compute_jaccard_index(title1_tokens, title2_tokens)
 
@@ -124,8 +149,8 @@ def test_compute_jaccard_index_perfect_matching_titles():
 
 
 def test_compute_jaccard_index_different_titles():
-    title1_tokens = {'pythia', '6.4', 'physics', 'and', 'manual'}
-    title2_tokens = {'cp', 'violation', 'in', 'the', 'b', 'system'}
+    title1_tokens = {"pythia", "6.4", "physics", "and", "manual"}
+    title2_tokens = {"cp", "violation", "in", "the", "b", "system"}
 
     result = compute_jaccard_index(title1_tokens, title2_tokens)
 
@@ -133,8 +158,8 @@ def test_compute_jaccard_index_different_titles():
 
 
 def test_compute_jaccard_index_similar_titles():
-    title1_tokens = {'cp', 'violation', 'b'}
-    title2_tokens = {'cp', 'violation', 'in', 'the', 'b', 'system'}
+    title1_tokens = {"cp", "violation", "b"}
+    title2_tokens = {"cp", "violation", "in", "the", "b", "system"}
 
     result = compute_jaccard_index(title1_tokens, title2_tokens)
 
@@ -143,7 +168,7 @@ def test_compute_jaccard_index_similar_titles():
 
 def test_compute_jaccard_index_one_empty_set():
     title1_tokens = {}
-    title2_tokens = {'cp', 'violation', 'in', 'the', 'b', 'system'}
+    title2_tokens = {"cp", "violation", "in", "the", "b", "system"}
 
     result = compute_jaccard_index(title1_tokens, title2_tokens)
 
@@ -151,9 +176,9 @@ def test_compute_jaccard_index_one_empty_set():
 
 
 def test_get_tokenized_title():
-    title = 'Exotic Exotic RG RG Flows from Holography'
+    title = "Exotic Exotic RG RG Flows from Holography"
 
-    expected = {'exotic', 'rg', 'flows', 'from', 'holography'}
+    expected = {"exotic", "rg", "flows", "from", "holography"}
 
     result = get_tokenized_title(title)
 
@@ -166,7 +191,7 @@ def test_compute_title_score_below_threshold():
 
     result = compute_title_score(title1, title2, threshold=0.5, math_threshold=0.3)
 
-    assert result == 0.
+    assert result == 0.0
 
 
 def test_compute_title_score_above_threshold():
@@ -193,4 +218,4 @@ def test_compute_title_score_below_math_threshold():
 
     result = compute_title_score(title1, title2, threshold=0.5, math_threshold=0.3)
 
-    assert result == 0.
+    assert result == 0.0
