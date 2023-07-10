@@ -36,8 +36,7 @@ setup_requires = [
 ]
 
 install_requires = [
-    'Flask>=0.12.2,<=2.0',
-    'Werkzeug~=0.0,>=0.12.2',
+    'Flask>=1.1.4,<2.0',
     'inspire-json-merger~=11.0,>=11.0.0',
     'dictdiffer<0.9',
     'inspire-utils~=3.0,>=3.0.0',
