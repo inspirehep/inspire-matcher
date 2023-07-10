@@ -22,5 +22,4 @@
 
 set -e
 
-flake8 inspire_matcher tests
 py.test tests

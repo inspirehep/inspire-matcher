@@ -54,6 +54,7 @@ tests_require = [
     'mock~=2.0,>=2.0.0',
     'pytest-cov~=2.0,<2.6.0',
     'pytest~=3.0,>=3.6.0',
+    'pytest-pep8',
 ]
 
 extras_require = {
