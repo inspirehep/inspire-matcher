@@ -33,18 +33,19 @@ jobs:
         run: |
           ${{ matrix.python }} --version
           ${{ matrix.pip }} freeze
+          echo ${{ matrix.python }}
 
       - name: Run tests
         run: |
           ./run-tests.sh
 
       - name: Build package
-        if: ${{ success() && github.event_name == 'push' && matrix.python-version == '2.7'  }}
+        if: ${{ success() && github.event_name == 'push' && matrix.python == 'python2'  }}
         run: |
           python setup.py sdist bdist_wheel
 
       - name: Publish package
-        if: ${{ success() && github.event_name == 'push' && matrix.python-version == '2.7'  }}
+        if: ${{ success() && github.event_name == 'push' && matrix.python == 'python2'  }}
         uses: pypa/gh-action-pypi-publish@v1.3.1
         with:
           user: __token__
