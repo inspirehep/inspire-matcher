@@ -22,4 +22,4 @@
 
 set -e
 
-pytest --pep8 -vvv tests
+py.test tests
