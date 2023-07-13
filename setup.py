@@ -42,7 +42,7 @@ install_requires = [
     'invenio-search>=1.0.0a10',
     'six~=1.0,>=1.11.0',
     'invenio-base>=1.2.3,<2.0.0',
-    'MarkupSafe>=2.1.1'
+    'MarkupSafe>=2.0.1'
 ]
 
 docs_require = []
