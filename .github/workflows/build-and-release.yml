@@ -9,43 +9,38 @@ on:
 jobs:
   Test:
     runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        include:
-          - python: python3
-            pip: pip3
-          - python: python2
-            pip: pip
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
       - name: Install python dependencies
         run: |
-          ${{ matrix.pip }} install --user --upgrade pip
-          ${{ matrix.pip }} install --user setuptools wheel
-          ${{ matrix.pip }} install --user -e .[tests,elasticsearch5]
+          python -m pip install --upgrade pip
+          pip install setuptools wheel
+          pip install -e .[tests,opensearch2]
 
       - name: Show python dependencies
         run: |
-          ${{ matrix.python }} --version
-          ${{ matrix.pip }} freeze
-          echo ${{ matrix.python }}
+          pip freeze
 
       - name: Run tests
         run: |
           ./run-tests.sh
 
       - name: Build package
-        if: ${{ success() && github.event_name == 'push' && matrix.python == 'python2'  }}
+        if: ${{ success() && github.event_name == 'push' }}
         run: |
           python setup.py sdist bdist_wheel
 
       - name: Publish package
-        if: ${{ success() && github.event_name == 'push' && matrix.python == 'python2'  }}
+        if: ${{ success() && github.event_name == 'push' }}
         uses: pypa/gh-action-pypi-publish@v1.3.1
         with:
           user: __token__

@@ -36,23 +36,21 @@ setup_requires = [
 ]
 
 install_requires = [
-    'Flask>=1.1.4,<2.0',
     'inspire-json-merger~=11.0,>=11.0.0',
-    'dictdiffer<0.9',
+    'dictdiffer>=0.9.0',
     'inspire-utils~=3.0,>=3.0.0',
     'invenio-search>=1.0.0a10',
     'six~=1.0,>=1.11.0',
-    'jinja2<3.0',
-    'MarkupSafe<2.0',
+    'invenio-base>=1.2.3,<2.0.0',
+    'MarkupSafe>=2.1.1'
 ]
 
 docs_require = []
 
 tests_require = [
-    'flake8-future-import~=0.0,>=0.4.3',
     'mock~=2.0,>=2.0.0',
     'pytest-cov~=2.0,<2.6.0',
-    'pytest~=3.0,>=3.6.0',
+    'pytest>=6,<7.2.0',
     'pytest-pep8',
 ]
 
@@ -62,24 +60,23 @@ extras_require = {
     'tests:python_version=="2.7"': [
         'unicode-string-literal~=1.0,>=1.1',
     ],
-    'elasticsearch2': [
-        'elasticsearch-dsl>=2.2.0,~=2.0',
-        'elasticsearch>=2.4.1,~=2.0',
-    ],
-    'elasticsearch5': [
-        'elasticsearch-dsl~=5.0',
-        'elasticsearch~=5.0',
-    ],
     'elasticsearch7': [
         'elasticsearch-dsl~=7.0',
         'elasticsearch~=7.0',
-    ]
-
+    ],
+    'opensearch1': [
+        'opensearch-py>=1.0.0,<3.0.0',
+        'opensearch-dsl>=1.0.0,<3.0.0'
+    ],
+    'opensearch2': [
+        'opensearch-py>=2.0.0,<3.0.0',
+        'opensearch-dsl>=2.0.0,<3.0.0'
+    ],
 }
 
 extras_require['all'] = []
 for name, reqs in extras_require.items():
-    if name not in ('elasticsearch2', 'elasticsearch5', 'elasticsearch7'):
+    if name not in ('opensearch1', 'opensearch2', 'elasticsearch7'):
         extras_require['all'].extend(reqs)
 
 packages = find_packages(exclude=['docs'])

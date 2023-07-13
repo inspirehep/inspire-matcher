@@ -41,7 +41,7 @@ def _get_validator(validator_param):
 
     try:
         validator = import_string(validator_param)
-    except (KeyError, ImportError):
+    except (KeyError, ImportError, AttributeError):
         current_app.logger.debug('No validator provided. Falling back to the default validator.')
         validator = import_string('inspire_matcher.validators:default_validator')
 
