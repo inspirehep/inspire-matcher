@@ -37,20 +37,22 @@ setup_requires = [
 
 install_requires = [
     'inspire-json-merger~=11.0,>=11.0.0',
-    'dictdiffer>=0.9.0',
+    'dictdiffer<0.9.0; python_version <= "2.7"',
+    'dictdiffer>=0.9.0; python_version >= "3.6"',
     'inspire-utils~=3.0,>=3.0.0',
-    'invenio-search>=1.0.0a10',
+    'invenio-search>=1.2.3',
     'six~=1.0,>=1.11.0',
     'invenio-base>=1.2.3,<2.0.0',
-    'MarkupSafe>=2.0.1'
+    'PyYAML==5.3; python_version >= "3.6"',
 ]
 
 docs_require = []
 
 tests_require = [
-    'mock~=2.0,>=2.0.0',
-    'pytest-cov~=2.0,<2.6.0',
-    'pytest>=6,<7.2.0',
+    'mock~=3.0,>=3.0.0',
+    'pytest-cov~=2.0,>=2.5.1',
+    'pytest~=4.0,>=4.6.0; python_version <= "2.7"',
+    'pytest~=8.0,>=8.2.2; python_version >= "3.6"',
     'pytest-pep8',
 ]
 
@@ -60,17 +62,17 @@ extras_require = {
     'tests:python_version=="2.7"': [
         'unicode-string-literal~=1.0,>=1.1',
     ],
-    'elasticsearch7': [
-        'elasticsearch-dsl~=7.0',
-        'elasticsearch~=7.0',
-    ],
     'opensearch1': [
         'opensearch-py>=1.0.0,<3.0.0',
         'opensearch-dsl>=1.0.0,<3.0.0'
     ],
+    'elasticsearch7': [
+        'elasticsearch-dsl~=7.0',
+        'elasticsearch~=7.0',
+    ],
     'opensearch2': [
         'opensearch-py>=2.0.0,<3.0.0',
-        'opensearch-dsl>=2.0.0,<3.0.0'
+        'opensearch-dsl>=2.0.0,<3.0.0',
     ],
 }
 
