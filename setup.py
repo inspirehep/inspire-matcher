@@ -26,10 +26,10 @@ from __future__ import absolute_import, division, print_function
 
 from setuptools import find_packages, setup
 
-
 URL = 'https://github.com/inspirehep/inspire-matcher'
 
-readme = open('README.rst').read()
+with open("README.rst") as f:
+    readme = f.read()
 
 setup_requires = [
     'autosemver~=0.0,>=0.5.2',
@@ -56,16 +56,18 @@ tests_require = [
     'pytest-pep8',
 ]
 
+dev_require = [
+    "pre-commit==3.5.0",
+]
+
 extras_require = {
     'docs': docs_require,
     'tests': tests_require,
+    'dev': dev_require,
     'tests:python_version=="2.7"': [
         'unicode-string-literal~=1.0,>=1.1',
     ],
-    'opensearch1': [
-        'opensearch-py>=1.0.0,<3.0.0',
-        'opensearch-dsl>=1.0.0,<3.0.0'
-    ],
+    'opensearch1': ['opensearch-py>=1.0.0,<3.0.0', 'opensearch-dsl>=1.0.0,<3.0.0'],
     'elasticsearch7': [
         'elasticsearch-dsl~=7.0',
         'elasticsearch~=7.0',

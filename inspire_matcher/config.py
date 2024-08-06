@@ -61,7 +61,11 @@ MATCHER_DEFAULT_CONFIGURATION = {
             "validator": "inspire_matcher.validators:cds_identifier_validator",
         },
     ],
-    "source": ["control_number", "external_system_identifiers", "persistent_identifiers"],
+    "source": [
+        "control_number",
+        "external_system_identifiers",
+        "persistent_identifiers",
+    ],
     "doc_type": "hep",
     "index": "records-hep",
 }

@@ -56,7 +56,9 @@ def _compile_filters(query, collections, match_deleted):
     }
 
     if collections:
-        result['query']['bool']['filter']['bool']['should'] = _compile_collections(collections)
+        result['query']['bool']['filter']['bool']['should'] = _compile_collections(
+            collections
+        )
     if not match_deleted:
         result['query']['bool']['filter']['bool']['must_not'] = {
             'match': {
@@ -85,21 +87,31 @@ def _compile_inner(query, record):
 
 
 def _compile_collections(collections):
-    return [{
-        'match': {
-            '_collections': collection,
-        },
-    } for collection in collections]
+    return [
+        {
+            'match': {
+                '_collections': collection,
+            },
+        }
+        for collection in collections
+    ]
 
 
 def _compile_exact(query, record):
     if 'match' in query:
         query['path'] = query.get('path', query['match'])
-        warnings.warn('The "match" key is deprecated. Use "path" instead.', DeprecationWarning)
+        warnings.warn(
+            'The "match" key is deprecated. Use "path" instead.', DeprecationWarning,
+            stacklevel=1,
+        )
 
     if 'search' in query:
         query['search_path'] = query.get('search_path', query['search'])
-        warnings.warn('The "search" key is deprecated. Use "search_path" instead.', DeprecationWarning)
+        warnings.warn(
+            'The "search" key is deprecated. Use "search_path" instead.',
+            DeprecationWarning,
+            stacklevel=1,
+        )
 
     path, search_path = query['path'], query['search_path']
 
@@ -116,11 +128,13 @@ def _compile_exact(query, record):
     }
 
     for value in values:
-        result['query']['bool']['should'].append({
-            'match': {
-                search_path: value,
-            },
-        })
+        result['query']['bool']['should'].append(
+            {
+                'match': {
+                    search_path: value,
+                },
+            }
+        )
 
     return result
 
@@ -151,21 +165,23 @@ def _compile_fuzzy(query, record):
         if '.' in path:
             raise ValueError('the "path" key can\'t contain dots')
         # TODO: This query should be refined instead of relying on validation to filter out irrelevant results.
-        result['query']['dis_max']['queries'].append({
-            'more_like_this': {
-                'boost': boost,
-                'like': [
-                    {
-                        'doc': {
-                            path: values,
+        result['query']['dis_max']['queries'].append(
+            {
+                'more_like_this': {
+                    'boost': boost,
+                    'like': [
+                        {
+                            'doc': {
+                                path: values,
+                            },
                         },
-                    },
-                ],
-                'max_query_terms': 25,
-                'min_doc_freq': 1,
-                'min_term_freq': 1,
-            },
-        })
+                    ],
+                    'max_query_terms': 25,
+                    'min_doc_freq': 1,
+                    'min_term_freq': 1,
+                },
+            }
+        )
 
     if not result['query']['dis_max']['queries']:
         return
@@ -206,14 +222,11 @@ def _compile_nested(query, record):
         if not value:
             return
 
-        nested_query['query']['nested']['query']['bool']['must'].append({
-            'match': {
-                search_path: {
-                    'query': value,
-                    'operator': query_operator
-                }
-            },
-        })
+        nested_query['query']['nested']['query']['bool']['must'].append(
+            {
+                'match': {search_path: {'query': value, 'operator': query_operator}},
+            }
+        )
     if "inner_hits" in query:
         nested_query['query']['nested']['inner_hits'] = query['inner_hits']
 
@@ -228,17 +241,17 @@ def _compile_nested_prefix(query, record):
         if not value:
             return
         if prefix_field and prefix_field in search_path:
-            nested_query['query']['nested']['query']['bool']['must'].append({
-                'match_phrase_prefix': {
-                    search_path: value
-                }
-            })
+            nested_query['query']['nested']['query']['bool']['must'].append(
+                {'match_phrase_prefix': {search_path: value}}
+            )
         else:
-            nested_query['query']['nested']['query']['bool']['must'].append({
-                'match': {
-                    search_path: value,
-                },
-            })
+            nested_query['query']['nested']['query']['bool']['must'].append(
+                {
+                    'match': {
+                        search_path: value,
+                    },
+                }
+            )
 
     if "inner_hits" in query:
         nested_query['query']['nested']['inner_hits'] = query['inner_hits']

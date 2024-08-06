@@ -24,7 +24,7 @@
 
 from __future__ import absolute_import, division, print_function
 
-from . import config
+from inspire_matcher import config
 
 
 class InspireMatcher(object):

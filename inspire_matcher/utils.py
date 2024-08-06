@@ -3,7 +3,8 @@
 # This file is part of INSPIRE.
 # Copyright (C) 2014-2017 CERN.
 #
-# INSPIRE is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
+# INSPIRE is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
@@ -84,7 +85,8 @@ def compute_jaccard_index(x_set, y_set):
 def get_tokenized_title(title):
     """Return the tokenised title.
 
-    The title is lowercased and split on the spaces. Then, duplicate tokens are removed by adding the tokens to a set.
+    The title is lowercased and split on the spaces. Then, duplicate
+        tokens are removed by adding the tokens to a set.
 
     Args:
         title (string): a title.
