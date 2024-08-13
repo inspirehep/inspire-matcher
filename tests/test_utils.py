@@ -23,6 +23,7 @@
 from __future__ import absolute_import, division, print_function
 
 import pytest
+
 from inspire_matcher.utils import (
     compute_author_match_score,
     compute_jaccard_index,
@@ -104,7 +105,7 @@ def test_compute_author_match_score_similar_authors():
 
 
 @pytest.mark.parametrize(
-    "x_authors,y_authors,expected",
+    ("x_authors", "y_authors", "expected"),
     [
         (
             [

@@ -28,10 +28,7 @@ from itertools import product
 
 from inspire_utils.record import get_value
 
-from .utils import (
-    compute_author_match_score,
-    compute_title_score,
-)
+from inspire_matcher.utils import compute_author_match_score, compute_title_score
 
 
 def default_validator(record, result):
@@ -41,14 +38,18 @@ def default_validator(record, result):
 def authors_titles_validator(record, result):
     """Compute a validation score for the possible match.
 
-    The score is based on a similarity score of the authors sets and the maximum Jaccard index found between 2 titles:
+    The score is based on a similarity score of the authors sets and
+        the maximum Jaccard index found between 2 titles:
     one from the record and one from the result title sets.
 
-    If the computed score is higher than 0.5, then the match is valid, otherwise it is not.
+    If the computed score is higher than 0.5, then the match is valid,
+    otherwise it is not.
 
     Args:
-        record (dict): the given record we are trying to match with similar ones in INSPIRE.
-        result (dict): possible match returned by the ES query that needs to be validated.
+        record (dict): the given record we are trying to match
+            with similar ones in INSPIRE.
+        result (dict): possible match returned by the ES query
+            that needs to be validated.
 
     Returns:
         bool: validation decision.
@@ -63,7 +64,9 @@ def authors_titles_validator(record, result):
     result_titles = get_value(result, '_source.titles.title', [])
 
     title_score = max(
-        compute_title_score(record_title, result_title, threshold=0.5, math_threshold=0.3)
+        compute_title_score(
+            record_title, result_title, threshold=0.5, math_threshold=0.3
+        )
         for (record_title, result_title) in product(record_titles, result_titles)
     )
 
@@ -79,8 +82,10 @@ def cds_identifier_validator(record, result):
     ``schema`` different from CDS.
 
     Args:
-        record (dict): the given record we are trying to match with similar ones in INSPIRE.
-        result (dict): possible match returned by the ES query that needs to be validated.
+        record (dict): the given record we are trying to match with
+            similar ones in INSPIRE.
+        result (dict): possible match returned by the ES query
+            that needs to be validated.
 
     Returns:
         bool: validation decision.
@@ -88,10 +93,20 @@ def cds_identifier_validator(record, result):
     """
 
     record_external_identifiers = get_value(record, 'external_system_identifiers', [])
-    result_external_identifiers = get_value(result, '_source.external_system_identifiers', [])
+    result_external_identifiers = get_value(
+        result, '_source.external_system_identifiers', []
+    )
 
-    record_external_identifiers = {external_id["value"] for external_id in record_external_identifiers if external_id["schema"] == 'CDS'}
-    result_external_identifiers = {external_id["value"] for external_id in result_external_identifiers if external_id["schema"] == 'CDS'}
+    record_external_identifiers = {
+        external_id["value"]
+        for external_id in record_external_identifiers
+        if external_id["schema"] == 'CDS'
+    }
+    result_external_identifiers = {
+        external_id["value"]
+        for external_id in result_external_identifiers
+        if external_id["schema"] == 'CDS'
+    }
 
     return bool(record_external_identifiers & result_external_identifiers)
 

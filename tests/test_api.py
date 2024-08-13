@@ -105,7 +105,7 @@ def test_match_raises_if_one_query_does_not_have_a_type():
         'index': 'records-hep',
     }
 
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(ValueError, match="Malformed query. Query 0 of step 0 does not compile:") as excinfo:
         list(match(None, config))
     assert 'Malformed query' in str(excinfo.value)
 
@@ -123,7 +123,7 @@ def test_match_raises_if_one_query_type_is_not_supported():
         'index': 'records-hep',
     }
 
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(ValueError, match="Malformed query. Query 0 of step 0 does not compile:") as excinfo:
         list(match(None, config))
     assert 'Malformed query' in str(excinfo.value)
 
@@ -144,7 +144,7 @@ def test_match_raises_if_an_exact_query_does_not_have_all_the_keys():
         'index': 'records-hep',
     }
 
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(ValueError, match="Malformed query. Query 0 of step 0 does not compile:") as excinfo:
         list(match(None, config))
     assert 'Malformed query' in str(excinfo.value)
 
@@ -167,14 +167,13 @@ def test_match_raises_on_invalid_collections():
         'collections': 'Literature',
     }
 
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(ValueError, match="Malformed collections. Expected a list of strings bug got: 'Literature'") as excinfo:
         list(match(None, config))
     assert 'Malformed collections' in str(excinfo.value)
 
 
 @mock.patch('inspire_matcher.api.es')
 def test_validator_list(es_mock):
-
     es_mock.search.return_value = {
         'hits': {
             'hits': {
@@ -225,7 +224,7 @@ def test_match_raises_if_inner_hits_param_has_wrong_config():
                         "paths": ["first_name", "last_name"],
                         "search_paths": ["authors.first_name", "authors.last_name"],
                         "type": "nested",
-                        "inner_hits": {"not_existing_argument": ["authors.record"]}
+                        "inner_hits": {"not_existing_argument": ["authors.record"]},
                     },
                 ],
             },
@@ -234,6 +233,6 @@ def test_match_raises_if_inner_hits_param_has_wrong_config():
         'index': 'records-hep',
     }
 
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(ValueError, match="Malformed query. Query 0 of step 0 does not compile:") as excinfo:
         list(match(None, config))
     assert 'Malformed query' in str(excinfo.value)

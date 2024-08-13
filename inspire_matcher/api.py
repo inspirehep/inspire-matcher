@@ -25,24 +25,24 @@
 from __future__ import absolute_import, division, print_function
 
 from flask import current_app
+from invenio_search import current_search_client as es
+from invenio_search.utils import prefix_index
 from six import string_types
 from werkzeug.utils import import_string
 
-from invenio_search import current_search_client as es
-from invenio_search.utils import prefix_index
-
-from .core import compile
+from inspire_matcher.core import compile
 
 
 def _get_validator(validator_param):
-
     if callable(validator_param):
         return validator_param
 
     try:
         validator = import_string(validator_param)
     except (KeyError, ImportError, AttributeError):
-        current_app.logger.debug('No validator provided. Falling back to the default validator.')
+        current_app.logger.debug(
+            'No validator provided. Falling back to the default validator.'
+        )
         validator = import_string('inspire_matcher.validators:default_validator')
 
     return validator
@@ -56,7 +56,9 @@ def match(record, config=None):
     out which record a reference should be pointing to.
     """
     if config is None:
-        current_app.logger.debug('No configuration provided. Falling back to the default configuration.')
+        current_app.logger.debug(
+            'No configuration provided. Falling back to the default configuration.'
+        )
         config = current_app.config['MATCHER_DEFAULT_CONFIGURATION']
 
     try:
@@ -72,11 +74,17 @@ def match(record, config=None):
         query_config['_source'] = source
     match_deleted = config.get('match_deleted', False)
     collections = config.get('collections')
-    if not (collections is None or (
-            isinstance(collections, (list, tuple)) and
-            all(isinstance(collection, string_types) for collection in collections)
-    )):
-        raise ValueError('Malformed collections. Expected a list of strings bug got: %s' % repr(collections))
+    if not (
+        collections is None
+        or (
+            isinstance(collections, (list, tuple))
+            and all(isinstance(collection, string_types) for collection in collections)
+        )
+    ):
+        raise ValueError(
+            'Malformed collections. Expected a list of strings bug got: %s'
+            % repr(collections)
+        )
 
     for i, step in enumerate(algorithm):
         try:
@@ -95,9 +103,14 @@ def match(record, config=None):
 
         for j, query in enumerate(queries):
             try:
-                body = compile(query, record, collections=collections, match_deleted=match_deleted)
+                body = compile(
+                    query, record, collections=collections, match_deleted=match_deleted
+                )
             except Exception as e:
-                raise ValueError('Malformed query. Query %d of step %d does not compile: %s.' % (j, i, repr(e)))
+                raise ValueError(
+                    'Malformed query. Query %d of step %d does not compile: %s.'
+                    % (j, i, repr(e))
+                )
 
             if not body:
                 continue

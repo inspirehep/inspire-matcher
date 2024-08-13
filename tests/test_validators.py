@@ -22,17 +22,18 @@
 
 from __future__ import absolute_import, division, print_function
 
-import pytest
 import json
 import os
+
 import pkg_resources
+import pytest
 
 from inspire_matcher.validators import (
+    arxiv_eprints_validator,
     authors_titles_validator,
     cds_identifier_validator,
     default_validator,
     persistent_identifier_validator,
-    arxiv_eprints_validator,
 )
 
 
@@ -40,52 +41,82 @@ def test_default_validator_is_not_very_exciting():
     assert default_validator(None, None)
 
 
-def test_authors_titles_validator_does_match_when_authors_are_same_and_titles_contain_perfect_match():
-    record = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'harvest_record_1601.02340.json')))
+def test_validator_matches_on_same_authors_and_titles():
+    record = json.loads(
+        pkg_resources.resource_string(
+            __name__, os.path.join('fixtures', 'harvest_record_1601.02340.json')
+        )
+    )
 
-    result = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'matching_result_1601.02340.json')))
+    result = json.loads(
+        pkg_resources.resource_string(
+            __name__, os.path.join('fixtures', 'matching_result_1601.02340.json')
+        )
+    )
 
     assert authors_titles_validator(record, result)
 
 
-def test_authors_titles_validator_does_not_match_when_authors_are_similar_but_titles_are_too_different():
-    record = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'harvest_record_1804.09082.json')))
+def test_validator_no_match_on_similar_authors_different_titles():
+    record = json.loads(
+        pkg_resources.resource_string(
+            __name__, os.path.join('fixtures', 'harvest_record_1804.09082.json')
+        )
+    )
 
-    result = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'matching_wrong_result_1211.4028.json')))
-
-    assert not authors_titles_validator(record, result)
-
-
-def test_authors_titles_validator_does_not_match_when_authors_are_same_but_titles_are_too_different():
-    record = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'harvest_record_1712.05946.json')))
-
-    result = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'matching_wrong_result_10.1103.json')))
+    result = json.loads(
+        pkg_resources.resource_string(
+            __name__, os.path.join('fixtures', 'matching_wrong_result_1211.4028.json')
+        )
+    )
 
     assert not authors_titles_validator(record, result)
 
 
-def test_cds_identifier_validator_does_match_when_external_system_identifiers_contain_perfect_match():
-    record = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'harvest_record_2654944.json')))
+def test_validator_no_match_on_different_titles():
+    record = json.loads(
+        pkg_resources.resource_string(
+            __name__, os.path.join('fixtures', 'harvest_record_1712.05946.json')
+        )
+    )
 
-    result = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'matching_result_2654944.json')))
+    result = json.loads(
+        pkg_resources.resource_string(
+            __name__, os.path.join('fixtures', 'matching_wrong_result_10.1103.json')
+        )
+    )
+
+    assert not authors_titles_validator(record, result)
+
+
+def test_cds_id_validator_matches_perfectlyh():
+    record = json.loads(
+        pkg_resources.resource_string(
+            __name__, os.path.join('fixtures', 'harvest_record_2654944.json')
+        )
+    )
+
+    result = json.loads(
+        pkg_resources.resource_string(
+            __name__, os.path.join('fixtures', 'matching_result_2654944.json')
+        )
+    )
 
     assert cds_identifier_validator(record, result)
 
 
-def test_cds_identifier_validator_does_not_match_when_system_identifiers_are_from_different_sources():
-    record = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'harvest_record_2654944.json')))
+def test_cds_identifier_mismatch_different_sources():
+    record = json.loads(
+        pkg_resources.resource_string(
+            __name__, os.path.join('fixtures', 'harvest_record_2654944.json')
+        )
+    )
 
-    result = json.loads(pkg_resources.resource_string(
-        __name__, os.path.join('fixtures', 'matching_wrong_2654944.json')))
+    result = json.loads(
+        pkg_resources.resource_string(
+            __name__, os.path.join('fixtures', 'matching_wrong_2654944.json')
+        )
+    )
 
     assert not cds_identifier_validator(record, result)
 
@@ -118,7 +149,7 @@ def test_persistent_identifier_validator_doesnt_validate_when_pid_entry_not_equa
 
 
 @pytest.mark.parametrize(
-    'expected,record,result',
+    ('expected', 'record', 'result'),
     [
         (
             False,
@@ -145,7 +176,7 @@ def test_persistent_identifier_validator_doesnt_validate_when_pid_entry_not_equa
             {},
             {'_source': {}},
         ),
-    ]
+    ],
 )
 def test_arxiv_eprints_validator(expected, record, result):
     assert expected == arxiv_eprints_validator(record, result)

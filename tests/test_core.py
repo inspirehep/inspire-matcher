@@ -276,7 +276,7 @@ def test_compile_fuzzy_raises_if_path_contains_a_dot():
         ],
     }
 
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(ValueError, match='the "path" key can\'t contain dots') as excinfo:
         _compile_fuzzy(query, record)
     assert 'dots' in str(excinfo.value)
 
@@ -316,7 +316,7 @@ def test_compile_nested():
                                 'match': {
                                     'publication_info.journal_title': {
                                         'query': 'Phys.Rev.',
-                                        'operator': 'OR'
+                                        'operator': 'OR',
                                     }
                                 },
                             },
@@ -324,7 +324,7 @@ def test_compile_nested():
                                 'match': {
                                     'publication_info.journal_volume': {
                                         'query': 'D94',
-                                        'operator': 'OR'
+                                        'operator': 'OR',
                                     }
                                 },
                             },
@@ -332,7 +332,7 @@ def test_compile_nested():
                                 'match': {
                                     'publication_info.artid': {
                                         'query': '124054',
-                                        'operator': 'OR'
+                                        'operator': 'OR',
                                     }
                                 },
                             },
@@ -347,7 +347,7 @@ def test_compile_nested():
     assert expected == result
 
 
-def test_compile_nested_requires_all_paths_to_contain_a_value_in_order_to_generate_a_query():
+def test_compile_nested_requires_all_paths_for_query():
     query = {
         'paths': [
             'reference.publication_info.journal_title',
@@ -387,7 +387,7 @@ def test_compile_nested_raises_when_search_paths_dont_share_a_common_path():
         'type': 'nested',
     }
 
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(ValueError, match="search_paths must share a common path") as excinfo:
         _compile_nested(query, None)
     assert 'common path' in str(excinfo.value)
 
@@ -398,13 +398,11 @@ def test_compile_nested_raises_when_paths_and_search_paths_dont_have_the_same_le
             'foo',
             'bar',
         ],
-        'search_paths': [
-            'baz'
-        ],
+        'search_paths': ['baz'],
         'type': 'nested',
     }
 
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(ValueError, match="paths and search_paths must be of the same length") as excinfo:
         _compile_nested(query, None)
     assert 'same length' in str(excinfo.value)
 
@@ -427,11 +425,13 @@ def test_compile_without_optional_args():
             'bool': {
                 'must': {
                     'bool': {
-                        'should': [{
-                            'match': {
-                                'dummy.search.path': 'foo',
-                            },
-                        }],
+                        'should': [
+                            {
+                                'match': {
+                                    'dummy.search.path': 'foo',
+                                },
+                            }
+                        ],
                     },
                 },
                 'filter': {
@@ -466,11 +466,13 @@ def test_compile_with_match_deleted():
     expected = {
         'query': {
             'bool': {
-                'should': [{
-                    'match': {
-                        'dummy.search.path': 'foo',
-                    },
-                }],
+                'should': [
+                    {
+                        'match': {
+                            'dummy.search.path': 'foo',
+                        },
+                    }
+                ],
             },
         },
     }
@@ -496,11 +498,13 @@ def test_compile_with_collections():
             'bool': {
                 'must': {
                     'bool': {
-                        'should': [{
-                            'match': {
-                                'dummy.search.path': 'foo',
-                            },
-                        }],
+                        'should': [
+                            {
+                                'match': {
+                                    'dummy.search.path': 'foo',
+                                },
+                            }
+                        ],
                     },
                 },
                 'filter': {
@@ -515,7 +519,7 @@ def test_compile_with_collections():
                                 'match': {
                                     '_collections': 'HAL Hidden',
                                 },
-                            }
+                            },
                         ],
                         'must_not': {
                             'match': {
@@ -554,7 +558,7 @@ def test_compile_prefix():
             'publication_info.journal_volume',
             'publication_info.artid',
         ],
-        'prefix_search_path': 'publication_info.journal_title'
+        'prefix_search_path': 'publication_info.journal_title',
     }
     reference = {
         'reference': {
@@ -578,19 +582,11 @@ def test_compile_prefix():
                                     "publication_info.journal_title": "Phys.Rev.D."
                                 }
                             },
-                            {
-                                "match": {
-                                    "publication_info.journal_volume": "94"
-                                }
-                            },
-                            {
-                                "match": {
-                                    "publication_info.artid": "124054"
-                                }
-                            }
+                            {"match": {"publication_info.journal_volume": "94"}},
+                            {"match": {"publication_info.artid": "124054"}},
                         ]
                     }
-                }
+                },
             }
         }
     }
@@ -609,12 +605,9 @@ def test_compile_nested_with_inner_hits():
             'authors.last_name',
         ],
         'type': 'nested',
-        'inner_hits': {"_source": ["authors.full_name"]}
+        'inner_hits': {"_source": ["authors.full_name"]},
     }
-    author_data = {
-        "first_name": "Name",
-        "last_name": "Test"
-    }
+    author_data = {"first_name": "Name", "last_name": "Test"}
 
     expected = {
         'query': {
@@ -627,7 +620,7 @@ def test_compile_nested_with_inner_hits():
                                 'match': {
                                     'authors.first_name': {
                                         'query': 'Name',
-                                        'operator': 'OR'
+                                        'operator': 'OR',
                                     }
                                 },
                             },
@@ -635,18 +628,14 @@ def test_compile_nested_with_inner_hits():
                                 'match': {
                                     'authors.last_name': {
                                         'query': 'Test',
-                                        'operator': 'OR'
+                                        'operator': 'OR',
                                     }
                                 },
                             },
                         ],
                     },
                 },
-                "inner_hits": {
-                    "_source": [
-                        "authors.full_name"
-                    ]
-                }
+                "inner_hits": {"_source": ["authors.full_name"]},
             },
         },
     }
@@ -685,7 +674,9 @@ def test_compile_authors_query():
                                                         "match_phrase_prefix": {
                                                             "authors.first_name": {
                                                                 "query": "Nicholas",
-                                                                "analyzer": "names_analyzer",
+                                                                "analyzer": (
+                                                                    "names_analyzer"
+                                                                ),
                                                             }
                                                         }
                                                     },
@@ -694,7 +685,8 @@ def test_compile_authors_query():
                                                             "authors.first_name": {
                                                                 "query": "Nicholas",
                                                                 "operator": "AND",
-                                                                "analyzer": "names_initials_analyzer",
+                                                                "analyzer":
+                                                                    "names_initials_analyzer",
                                                             }
                                                         }
                                                     },
@@ -706,7 +698,9 @@ def test_compile_authors_query():
                                                 "authors.first_name.initials": {
                                                     "query": "A",
                                                     "operator": "AND",
-                                                    "analyzer": "names_initials_analyzer",
+                                                    "analyzer": (
+                                                        "names_initials_analyzer"
+                                                    ),
                                                 }
                                             }
                                         },
@@ -763,7 +757,7 @@ def test_nested_query_with_and_operator():
         "type": "nested",
         "paths": ["full_name"],
         "search_paths": ["authors.full_name"],
-        "operator": "AND"
+        "operator": "AND",
     }
     author_data = {"full_name": "John Smith"}
 

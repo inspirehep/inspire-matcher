@@ -24,7 +24,6 @@ from __future__ import absolute_import, division, print_function
 
 import pytest
 from flask import Flask
-
 from invenio_search import InvenioSearch
 
 from inspire_matcher import InspireMatcher
@@ -36,10 +35,10 @@ def app():
     InvenioSearch(app)
     InspireMatcher(app)
 
-    yield app
+    return app
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True)
 def app_context(app):
     with app.app_context():
         yield app
