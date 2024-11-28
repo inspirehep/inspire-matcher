@@ -43,6 +43,7 @@ install_requires = [
     'invenio-search>=1.2.3',
     'six~=1.0,>=1.11.0',
     'invenio-base>=1.2.3,<2.0.0',
+    'pyyaml==5.4.1; python_version <= "2.7"',
     'pyyaml>=6.0,<7.0; python_version >= "3.6"',
 ]
 
