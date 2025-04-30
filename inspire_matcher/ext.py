@@ -34,9 +34,9 @@ class InspireMatcher(object):
 
     def init_app(self, app):
         self.init_config(app)
-        app.extensions['inspire-matcher'] = self
+        app.extensions["inspire-matcher"] = self
 
     def init_config(self, app):
         for k in dir(config):
-            if k.startswith('MATCHER_'):
+            if k.startswith("MATCHER_"):
                 app.config.setdefault(k, getattr(config, k))

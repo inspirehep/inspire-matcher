@@ -26,107 +26,95 @@ from __future__ import absolute_import, division, print_function
 
 from setuptools import find_packages, setup
 
-URL = 'https://github.com/inspirehep/inspire-matcher'
+URL = "https://github.com/inspirehep/inspire-matcher"
 
 with open("README.rst") as f:
     readme = f.read()
 
-setup_requires = [
-    'autosemver~=0.0,>=0.5.2',
-]
-
 install_requires = [
-    'inspire-json-merger~=11.0,>=11.0.0',
+    "inspire-json-merger>=11.0.0",
     'dictdiffer<0.9.0; python_version <= "2.7"',
     'dictdiffer>=0.9.0; python_version >= "3.6"',
-    'inspire-utils~=3.0,>=3.0.0',
-    'invenio-search>=1.2.3',
-    'six~=1.0,>=1.11.0',
-    'invenio-base>=1.2.3,<2.0.0',
+    "inspire-utils>=3.0.0",
+    "invenio-search>=1.2.3",
+    "six~=1.0,>=1.11.0",
+    "invenio-base>=1.2.3,<2.0.0",
     'pyyaml==5.4.1; python_version <= "2.7"',
     'pyyaml>=6.0,<7.0; python_version >= "3.6"',
 ]
 
-docs_require = []
-
 tests_require = [
-    'mock~=3.0,>=3.0.0',
-    'pytest-cov~=2.0,>=2.5.1',
+    "mock~=3.0,>=3.0.0",
+    "pytest-cov~=2.0,>=2.5.1",
     'pytest~=4.0,>=4.6.0; python_version <= "2.7"',
-    'pytest~=8.0,>=8.2.2; python_version >= "3.6"',
-    'pytest-pep8',
+    'pytest>=8.3.5; python_version >= "3.6"',
+    "pytest-pep8",
 ]
 
 dev_require = [
-    "pre-commit==3.5.0",
+    'pre-commit>=4.2.0; python_version >= "3.6"',
 ]
 
 extras_require = {
-    'docs': docs_require,
-    'tests': tests_require,
-    'dev': dev_require,
+    "tests": tests_require,
+    "dev": dev_require,
     'tests:python_version=="2.7"': [
-        'unicode-string-literal~=1.0,>=1.1',
+        "unicode-string-literal~=1.0,>=1.1",
     ],
-    'opensearch1': ['opensearch-py>=1.0.0,<3.0.0', 'opensearch-dsl>=1.0.0,<3.0.0'],
-    'elasticsearch7': [
-        'elasticsearch-dsl~=7.0',
-        'elasticsearch~=7.0',
+    "elasticsearch7": [
+        "elasticsearch-dsl~=7.0",
+        "elasticsearch~=7.0",
     ],
-    'opensearch2': [
-        'opensearch-py>=2.0.0,<3.0.0',
-        'opensearch-dsl>=2.0.0,<3.0.0',
+    "opensearch2": [
+        "opensearch-py>=2.0.0,<3.0.0",
+        "opensearch-dsl>=2.0.0,<3.0.0",
     ],
 }
 
-extras_require['all'] = []
+extras_require["all"] = []
 for name, reqs in extras_require.items():
-    if name not in ('opensearch1', 'opensearch2', 'elasticsearch7'):
-        extras_require['all'].extend(reqs)
+    if name not in ("opensearch2", "elasticsearch7"):
+        extras_require["all"].extend(reqs)
 
-packages = find_packages(exclude=['docs'])
+packages = find_packages(exclude=["docs"])
 
 setup(
-    name='inspire-matcher',
-    autosemver={
-        'bugtracker_url': URL + '/issues',
-    },
+    name="inspire-matcher",
     url=URL,
-    license='GPLv3',
-    author='CERN',
-    author_email='admin@inspirehep.net',
+    license="GPLv3",
+    author="CERN",
+    author_email="admin@inspirehep.net",
     packages=packages,
     include_package_data=True,
     zip_safe=False,
-    platforms='any',
+    platforms="any",
     description=__doc__,
     long_description=readme,
-    setup_requires=setup_requires,
     install_requires=install_requires,
     tests_require=tests_require,
     extras_require=extras_require,
     entry_points={
-        'invenio_base.apps': [
-            'inspire_matcher = inspire_matcher:InspireMatcher',
+        "invenio_base.apps": [
+            "inspire_matcher = inspire_matcher:InspireMatcher",
         ],
     },
     version="9.0.31",
     classifiers=[
-        'Development Status :: 4 - Beta',
-        'Environment :: Web Environment',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11',
-        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
-        'Topic :: Software Development :: Libraries :: Python Modules',
+        "Development Status :: 4 - Beta",
+        "Environment :: Web Environment",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
 )

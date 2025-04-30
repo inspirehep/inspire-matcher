@@ -55,13 +55,13 @@ def authors_titles_validator(record, result):
         bool: validation decision.
 
     """
-    record_authors = get_value(record, 'authors', [])
-    result_authors = get_value(result, '_source.authors', [])
+    record_authors = get_value(record, "authors", [])
+    result_authors = get_value(result, "_source.authors", [])
 
     author_score = compute_author_match_score(record_authors, result_authors)
 
-    record_titles = get_value(record, 'titles.title', [])
-    result_titles = get_value(result, '_source.titles.title', [])
+    record_titles = get_value(record, "titles.title", [])
+    result_titles = get_value(result, "_source.titles.title", [])
 
     title_score = max(
         compute_title_score(
@@ -92,20 +92,20 @@ def cds_identifier_validator(record, result):
 
     """
 
-    record_external_identifiers = get_value(record, 'external_system_identifiers', [])
+    record_external_identifiers = get_value(record, "external_system_identifiers", [])
     result_external_identifiers = get_value(
-        result, '_source.external_system_identifiers', []
+        result, "_source.external_system_identifiers", []
     )
 
     record_external_identifiers = {
         external_id["value"]
         for external_id in record_external_identifiers
-        if external_id["schema"] == 'CDS'
+        if external_id["schema"] == "CDS"
     }
     result_external_identifiers = {
         external_id["value"]
         for external_id in result_external_identifiers
-        if external_id["schema"] == 'CDS'
+        if external_id["schema"] == "CDS"
     }
 
     return bool(record_external_identifiers & result_external_identifiers)
