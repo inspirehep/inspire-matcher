@@ -24,13 +24,6 @@
  INSPIRE-Matcher
 =================
 
-.. image:: https://travis-ci.org/inspirehep/inspire-matcher.svg?branch=master
-    :target: https://travis-ci.org/inspirehep/inspire-matcher
-
-.. image:: https://coveralls.io/repos/github/inspirehep/inspire-matcher/badge.svg?branch=master
-    :target: https://coveralls.io/github/inspirehep/inspire-matcher?branch=master
-
-
 About
 =====
 

@@ -36,28 +36,28 @@ from inspire_matcher.core import (
 
 def test_compile_exact():
     query = {
-        'path': 'arxiv_eprints.value',
-        'search_path': 'arxiv_eprints.value.raw',
-        'type': 'exact',
+        "path": "arxiv_eprints.value",
+        "search_path": "arxiv_eprints.value.raw",
+        "type": "exact",
     }
     record = {
-        'arxiv_eprints': [
+        "arxiv_eprints": [
             {
-                'categories': [
-                    'hep-th',
+                "categories": [
+                    "hep-th",
                 ],
-                'value': 'hep-th/9711200',
+                "value": "hep-th/9711200",
             },
         ],
     }
 
     expected = {
-        'query': {
-            'bool': {
-                'should': [
+        "query": {
+            "bool": {
+                "should": [
                     {
-                        'match': {
-                            'arxiv_eprints.value.raw': 'hep-th/9711200',
+                        "match": {
+                            "arxiv_eprints.value.raw": "hep-th/9711200",
                         },
                     },
                 ],
@@ -71,23 +71,23 @@ def test_compile_exact():
 
 def test_compile_exact_supports_non_list_fields():
     query = {
-        'path': 'reference.arxiv_eprint',
-        'search_path': 'arxiv_eprints.value.raw',
-        'type': 'exact',
+        "path": "reference.arxiv_eprint",
+        "search_path": "arxiv_eprints.value.raw",
+        "type": "exact",
     }
     reference = {
-        'reference': {
-            'arxiv_eprint': 'hep-th/9711200',
+        "reference": {
+            "arxiv_eprint": "hep-th/9711200",
         },
     }
 
     expected = {
-        'query': {
-            'bool': {
-                'should': [
+        "query": {
+            "bool": {
+                "should": [
                     {
-                        'match': {
-                            'arxiv_eprints.value.raw': 'hep-th/9711200',
+                        "match": {
+                            "arxiv_eprints.value.raw": "hep-th/9711200",
                         },
                     },
                 ],
@@ -101,50 +101,50 @@ def test_compile_exact_supports_non_list_fields():
 
 def test_compile_fuzzy():
     query = {
-        'clauses': [
+        "clauses": [
             {
-                'boost': 20,
-                'path': 'abstracts',
+                "boost": 20,
+                "path": "abstracts",
             },
         ],
-        'type': 'fuzzy',
+        "type": "fuzzy",
     }
     record = {
-        'abstracts': [
+        "abstracts": [
             {
-                'source': 'arXiv',
-                'value': 'Probably not.',
+                "source": "arXiv",
+                "value": "Probably not.",
             },
         ],
     }
 
     expected = {
-        'min_score': 1,
-        'query': {
-            'dis_max': {
-                'queries': [
+        "min_score": 1,
+        "query": {
+            "dis_max": {
+                "queries": [
                     {
-                        'more_like_this': {
-                            'boost': 20,
-                            'like': [
+                        "more_like_this": {
+                            "boost": 20,
+                            "like": [
                                 {
-                                    'doc': {
-                                        'abstracts': [
+                                    "doc": {
+                                        "abstracts": [
                                             {
-                                                'source': 'arXiv',
-                                                'value': 'Probably not.',
+                                                "source": "arXiv",
+                                                "value": "Probably not.",
                                             },
                                         ],
                                     },
                                 },
                             ],
-                            'max_query_terms': 25,
-                            'min_doc_freq': 1,
-                            'min_term_freq': 1,
+                            "max_query_terms": 25,
+                            "min_doc_freq": 1,
+                            "min_term_freq": 1,
                         },
                     },
                 ],
-                'tie_breaker': 0.3,
+                "tie_breaker": 0.3,
             },
         },
     }
@@ -155,50 +155,50 @@ def test_compile_fuzzy():
 
 def test_compile_fuzzy_supports_slicing_in_paths():
     query = {
-        'clauses': [
+        "clauses": [
             {
-                'boost': 10,
-                'path': 'authors[:3]',
+                "boost": 10,
+                "path": "authors[:3]",
             },
         ],
-        'type': 'fuzzy',
+        "type": "fuzzy",
     }
     record = {
-        'authors': [
-            {'full_name': 'Aharony, Ofer'},
-            {'full_name': 'Gubser, Steven S.'},
-            {'full_name': 'Maldacena, Juan Martin'},
-            {'full_name': 'Ooguri, Hirosi'},
-            {'full_name': 'Oz, Yaron'},
+        "authors": [
+            {"full_name": "Aharony, Ofer"},
+            {"full_name": "Gubser, Steven S."},
+            {"full_name": "Maldacena, Juan Martin"},
+            {"full_name": "Ooguri, Hirosi"},
+            {"full_name": "Oz, Yaron"},
         ],
     }
 
     expected = {
-        'min_score': 1,
-        'query': {
-            'dis_max': {
-                'queries': [
+        "min_score": 1,
+        "query": {
+            "dis_max": {
+                "queries": [
                     {
-                        'more_like_this': {
-                            'boost': 10,
-                            'like': [
+                        "more_like_this": {
+                            "boost": 10,
+                            "like": [
                                 {
-                                    'doc': {
-                                        'authors': [
-                                            {'full_name': 'Aharony, Ofer'},
-                                            {'full_name': 'Gubser, Steven S.'},
-                                            {'full_name': 'Maldacena, Juan Martin'},
+                                    "doc": {
+                                        "authors": [
+                                            {"full_name": "Aharony, Ofer"},
+                                            {"full_name": "Gubser, Steven S."},
+                                            {"full_name": "Maldacena, Juan Martin"},
                                         ],
                                     },
                                 },
                             ],
-                            'max_query_terms': 25,
-                            'min_doc_freq': 1,
-                            'min_term_freq': 1,
+                            "max_query_terms": 25,
+                            "min_doc_freq": 1,
+                            "min_term_freq": 1,
                         },
                     },
                 ],
-                'tie_breaker': 0.3,
+                "tie_breaker": 0.3,
             },
         },
     }
@@ -209,46 +209,46 @@ def test_compile_fuzzy_supports_slicing_in_paths():
 
 def test_compile_fuzzy_falls_back_to_boost_1():
     query = {
-        'clauses': [
-            {'path': 'abstracts'},
+        "clauses": [
+            {"path": "abstracts"},
         ],
     }
     record = {
-        'abstracts': [
+        "abstracts": [
             {
-                'source': 'arXiv',
-                'value': 'Probably not.',
+                "source": "arXiv",
+                "value": "Probably not.",
             },
         ],
     }
 
     expected = {
-        'min_score': 1,
-        'query': {
-            'dis_max': {
-                'queries': [
+        "min_score": 1,
+        "query": {
+            "dis_max": {
+                "queries": [
                     {
-                        'more_like_this': {
-                            'boost': 1,
-                            'like': [
+                        "more_like_this": {
+                            "boost": 1,
+                            "like": [
                                 {
-                                    'doc': {
-                                        'abstracts': [
+                                    "doc": {
+                                        "abstracts": [
                                             {
-                                                'source': 'arXiv',
-                                                'value': 'Probably not.',
+                                                "source": "arXiv",
+                                                "value": "Probably not.",
                                             },
                                         ],
                                     },
                                 },
                             ],
-                            'max_query_terms': 25,
-                            'min_doc_freq': 1,
-                            'min_term_freq': 1,
+                            "max_query_terms": 25,
+                            "min_doc_freq": 1,
+                            "min_term_freq": 1,
                         },
                     },
                 ],
-                'tie_breaker': 0.3,
+                "tie_breaker": 0.3,
             },
         },
     }
@@ -259,80 +259,82 @@ def test_compile_fuzzy_falls_back_to_boost_1():
 
 def test_compile_fuzzy_raises_if_path_contains_a_dot():
     query = {
-        'clauses': [
+        "clauses": [
             {
-                'boost': 10,
-                'path': 'authors.full_name',
+                "boost": 10,
+                "path": "authors.full_name",
             },
         ],
     }
     record = {
-        'authors': [
-            {'full_name': 'Aharony, Ofer'},
-            {'full_name': 'Gubser, Steven S.'},
-            {'full_name': 'Maldacena, Juan Martin'},
-            {'full_name': 'Ooguri, Hirosi'},
-            {'full_name': 'Oz, Yaron'},
+        "authors": [
+            {"full_name": "Aharony, Ofer"},
+            {"full_name": "Gubser, Steven S."},
+            {"full_name": "Maldacena, Juan Martin"},
+            {"full_name": "Ooguri, Hirosi"},
+            {"full_name": "Oz, Yaron"},
         ],
     }
 
-    with pytest.raises(ValueError, match='the "path" key can\'t contain dots') as excinfo:
+    with pytest.raises(
+        ValueError, match='the "path" key can\'t contain dots'
+    ) as excinfo:
         _compile_fuzzy(query, record)
-    assert 'dots' in str(excinfo.value)
+    assert "dots" in str(excinfo.value)
 
 
 def test_compile_nested():
     query = {
-        'paths': [
-            'reference.publication_info.journal_title',
-            'reference.publication_info.journal_volume',
-            'reference.publication_info.artid',
+        "paths": [
+            "reference.publication_info.journal_title",
+            "reference.publication_info.journal_volume",
+            "reference.publication_info.artid",
         ],
-        'search_paths': [
-            'publication_info.journal_title',
-            'publication_info.journal_volume',
-            'publication_info.artid',
+        "search_paths": [
+            "publication_info.journal_title",
+            "publication_info.journal_volume",
+            "publication_info.artid",
         ],
-        'type': 'nested',
+        "type": "nested",
     }
     reference = {
-        'reference': {
-            'publication_info': {
-                'journal_title': 'Phys.Rev.',
-                'journal_volume': 'D94',
-                'artid': '124054',
+        "reference": {
+            "publication_info": {
+                "journal_title": "Phys.Rev.",
+                "journal_volume": "D94",
+                "artid": "124054",
             },
         },
     }
 
     expected = {
-        'query': {
-            'nested': {
-                'path': 'publication_info',
-                'query': {
-                    'bool': {
-                        'must': [
+        "query": {
+            "nested": {
+                "path": "publication_info",
+                "query": {
+                    "bool": {
+                        "must": [
                             {
-                                'match': {
-                                    'publication_info.journal_title': {
-                                        'query': 'Phys.Rev.',
-                                        'operator': 'OR',
+                                "match": {
+                                    "publication_info.journal_title": {
+                                        "query": "Phys.Rev.",
+                                        "operator": "OR",
                                     }
                                 },
                             },
                             {
-                                'match': {
-                                    'publication_info.journal_volume': {
-                                        'query': 'D94',
-                                        'operator': 'OR',
+                                "match": {
+                                    "publication_info.journal_volume": {
+                                        "query": "D94",
+                                        "operator": "OR",
                                     }
                                 },
                             },
                             {
-                                'match': {
-                                    'publication_info.artid': {
-                                        'query': '124054',
-                                        'operator': 'OR',
+                                "match": {
+                                    "publication_info.artid": {
+                                        "query": "124054",
+                                        "operator": "OR",
                                     }
                                 },
                             },
@@ -349,23 +351,23 @@ def test_compile_nested():
 
 def test_compile_nested_requires_all_paths_for_query():
     query = {
-        'paths': [
-            'reference.publication_info.journal_title',
-            'reference.publication_info.journal_volume',
-            'reference.publication_info.artid',
+        "paths": [
+            "reference.publication_info.journal_title",
+            "reference.publication_info.journal_volume",
+            "reference.publication_info.artid",
         ],
-        'search_paths': [
-            'publication_info.journal_title',
-            'publication_info.journal_volume',
-            'publication_info.artid',
+        "search_paths": [
+            "publication_info.journal_title",
+            "publication_info.journal_volume",
+            "publication_info.artid",
         ],
     }
     reference = {
-        'reference': {
-            'publication_info': {
-                'label': '23',
-                'misc': [
-                    'Strai~burger, C., this Conference',
+        "reference": {
+            "publication_info": {
+                "label": "23",
+                "misc": [
+                    "Strai~burger, C., this Conference",
                 ],
             },
         },
@@ -376,69 +378,73 @@ def test_compile_nested_requires_all_paths_for_query():
 
 def test_compile_nested_raises_when_search_paths_dont_share_a_common_path():
     query = {
-        'paths': [
-            'foo.bar',
-            'foo.baz',
+        "paths": [
+            "foo.bar",
+            "foo.baz",
         ],
-        'search_paths': [
-            'bar',
-            'baz',
+        "search_paths": [
+            "bar",
+            "baz",
         ],
-        'type': 'nested',
+        "type": "nested",
     }
 
-    with pytest.raises(ValueError, match="search_paths must share a common path") as excinfo:
+    with pytest.raises(
+        ValueError, match="search_paths must share a common path"
+    ) as excinfo:
         _compile_nested(query, None)
-    assert 'common path' in str(excinfo.value)
+    assert "common path" in str(excinfo.value)
 
 
 def test_compile_nested_raises_when_paths_and_search_paths_dont_have_the_same_length():
     query = {
-        'paths': [
-            'foo',
-            'bar',
+        "paths": [
+            "foo",
+            "bar",
         ],
-        'search_paths': ['baz'],
-        'type': 'nested',
+        "search_paths": ["baz"],
+        "type": "nested",
     }
 
-    with pytest.raises(ValueError, match="paths and search_paths must be of the same length") as excinfo:
+    with pytest.raises(
+        ValueError, match="paths and search_paths must be of the same length"
+    ) as excinfo:
         _compile_nested(query, None)
-    assert 'same length' in str(excinfo.value)
+    assert "same length" in str(excinfo.value)
 
 
 def test_compile_without_optional_args():
     query = {
-        'type': 'exact',
-        'path': 'dummy.path',
-        'search_path': 'dummy.search.path',
+        "type": "exact",
+        "path": "dummy.path",
+        "search_path": "dummy.search.path",
     }
     record = {
-        'dummy': {
-            'path': 'foo',
+        "dummy": {
+            "path": "foo",
         },
     }
 
     result = compile(query, record)
     expected = {
-        'query': {
-            'bool': {
-                'must': {
-                    'bool': {
-                        'should': [
+        "query": {
+            "bool": {
+                "must": {
+                    "bool": {
+                        "should": [
                             {
-                                'match': {
-                                    'dummy.search.path': 'foo',
+                                "match": {
+                                    "dummy.search.path": "foo",
                                 },
                             }
                         ],
                     },
                 },
-                'filter': {
-                    'bool': {
-                        'must_not': {
-                            'match': {
-                                'deleted': True,
+                "filter": {
+                    "bool": {
+                        "must_not": {
+                            "match": {
+                                "deleted": True,
                             },
                         },
                     },
@@ -452,24 +458,24 @@ def test_compile_without_optional_args():
 
 def test_compile_with_match_deleted():
     query = {
-        'type': 'exact',
-        'path': 'dummy.path',
-        'search_path': 'dummy.search.path',
+        "type": "exact",
+        "path": "dummy.path",
+        "search_path": "dummy.search.path",
     }
     record = {
-        'dummy': {
-            'path': 'foo',
+        "dummy": {
+            "path": "foo",
         },
     }
 
     result = compile(query, record, match_deleted=True)
     expected = {
-        'query': {
-            'bool': {
-                'should': [
+        "query": {
+            "bool": {
+                "should": [
                     {
-                        'match': {
-                            'dummy.search.path': 'foo',
+                        "match": {
+                            "dummy.search.path": "foo",
                         },
                     }
                 ],
@@ -482,48 +488,48 @@ def test_compile_with_match_deleted():
 
 def test_compile_with_collections():
     query = {
-        'type': 'exact',
-        'path': 'dummy.path',
-        'search_path': 'dummy.search.path',
+        "type": "exact",
+        "path": "dummy.path",
+        "search_path": "dummy.search.path",
     }
     record = {
-        'dummy': {
-            'path': 'foo',
+        "dummy": {
+            "path": "foo",
         },
     }
 
-    result = compile(query, record, collections=['Literature', 'HAL Hidden'])
+    result = compile(query, record, collections=["Literature", "HAL Hidden"])
     expected = {
-        'query': {
-            'bool': {
-                'must': {
-                    'bool': {
-                        'should': [
+        "query": {
+            "bool": {
+                "must": {
+                    "bool": {
+                        "should": [
                             {
-                                'match': {
-                                    'dummy.search.path': 'foo',
+                                "match": {
+                                    "dummy.search.path": "foo",
                                 },
                             }
                         ],
                     },
                 },
-                'filter': {
-                    'bool': {
-                        'should': [
+                "filter": {
+                    "bool": {
+                        "should": [
                             {
-                                'match': {
-                                    '_collections': 'Literature',
+                                "match": {
+                                    "_collections": "Literature",
                                 },
                             },
                             {
-                                'match': {
-                                    '_collections': 'HAL Hidden',
+                                "match": {
+                                    "_collections": "HAL Hidden",
                                 },
                             },
                         ],
-                        'must_not': {
-                            'match': {
-                                'deleted': True,
+                        "must_not": {
+                            "match": {
+                                "deleted": True,
                             },
                         },
                     },
@@ -537,9 +543,9 @@ def test_compile_with_collections():
 
 def test_compile_returns_none_if_empty_inner():
     query = {
-        'type': 'exact',
-        'path': 'dummy.path',
-        'search_path': 'dummy.search.path',
+        "type": "exact",
+        "path": "dummy.path",
+        "search_path": "dummy.search.path",
     }
     record = {}
 
@@ -548,24 +554,24 @@ def test_compile_returns_none_if_empty_inner():
 
 def test_compile_prefix():
     query = {
-        'paths': [
-            'reference.publication_info.journal_title',
-            'reference.publication_info.journal_volume',
-            'reference.publication_info.artid',
+        "paths": [
+            "reference.publication_info.journal_title",
+            "reference.publication_info.journal_volume",
+            "reference.publication_info.artid",
         ],
-        'search_paths': [
-            'publication_info.journal_title',
-            'publication_info.journal_volume',
-            'publication_info.artid',
+        "search_paths": [
+            "publication_info.journal_title",
+            "publication_info.journal_volume",
+            "publication_info.artid",
         ],
-        'prefix_search_path': 'publication_info.journal_title',
+        "prefix_search_path": "publication_info.journal_title",
     }
     reference = {
-        'reference': {
-            'publication_info': {
-                'journal_title': 'Phys.Rev.D.',
-                'journal_volume': '94',
-                'artid': '124054',
+        "reference": {
+            "publication_info": {
+                "journal_title": "Phys.Rev.D.",
+                "journal_volume": "94",
+                "artid": "124054",
             },
         },
     }
@@ -596,39 +602,39 @@ def test_compile_prefix():
 
 def test_compile_nested_with_inner_hits():
     query = {
-        'paths': [
-            'first_name',
-            'last_name',
+        "paths": [
+            "first_name",
+            "last_name",
         ],
-        'search_paths': [
-            'authors.first_name',
-            'authors.last_name',
+        "search_paths": [
+            "authors.first_name",
+            "authors.last_name",
         ],
-        'type': 'nested',
-        'inner_hits': {"_source": ["authors.full_name"]},
+        "type": "nested",
+        "inner_hits": {"_source": ["authors.full_name"]},
     }
     author_data = {"first_name": "Name", "last_name": "Test"}
 
     expected = {
-        'query': {
-            'nested': {
-                'path': 'authors',
-                'query': {
-                    'bool': {
-                        'must': [
+        "query": {
+            "nested": {
+                "path": "authors",
+                "query": {
+                    "bool": {
+                        "must": [
                             {
-                                'match': {
-                                    'authors.first_name': {
-                                        'query': 'Name',
-                                        'operator': 'OR',
+                                "match": {
+                                    "authors.first_name": {
+                                        "query": "Name",
+                                        "operator": "OR",
                                     }
                                 },
                             },
                             {
-                                'match': {
-                                    'authors.last_name': {
-                                        'query': 'Test',
-                                        'operator': 'OR',
+                                "match": {
+                                    "authors.last_name": {
+                                        "query": "Test",
+                                        "operator": "OR",
                                     }
                                 },
                             },
@@ -685,8 +691,9 @@ def test_compile_authors_query():
                                                             "authors.first_name": {
                                                                 "query": "Nicholas",
                                                                 "operator": "AND",
-                                                                "analyzer":
-                                                                    "names_initials_analyzer",
+                                                                "analyzer": (
+                                                                    "names_initials_analyzer"
+                                                                ),
                                                             }
                                                         }
                                                     },
@@ -737,7 +744,7 @@ def test_nested_query_uses_correct_path_if_only_one_search_path_provided():
                             {
                                 "match": {
                                     "authors.full_name": {
-                                        'query': "John Smith",
+                                        "query": "John Smith",
                                         "operator": "OR",
                                     }
                                 }
@@ -771,7 +778,7 @@ def test_nested_query_with_and_operator():
                             {
                                 "match": {
                                     "authors.full_name": {
-                                        'query': "John Smith",
+                                        "query": "John Smith",
                                         "operator": "AND",
                                     }
                                 }

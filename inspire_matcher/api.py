@@ -41,9 +41,9 @@ def _get_validator(validator_param):
         validator = import_string(validator_param)
     except (KeyError, ImportError, AttributeError):
         current_app.logger.debug(
-            'No validator provided. Falling back to the default validator.'
+            "No validator provided. Falling back to the default validator."
         )
-        validator = import_string('inspire_matcher.validators:default_validator')
+        validator = import_string("inspire_matcher.validators:default_validator")
 
     return validator
 
@@ -57,23 +57,23 @@ def match(record, config=None):
     """
     if config is None:
         current_app.logger.debug(
-            'No configuration provided. Falling back to the default configuration.'
+            "No configuration provided. Falling back to the default configuration."
         )
-        config = current_app.config['MATCHER_DEFAULT_CONFIGURATION']
+        config = current_app.config["MATCHER_DEFAULT_CONFIGURATION"]
 
     try:
-        index = prefix_index(config['index'])
-        size = config.get('size', 10)
-        algorithm = config['algorithm']
-        query_config = {'index': index, 'size': size}
+        index = prefix_index(config["index"])
+        size = config.get("size", 10)
+        algorithm = config["algorithm"]
+        query_config = {"index": index, "size": size}
     except KeyError as e:
-        raise KeyError('Malformed configuration: %s.' % repr(e))
+        raise KeyError("Malformed configuration: %s." % repr(e))
 
-    source = config.get('source', [])
+    source = config.get("source", [])
     if source:
-        query_config['_source'] = source
-    match_deleted = config.get('match_deleted', False)
-    collections = config.get('collections')
+        query_config["_source"] = source
+    match_deleted = config.get("match_deleted", False)
+    collections = config.get("collections")
     if not (
         collections is None
         or (
@@ -82,20 +82,20 @@ def match(record, config=None):
         )
     ):
         raise ValueError(
-            'Malformed collections. Expected a list of strings bug got: %s'
+            "Malformed collections. Expected a list of strings bug got: %s"
             % repr(collections)
         )
 
     for i, step in enumerate(algorithm):
         try:
-            queries = step['queries']
+            queries = step["queries"]
         except KeyError:
-            raise KeyError('Malformed algorithm: step %d has no queries.' % i)
+            raise KeyError("Malformed algorithm: step %d has no queries." % i)
 
-        if not isinstance(step.get('validator'), list):
-            validator_params = [step.get('validator')]
+        if not isinstance(step.get("validator"), list):
+            validator_params = [step.get("validator")]
         else:
-            validator_params = step.get('validator')
+            validator_params = step.get("validator")
 
         validators = []
         for validator_param in validator_params:
@@ -108,16 +108,16 @@ def match(record, config=None):
                 )
             except Exception as e:
                 raise ValueError(
-                    'Malformed query. Query %d of step %d does not compile: %s.'
+                    "Malformed query. Query %d of step %d does not compile: %s."
                     % (j, i, repr(e))
                 )
 
             if not body:
                 continue
-            query_config['body'] = body
-            current_app.logger.debug('Sending ES query: %s' % repr(body))
+            query_config["body"] = body
+            current_app.logger.debug("Sending ES query: %s" % repr(body))
             result = es.search(**query_config)
-            for hit in result['hits']['hits']:
+            for hit in result["hits"]["hits"]:
                 is_hit_valid = all([validator(record, hit) for validator in validators])
                 if is_hit_valid:
                     yield hit

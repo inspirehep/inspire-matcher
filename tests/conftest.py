@@ -29,7 +29,7 @@ from invenio_search import InvenioSearch
 from inspire_matcher import InspireMatcher
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def app():
     app = Flask(__name__)
     InvenioSearch(app)
