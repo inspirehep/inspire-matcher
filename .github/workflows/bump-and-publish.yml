@@ -25,7 +25,7 @@ jobs:
         shell: bash
         run: |
           git config user.name github-actions
-          git config user.email github-actions@github.com 
+          git config user.email "38065702145+github-actions[bot]@users.noreply.github.com"
 
       - name: Install bump2version
         shell: bash
@@ -42,7 +42,7 @@ jobs:
         uses: ad-m/github-push-action@v0.8.0
         with:
           branch: ${{ github.ref }}
-          github_token: ${{ secrets.INSPIRE_BOT_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           tags: true
 
       - name: get sha
