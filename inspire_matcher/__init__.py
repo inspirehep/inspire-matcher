@@ -25,4 +25,4 @@ from __future__ import absolute_import, division, print_function
 from inspire_matcher.api import match  # noqa: F401
 from inspire_matcher.ext import InspireMatcher  # noqa: F401
 
-__version__ = "9.0.43"
+__version__ = "9.0.44"
