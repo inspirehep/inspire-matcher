@@ -33,8 +33,6 @@ with open("README.rst") as f:
 
 install_requires = [
     "inspire-json-merger>=11.0.0",
-    'dictdiffer<0.9.0; python_version <= "2.7"',
-    'dictdiffer>=0.9.0; python_version >= "3.6"',
     "inspire-utils>=3.0.0",
     "invenio-search>=1.2.3",
     "six~=1.0,>=1.11.0",
