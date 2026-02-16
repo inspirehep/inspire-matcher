@@ -67,11 +67,15 @@ extras_require = {
         "opensearch-py>=2.0.0,<3.0.0",
         "opensearch-dsl>=2.0.0,<3.0.0",
     ],
+    "opensearch3": [
+        "opensearch-py>=3.0.0,<4.0.0",
+        "opensearch-dsl>=2.0.0,<3.0.0",
+    ],
 }
 
 extras_require["all"] = []
 for name, reqs in extras_require.items():
-    if name not in ("opensearch2", "elasticsearch7"):
+    if name not in ("opensearch2", "opensearch3", "elasticsearch7"):
         extras_require["all"].extend(reqs)
 
 packages = find_packages(exclude=["docs"])
