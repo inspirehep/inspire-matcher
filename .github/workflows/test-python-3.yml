@@ -6,6 +6,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        opensearch-extra: [opensearch2, opensearch3]
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -18,11 +22,12 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -e .[tests,opensearch2]
+        pip install -e .[tests,${{ matrix.opensearch-extra }}]
 
     - name: Show python dependencies
       run: |
         python3 --version
+        echo "OpenSearch extra: ${{ matrix.opensearch-extra }}"
         pip freeze
 
     - name: Run tests

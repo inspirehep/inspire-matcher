@@ -28,3 +28,13 @@ About
 =====
 
 Finds the records in INSPIRE most similar to a given record or reference.
+
+Local setup and tests
+=====================
+
+.. code-block:: bash
+
+    pyenv virtualenv matcher
+    pyenv activate matcher
+    pip install -e ".[tests,opensearch3]"
+    ./run-tests.sh
