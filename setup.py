@@ -100,7 +100,7 @@ setup(
             "inspire_matcher = inspire_matcher:InspireMatcher",
         ],
     },
-    version="9.0.46",
+    version="9.0.47",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Web Environment",
