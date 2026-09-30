@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # This file is part of INSPIRE.
 # Copyright (C) 2014-2017 CERN.
@@ -20,9 +19,8 @@
 # granted to it by virtue of its status as an Intergovernmental Organization
 # or submit itself to any jurisdiction.
 
-from __future__ import absolute_import, division, print_function
+from unittest import mock
 
-import mock
 import pytest
 
 from inspire_matcher.api import match
@@ -53,7 +51,7 @@ def test_match_raises_if_one_step_of_the_algorithm_has_no_queries():
     assert "Malformed algorithm" in str(excinfo.value)
 
 
-@mock.patch("inspire_matcher.api.es")
+@mock.patch("inspire_matcher.api.es", new_callable=mock.Mock)
 def test_match_uses_the_given_validator_callable(es_mock):
     es_mock.search.return_value = {
         "hits": {
@@ -181,7 +179,7 @@ def test_match_raises_on_invalid_collections():
     assert "Malformed collections" in str(excinfo.value)
 
 
-@mock.patch("inspire_matcher.api.es")
+@mock.patch("inspire_matcher.api.es", new_callable=mock.Mock)
 def test_validator_list(es_mock):
     es_mock.search.return_value = {
         "hits": {

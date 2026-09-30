@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # This file is part of INSPIRE.
 # Copyright (C) 2014-2017 CERN.
@@ -22,12 +21,9 @@
 
 """Matcher API."""
 
-from __future__ import absolute_import, division, print_function
-
 from flask import current_app
 from invenio_search import current_search_client as es
 from invenio_search.utils import prefix_index
-from six import string_types
 from werkzeug.utils import import_string
 
 from inspire_matcher.core import compile
@@ -78,7 +74,7 @@ def match(record, config=None):
         collections is None
         or (
             isinstance(collections, (list, tuple))
-            and all(isinstance(collection, string_types) for collection in collections)
+            and all(isinstance(collection, str) for collection in collections)
         )
     ):
         raise ValueError(

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # This file is part of INSPIRE.
 # Copyright (C) 2014-2017 CERN.
@@ -20,12 +19,9 @@
 # granted to it by virtue of its status as an Intergovernmental Organization
 # or submit itself to any jurisdiction.
 
-from __future__ import absolute_import, division, print_function
-
 import json
-import os
+from importlib.resources import files
 
-import pkg_resources
 import pytest
 
 from inspire_matcher.validators import (
@@ -37,86 +33,45 @@ from inspire_matcher.validators import (
 )
 
 
+def load_fixture(name):
+    return json.loads(files(__package__).joinpath("fixtures", name).read_text())
+
+
 def test_default_validator_is_not_very_exciting():
     assert default_validator(None, None)
 
 
 def test_validator_matches_on_same_authors_and_titles():
-    record = json.loads(
-        pkg_resources.resource_string(
-            __name__, os.path.join("fixtures", "harvest_record_1601.02340.json")
-        )
-    )
-
-    result = json.loads(
-        pkg_resources.resource_string(
-            __name__, os.path.join("fixtures", "matching_result_1601.02340.json")
-        )
-    )
+    record = load_fixture("harvest_record_1601.02340.json")
+    result = load_fixture("matching_result_1601.02340.json")
 
     assert authors_titles_validator(record, result)
 
 
 def test_validator_no_match_on_similar_authors_different_titles():
-    record = json.loads(
-        pkg_resources.resource_string(
-            __name__, os.path.join("fixtures", "harvest_record_1804.09082.json")
-        )
-    )
-
-    result = json.loads(
-        pkg_resources.resource_string(
-            __name__, os.path.join("fixtures", "matching_wrong_result_1211.4028.json")
-        )
-    )
+    record = load_fixture("harvest_record_1804.09082.json")
+    result = load_fixture("matching_wrong_result_1211.4028.json")
 
     assert not authors_titles_validator(record, result)
 
 
 def test_validator_no_match_on_different_titles():
-    record = json.loads(
-        pkg_resources.resource_string(
-            __name__, os.path.join("fixtures", "harvest_record_1712.05946.json")
-        )
-    )
-
-    result = json.loads(
-        pkg_resources.resource_string(
-            __name__, os.path.join("fixtures", "matching_wrong_result_10.1103.json")
-        )
-    )
+    record = load_fixture("harvest_record_1712.05946.json")
+    result = load_fixture("matching_wrong_result_10.1103.json")
 
     assert not authors_titles_validator(record, result)
 
 
 def test_cds_id_validator_matches_perfectlyh():
-    record = json.loads(
-        pkg_resources.resource_string(
-            __name__, os.path.join("fixtures", "harvest_record_2654944.json")
-        )
-    )
-
-    result = json.loads(
-        pkg_resources.resource_string(
-            __name__, os.path.join("fixtures", "matching_result_2654944.json")
-        )
-    )
+    record = load_fixture("harvest_record_2654944.json")
+    result = load_fixture("matching_result_2654944.json")
 
     assert cds_identifier_validator(record, result)
 
 
 def test_cds_identifier_mismatch_different_sources():
-    record = json.loads(
-        pkg_resources.resource_string(
-            __name__, os.path.join("fixtures", "harvest_record_2654944.json")
-        )
-    )
-
-    result = json.loads(
-        pkg_resources.resource_string(
-            __name__, os.path.join("fixtures", "matching_wrong_2654944.json")
-        )
-    )
+    record = load_fixture("harvest_record_2654944.json")
+    result = load_fixture("matching_wrong_2654944.json")
 
     assert not cds_identifier_validator(record, result)
 
