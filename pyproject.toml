@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "inspire-matcher"
-version = "9.0.47"
+version = "9.0.48"
 description = "Find the records in INSPIRE most similar to a given record or reference."
 authors = [{name = "CERN", email = "admin@inspirehep.net"}]
 license = "GPL-3.0-or-later"
