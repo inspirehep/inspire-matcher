@@ -47,7 +47,7 @@ invenio-search = ">=1.2.3"
 invenio-base = ">=1.2.3,<2.0.0"
 pyyaml = ">=6.0,<7.0"
 # invenio-search 2.4.x imports pkg_resources.
-setuptools = "<81"
+setuptools = "<84"
 
 [tool.coverage.run]
 include = ["inspire_matcher/*.py"]
